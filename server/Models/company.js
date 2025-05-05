@@ -15,6 +15,12 @@ const companySchema = new mongoose.Schema({
     phone: { type: String },
   },
   image: { type: String },
+  token: {
+    type: String,
+  },
+  resetPasswordExpires: {
+    type: Date,
+  },
 })
 
 const Company = mongoose.model('Company', companySchema)
