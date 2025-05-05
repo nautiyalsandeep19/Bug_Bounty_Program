@@ -1,38 +1,43 @@
-# Node modules
-**/node_modules/
-
-# Environment variables
-**/.env
-
 # Logs
-logs
 *.log
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 
-# Build directories
+# Coverage reports
+coverage/
+
+# Environment variables
+client/.env
+server/.env
+
+# Build output
 dist/
 build/
 .next/
 out/
+client/dist/
+client/build/
+server/dist/
+server/build/
 
-# OS-specific
+# Node modules
+client/node_modules/
+server/node_modules/
+
+# Local database files
+*.sqlite
+*.db
+
+# OS-specific files
 .DS_Store
 Thumbs.db
 
-# IDEs and editors
+# IDE/editor settings
 .vscode/
 .idea/
 *.suo
 *.ntvs*
 *.njsproj
 *.sln
-
-# Optional: coverage reports
-coverage/
-
-# Optional: local database files
-*.sqlite
-*.db
