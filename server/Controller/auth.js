@@ -1,0 +1,274 @@
+import Hacker from '../Models/hacker.js'
+import Company from '../Models/company.js'
+import otpGenerator from 'otp-generator'
+import Otp from '../Models/otp.js'
+import bcryptjs from 'bcryptjs'
+import Jwt from 'jsonwebtoken'
+
+//send otp
+
+export const sendOtp = async (req, res) => {
+  try {
+    //fetch email from body
+    const { email } = req.body
+
+    //check existing user
+    const existingUser =
+      (await Hacker.findOne({ email })) || (await Company.findOne({ email }))
+
+    if (existingUser) {
+      return res.status(409).json({
+        success: false,
+        message: 'User Already Registered',
+      })
+    }
+    console.log('email', email)
+
+    //genrate otp
+    var genOtp = otpGenerator.generate(6, {
+      upperCaseAlphabets: false,
+      lowerCaseAlphabets: false,
+      specialChars: false,
+      digits: true,
+    })
+
+    console.log(genOtp)
+
+    let result = await Otp.findOne({ otp: genOtp })
+    while (result) {
+      var genOtp = otpGenerator.generate(6, {
+        upperCaseAlphabets: false,
+        lowerCaseAlphabets: false,
+        specialChars: false,
+        digits: true,
+      })
+    }
+    result = await Otp.findOne({ otp: genOtp })
+
+    //entry in db
+    const otpPayload = { email, otp: genOtp }
+
+    const otpBody = await Otp.create(otpPayload)
+    console.log(otpBody)
+
+    res.status(200).json({
+      success: true,
+      message: 'Otp Send Successfullty',
+      genOtp,
+    })
+  } catch (error) {
+    console.error(error)
+    return res.status(500).json({
+      success: false,
+      message: error.message,
+    })
+  }
+}
+
+//signup
+
+export const signUp = async (req, res) => {
+  try {
+    const { name, email, password, confirmPassword, otp, userType, domain } =
+      req.body
+
+    if (!name || !email || !password || !confirmPassword || !otp || !userType) {
+      return res.status(400).status({
+        success: false,
+        message: 'All feilds are required',
+      })
+    }
+
+    if (password !== confirmPassword) {
+      return res.status(409).json({
+        success: false,
+        message: "Password doesn't matched",
+      })
+    }
+
+    //  validate Otp
+
+    const recentOtp = await Otp.findOne({ email })
+      .sort({ createdAt: -1 })
+      .limit(1)
+    // console.log(recentOtp.otp)
+
+    if (recentOtp === null) {
+      return res.status(400).json({
+        success: false,
+        message: 'Otp not found !',
+      })
+    } else if (recentOtp.otp !== otp) {
+      return res.status(400).json({
+        success: false,
+        message: 'Otp not matched !',
+      })
+    }
+
+    //password encryption
+
+    const hashPassword = await bcryptjs.hash(password, 10)
+
+    //create entry in db
+    const seed = Math.random().toString(36).substring(7)
+    if (userType === 'hacker') {
+      const hacker = await Hacker.create({
+        name,
+        email,
+        password: hashPassword,
+        image: `https://api.dicebear.com/9.x/bottts-neutral/svg?seed=${seed}`,
+      })
+
+      return res.status(200).json({
+        success: true,
+        message: 'Hacker registered successfully  ',
+        hacker,
+      })
+    } else if (userType === 'company') {
+      if (!domain) {
+        return res.status(400).json({
+          success: false,
+          message: 'Domain required',
+        })
+      }
+
+      const company = await Company.create({
+        name,
+        email,
+        password: hashPassword,
+        domain,
+        image: `https://api.dicebear.com/9.x/initials/svg?seed=${name}`,
+      })
+
+      return res.status(200).json({
+        success: true,
+        message: 'Company registered successfully  ',
+        company,
+      })
+    }
+  } catch (error) {
+    console.log(error)
+
+    return res.status(500).json({
+      success: false,
+      message: 'Unable to register ',
+    })
+  }
+}
+
+//Login
+
+export const login = async (req, res) => {
+  try {
+    const { email, password, userType } = req.body
+
+    if (!email || !password || !userType) {
+      return res.status(401).json({
+        success: false,
+        message: 'All feilds are required',
+      })
+    }
+    console.log(email, password)
+
+    if (userType === 'hacker') {
+      const hacker = await Hacker.findOne({ email })
+      if (!hacker) {
+        return res.status(401).json({
+          success: false,
+          message: 'hacker not registerd ! please sign up',
+        })
+      }
+      console.log(hacker)
+
+      console.log('frontend', password)
+      console.log('encrypted password from backend', hacker.password)
+
+      //genrate jwttoken
+      if (await bcryptjs.compare(password, hacker.password)) {
+        const payLoad = {
+          email: hacker.email,
+          id: hacker._id,
+          userType: userType,
+        }
+        const token = Jwt.sign(payLoad, process.env.JWT_SECRET, {
+          expiresIn: '4h',
+        })
+
+        hacker.token = token
+        hacker.password = undefined
+
+        //create cookie
+
+        const options = {
+          expires: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000),
+          httpOnly: true,
+        }
+
+        res.cookie('token', token, options).status(200).json({
+          success: true,
+          token,
+          hacker,
+          message: 'logged in successfully',
+        })
+      } else {
+        return res.status(401).json({
+          success: false,
+          message: 'password is incorrect',
+        })
+      }
+    } else if (userType === 'company') {
+      const company = await Company.findOne({ email })
+      if (!company) {
+        return res.status(401).json({
+          success: false,
+          message: 'company not registerd ! please sign up',
+        })
+      }
+      console.log(company)
+
+      console.log('frontend', password)
+      console.log('encrypted password from backend', company.password)
+
+      //genrate jwttoken
+      if (await bcryptjs.compare(password, company.password)) {
+        const payLoad = {
+          email: company.email,
+          id: company._id,
+          userType: userType,
+        }
+        const token = Jwt.sign(payLoad, process.env.JWT_SECRET, {
+          expiresIn: '4h',
+        })
+
+        company.token = token
+        company.password = undefined
+
+        //create cookie
+
+        const options = {
+          expires: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000),
+          httpOnly: true,
+        }
+
+        res.cookie('token', token, options).status(200).json({
+          success: true,
+          token,
+          company,
+          message: 'logged in successfully',
+        })
+      } else {
+        return res.status(401).json({
+          success: false,
+          message: 'password is incorrect',
+        })
+      }
+    }
+  } catch (error) {
+    console.log(error)
+
+    return res.status(500).json({
+      success: false,
+      message: 'Unable to login ',
+    })
+  }
+}
