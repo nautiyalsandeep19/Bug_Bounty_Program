@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose from 'mongoose'
 
 const hackerSchema = new mongoose.Schema(
   {
@@ -10,11 +10,14 @@ const hackerSchema = new mongoose.Schema(
       type: String,
       required: true,
       unique: true,
-    //   match: [/\S+@\S+\.\S+/, "is invalid"],
+      //   match: [/\S+@\S+\.\S+/, "is invalid"],
     },
     password: {
       type: String,
       required: true,
+    },
+    image: {
+      type: String,
     },
     skills: {
       type: [String],
@@ -22,12 +25,12 @@ const hackerSchema = new mongoose.Schema(
     programs: [
       {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "Program",
+        ref: 'Program',
       },
     ],
   },
   { timestamps: true }
-);
+)
 
-const Hacker = mongoose.model("Hacker", hackerSchema);
-export default Hacker;
+const Hacker = mongoose.model('Hacker', hackerSchema)
+export default Hacker
