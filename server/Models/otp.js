@@ -1,5 +1,5 @@
 import mongoose from 'mongoose'
-import { mailSender } from '../Utils/maiSender.js'
+import mailSender from '../Utils/maiSender.js'
 import mailtemplate from '../Templates/OtpEmailTemplate.js'
 
 const OtpScheema = new mongoose.Schema({
@@ -15,7 +15,7 @@ const OtpScheema = new mongoose.Schema({
   createdAt: {
     type: Date,
     default: Date.now,
-    expires: 5,
+    expires: 150,
   },
 })
 

@@ -12,7 +12,7 @@ const mailSender = async (email, title, body) => {
       host: process.env.MAIL_HOST,
       auth: {
         user: process.env.MAIL_USER,
-        pass: process.env.MAIL_PASSORD,
+        pass: process.env.MAIL_PASSWORD,
       },
     })
 
