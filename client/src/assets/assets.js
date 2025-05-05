@@ -1,12 +1,14 @@
 import bugbase from "./bugbase.jpg"
 import hike from "./hike.png"
 import phonepe from "./phonepe.png"
+import noannoncement from "./no_announcement.svg"
 
 
 export const assets = {
     bugbase,
     hike,
-    phonepe
+    phonepe,
+    noannoncement
 }
 
 
@@ -40,7 +42,7 @@ export const navLinks = [
   export const PROGRAMS = [
     {
       id:1,
-        name: "BugBase",
+        name: "Sandeep",
       slug: "hike-bugbounty",
       type: "Bug Bounty",
       logo: assets.bugbase,
@@ -49,7 +51,7 @@ export const navLinks = [
     },
     {
       id:2,
-      name: "Hike",
+      name: "Sumit",
       slug: "bugbase",
       type: "Bug Bounty",
       logo: assets.hike,
@@ -58,7 +60,7 @@ export const navLinks = [
     },
     {
       id:3,
-      name: "PhonePe",
+      name: "Tushar",
       slug: "needl.ai",
       type: "Vulnerability Disclosure",
       logo: assets.phonepe,

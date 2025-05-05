@@ -50,12 +50,12 @@ const Scope = () => {
   const AssetRow = ({ asset }) => (
     <div className="flex flex-col md:flex-row justify-between items-center bg-gray-50 p-4 mt-2 rounded">
       <div className="flex-1 text-sm">
-        <a href={asset.asset} className="text-blue-600 underline">{asset.asset}</a>
+        <a href={asset.asset} className="text-blue-600">{asset.asset}</a>
         <div className="text-gray-500">{asset.description}</div>
       </div>
-      <div className="text-sm w-full md:w-1/6 text-center">{asset.type}</div>
-      <div className="text-sm w-full md:w-1/6 text-center">{asset.lastUpdate}</div>
-      <div className="text-sm w-full md:w-1/6 text-center">{asset.reportsResolved}</div>
+      <div className="text-sm text-black w-full md:w-1/6 text-center">{asset.type}</div>
+      <div className="text-sm text-black w-full md:w-1/6 text-center">{asset.lastUpdate}</div>
+      <div className="text-sm text-black w-full md:w-1/6 text-center">{asset.reportsResolved}</div>
       <div className="flex gap-2 flex-wrap justify-center mt-2 md:mt-0 w-full md:w-1/6">
         {asset.labels.map((label, idx) => <Tag key={idx} text={label} />)}
       </div>
@@ -63,12 +63,12 @@ const Scope = () => {
   );
 
   return (
-    <div className="p-6 max-w-6xl mx-auto space-y-10">
+    <div className="p-6 max-w-7xl mx-auto space-y-10">
       {/* In Scope */}
-      <div className="border rounded-lg p-5">
-        <div className="flex items-center gap-2 mb-2">
+      <div className="border justify-between rounded-lg p-5 bg-black">
+        <div className="flex justify-between gap-2 mb-2">
           <span className="text-lg font-semibold">In Scope Targets</span>
-          <span className="bg-green-100 text-green-700 px-2 py-1 text-xs rounded-full">✓ In Scope</span>
+          <span className="bg-green-500 text-white font-bold px-2 py-1.5 text-xs rounded-full">✓ In Scope</span>
         </div>
         <p className="text-sm mb-4">Rewards Information</p>
         <div className="flex flex-wrap gap-2 mb-4">
@@ -79,11 +79,11 @@ const Scope = () => {
           {rewardLevels.map(({ label, color, amount }) => (
             <div key={label} className="flex items-center gap-1 text-sm">
               <span className={`text-white text-xs px-2 py-1 rounded ${color}`}>{label}</span>
-              <span className="text-gray-700 font-medium">{amount}</span>
+              <span className="text-white font-medium">{amount}</span>
             </div>
           ))}
         </div>
-        <div className="bg-gray-100 p-2 text-sm font-semibold grid grid-cols-5 text-center rounded">
+        <div className="bg-gray-500 p-2 text-sm  font-semibold grid grid-cols-5 text-center rounded">
           <span className="text-left pl-2">Asset</span>
           <span>Type</span>
           <span>Last update</span>
@@ -96,17 +96,17 @@ const Scope = () => {
       </div>
 
       {/* Out of Scope */}
-      <div className="border rounded-lg p-5">
-        <div className="flex items-center gap-2 mb-2">
+      <div className="border bg-black rounded-lg p-5">
+        <div className="flex items-center justify-between gap-2 mb-2">
           <span className="text-lg font-semibold">Out Of Scope Targets</span>
-          <span className="bg-red-100 text-red-700 px-2 py-1 text-xs rounded-full">× Out Of Scope</span>
+          <span className="bg-red-500 text-white font-bold px-2 py-1.5 text-xs rounded-full">× Out Of Scope</span>
         </div>
         <p className="text-sm mb-4">Rewards Information</p>
         <div className="flex flex-wrap gap-2 mb-4">
           <span className="bg-red-200 text-red-800 text-xs px-3 py-1 rounded-full">🚫 Ineligible for Bounty</span>
           <span className="bg-red-200 text-red-800 text-xs px-3 py-1 rounded-full">🚫 Ineligible for Swag</span>
         </div>
-        <div className="bg-gray-100 p-2 text-sm font-semibold grid grid-cols-5 text-center rounded">
+        <div className="bg-gray-500 p-2 text-sm font-semibold grid grid-cols-5 text-center rounded">
           <span className="text-left pl-2">Asset</span>
           <span>Type</span>
           <span>Last update</span>

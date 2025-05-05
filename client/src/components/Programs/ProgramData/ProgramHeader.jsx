@@ -1,72 +1,77 @@
-import React from 'react'
-import { useParams } from "react-router-dom"
-import { PROGRAMS } from "../../../assets/assets"
+import React from 'react';
+import { useParams } from "react-router-dom";
+import { PROGRAMS } from "../../../assets/assets";
 
 const ProgramHeader = () => {
-
-  const { slug } = useParams()
-  const program = PROGRAMS.find((p) => p.slug === slug)
+  const { slug } = useParams();
+  const program = PROGRAMS.find((p) => p.slug === slug);
 
   if (!program) {
-    return <div className="p-4">Program not found.</div>
+    return <div className="p-4 text-white">Program not found.</div>;
   }
 
-
   return (
-    <div className="max-w-7xl mx-auto p-4 bg-white flex flex-col rounded shadow mt-4">
-      <div className="flex items-center gap-6">
-        <img src={program.logo} alt={program.name} className="h-24 w-24" />
+    <div className="max-w-7xl mx-auto p-6 mt-6 bg-[#0b132b] rounded-2xl shadow-xl text-white">
+      
+      {/* Header */}
+      <div className="flex flex-col sm:flex-row sm:items-center gap-6 mb-6">
+        <img src={program.logo} alt={program.name} className="h-24 w-24 rounded-full border-2 border-blue-400 p-1 bg-white" />
         <div>
-          <h1 className="text-2xl font-bold">{program.name}</h1>
-          <p className="text-gray-600">{`https://${program.slug}.in`}</p>
+          <h1 className="text-3xl font-extrabold tracking-tight">{program.name}</h1>
+          <p className="text-sm text-blue-300 mt-1">{`https://${program.slug}.in`}</p>
         </div>
       </div>
 
-      <div className="bg-white rounded-xl p-4 mt-6">
-  <h2 className="text-sm mb-5 flex font-semibold text-gray-400">Report Statistics</h2>
+      {/* Tags */}
+      <div className="flex flex-wrap gap-2 mt-6 justify-center mb-3 sm:justify-start">
+          {program.tags.map((tag, idx) => (
+            <span
+              key={idx}
+              className={`text-xs px-4 py-1.5 rounded-full font-medium uppercase tracking-wide ${
+                tag === "Bounty"
+                  ? "bg-orange-600 text-white"
+                  : tag === "Thanks"
+                  ? "bg-green-600 text-white"
+                  : tag === "Managed"
+                  ? "bg-yellow-500 text-white"
+                  : tag === "Self-Managed"
+                  ? "bg-blue-600 text-white"
+                  : "bg-gray-500 text-white"
+              }`}
+            >
+              {tag}
+            </span>
+          ))}
+        </div>
 
-  <div className="flex justify-between text-center mb-4">
-    <div>
-      <p className="text-xl font-medium">454</p>
-      <p className="text-sm text-gray-400">Total Reports Received</p>
-    </div>
-    <div>
-      <p className="text-xl font-medium">1</p>
-      <p className="text-sm text-gray-400">Assets in Scope</p>
-    </div>
-    <div>
-      <p className="text-xl font-medium">$100 - $500</p>
-      <p className="text-sm text-gray-400">Bounty Range</p>
-    </div>
-  </div>
+      {/* Statistics Card */}
+      <div className="bg-white/10 backdrop-blur-md rounded-xl p-6 mb-6 border border-white/10 shadow-md">
+        <h2 className="text-base font-semibold text-blue-200 mb-4 uppercase tracking-wide">Report Statistics</h2>
+        <div className="grid grid-cols-1 sm:grid-cols-3 text-center gap-6">
+          <div>
+            <p className="text-2xl font-bold">0</p>
+            <p className="text-sm text-gray-300 mt-1">Total Reports Received</p>
+          </div>
+          <div>
+            <p className="text-2xl font-bold">0</p>
+            <p className="text-sm text-gray-300 mt-1">Assets in Scope</p>
+          </div>
+          <div>
+            <p className="text-2xl font-bold">$0-0$</p>
+            <p className="text-sm text-gray-300 mt-1">Bounty Range</p>
+          </div>
+        </div>
 
-  <div className="flex flex-wrap gap-1 -mt-2">
-    {program.tags.map((tag, idx) => (
-      <span
-        key={idx}
-        className={`text-xs px-3 py-1.5 rounded-full border ${
-          tag === "Bounty"
-            ? "bg-[#e37a42] text-white"
-            : tag === "Thanks"
-            ? "bg-[#05ae01] text-white"
-            : tag === "Managed"
-            ? "bg-yellow-500 text-white"
-            : tag === "Self-Managed"
-            ? "bg-[#4193df] text-white"
-            : "bg-gray-400 text-white"
-        }`}
-      >
-        {tag}
-      </span>
-    ))}
-  </div>
-</div>
+      </div>
 
-      <button className="mt-6  w-[200px] text-center  px-2 py-2 bg-green-600 text-white rounded">
-        Submit Report
-      </button>
+      {/* CTA */}
+      <div className="flex justify-start">
+        <button className="bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white px-6 py-3 rounded-full text-sm font-semibold shadow-md transition-all duration-200">
+          Submit Report
+        </button>
+      </div>
     </div>
-  )
-}
+  );
+};
 
-export default ProgramHeader
+export default ProgramHeader;

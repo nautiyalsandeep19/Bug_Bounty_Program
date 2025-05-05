@@ -25,16 +25,17 @@ export default function ProgramTabs() {
   };
 
   return (
-    <div className="max-w-7xl mt-10 mx-auto p-4">
-      <div className="flex space-x-6 border-b border-gray-300 mb-6">
+    <div className="max-w-7xl mt-2 mx-auto p-4">
+      {/* Tabs Navigation */}
+      <div className="flex h-[70px] space-x-6 border-b bg-black border-gray-300 mb-6 sticky top-[-30px] z-10">
         {tabs.map((tab) => (
           <button
             key={tab.key}
             onClick={() => setActiveTab(tab.key)}
             className={`pb-2 text-sm md:text-base border-b-2 ${
               activeTab === tab.key
-                ? "border-green-500 text-green-600 font-semibold"
-                : "border-transparent text-gray-600 hover:text-green-600"
+                ? "border-blue-500 text-blue-600 font-semibold"
+                : "border-transparent text-gray-600 hover:text-blue-600"
             }`}
           >
             {tab.label}
@@ -42,7 +43,8 @@ export default function ProgramTabs() {
         ))}
       </div>
 
-      <div className="bg-white p-6 rounded shadow">
+      {/* Scrollable Content Area */}
+      <div className="bg-white p-6 h-[85vh] rounded shadow overflow-y-auto">
         {renderTabContent()}
       </div>
     </div>
