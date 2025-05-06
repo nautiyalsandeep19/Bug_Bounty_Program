@@ -1,5 +1,5 @@
 const resetPasswordEmailTemplate = (resetLink) => {
-  return `
+    return `
       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; padding: 20px; border: 1px solid #eee; border-radius: 8px;">
         <h2 style="color: #333;">Reset Your Password</h2>
         <p style="font-size: 16px; color: #555;">
@@ -13,6 +13,9 @@ const resetPasswordEmailTemplate = (resetLink) => {
         <p style="font-size: 14px; color: #999;">
           If you did not request a password reset, please ignore this email.
         </p>
-      </div>   `
-}
-export default resetPasswordEmailTemplate
+      </div>
+    `;
+  };
+  
+  export default resetPasswordEmailTemplate;
+  
