@@ -1,6 +1,5 @@
-
-// // App.jsx
-import React from 'react';
+// App.jsx
+import React, { useState,useEffect } from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import Sidebar from './components/Sidebar/Sidebar';
 import Dashboard from './Pages/Dashboard';
@@ -12,6 +11,8 @@ import Bounties from './Pages/Bounties';
 import Settings from './Pages/Settings';
 
 function App() {
+
+
   return (
       <div className="flex min-h-screen bg-[#0e0e0e] text-white">
         <Sidebar />
