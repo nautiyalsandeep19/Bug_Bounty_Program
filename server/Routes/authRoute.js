@@ -17,8 +17,8 @@ import { loginValidator } from '../Validator/authValidator.js'
 const router = express.Router()
 
 router.post('/sendOtp', otpLimiter, sendOtp)
-router.post('/signUp', signUpValidator, validate, signUp)
-router.post('/login', loginLimiter, loginValidator, validate, login)
+router.post('/signUp', signUp)
+router.post('/login', login)
 
 //protected route only uses when the user logged in
 router.post(

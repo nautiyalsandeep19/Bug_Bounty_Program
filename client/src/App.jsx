@@ -1,6 +1,7 @@
-import Login from './Components/LoginSignup/Login'
-import SignUp from './Components/LoginSignup/SignUp'
+import Login from './Pages/Auth/Login.jsx'
+import SignUp from './Pages/Auth/SignUp.jsx'
 import { Routes, Route } from 'react-router'
+import VerifyOTP from './Pages/Auth/VerifyOtp'
 
 function App() {
   return (
@@ -8,6 +9,7 @@ function App() {
       <Routes>
         <Route path="/signUp" element={<SignUp />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/verifyOtp" element={<VerifyOTP />} />
       </Routes>
     </>
   )
