@@ -9,7 +9,6 @@ const SignUp = () => {
   const [userType, setUserType] = useState('hacker')
   const [formData, setFormData] = useState({
     name: '',
-
     email: '',
     country: '',
     password: '',

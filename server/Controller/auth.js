@@ -9,7 +9,33 @@ import Jwt from 'jsonwebtoken'
 export const sendOtp = async (req, res) => {
   try {
     //fetch email from body
-    const { email } = req.body
+    const { name, email, password, confirmPassword, userType, domain } =
+      req.body
+
+    if (!name || !email || !password || !confirmPassword || !userType) {
+      return res.status(400).status({
+        success: false,
+        message: 'All feilds are required',
+      })
+    }
+
+    //creating a regexformat password
+    const passwordRegex =
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/
+
+    if (!passwordRegex.test(password)) {
+      return res.status(400).json({
+        success: false,
+        message:
+          'Password must contain at least 8 characters, including uppercase, lowercase, number, and special character.',
+      })
+    }
+    if (password !== confirmPassword) {
+      return res.status(409).json({
+        success: false,
+        message: "Password doesn't matched",
+      })
+    }
 
     //check existing user
     const existingUser =

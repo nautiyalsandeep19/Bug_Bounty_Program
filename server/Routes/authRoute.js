@@ -6,9 +6,11 @@ import {
   resetPassword,
 } from '../Controller/resetPassword.js'
 
+//ratelimiting
 import { loginLimiter, otpLimiter } from '../Middleware/rateLimiter.js'
 import {
   changePasswordValidator,
+  otpValidator,
   signUpValidator,
 } from '../Validator/authValidator.js'
 import { validate } from '../Middleware/validate.js'
@@ -16,7 +18,7 @@ import { loginValidator } from '../Validator/authValidator.js'
 
 const router = express.Router()
 
-router.post('/sendOtp', otpLimiter, sendOtp)
+router.post('/sendOtp', otpLimiter, otpValidator, validate, sendOtp)
 router.post('/signUp', signUpValidator, validate, signUp)
 router.post('/login', loginLimiter, loginValidator, validate, login)
 
