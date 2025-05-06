@@ -2,17 +2,25 @@ import React, { useState } from "react";
 import { Link } from "react-router";
 
 const Tab = ({ tabData, field, setField }) => {
+  const activeIndex = tabData.findIndex((tab) => tab.tabName === field);
+
   return (
-    <div className="flex bg-gray-800 p-1 gap-x-1 my-6 rounded-full w-fit cursor-pointer shadow-inner">
+    <div className="relative flex bg-gray-800 p-1 gap-x-1 my-6 rounded-full w-fit cursor-pointer shadow-inner">
+      {/* Slider Animation */}
+      <div
+        className="absolute top-1 bottom-1 left-1 w-1/2 bg-blue-600 rounded-full transition-all duration-300"
+        style={{
+          transform: `translateX(${activeIndex * 100}%)`,
+        }}
+      ></div>
+
       {tabData.map((tab) => (
         <div
           key={tab?.id}
           onClick={() => setField(tab.tabName)}
-          className={`${
-            field === tab.tabName
-              ? "bg-blue-600 text-white"
-              : "bg-transparent text-gray-300"
-          } py-2 px-6 rounded-full transition-colors duration-300 text-sm font-medium`}
+          className={`relative z-10 py-2 px-6 rounded-full transition-colors duration-300 text-sm font-medium ${
+            field === tab.tabName ? "text-white" : "text-gray-300"
+          }`}
         >
           {tab?.tabName}
         </div>
@@ -20,6 +28,7 @@ const Tab = ({ tabData, field, setField }) => {
     </div>
   );
 };
+
 
 const Login = () => {
   const [userType, setUserType] = useState("hacker");
