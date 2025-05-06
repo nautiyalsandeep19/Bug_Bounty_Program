@@ -1,15 +1,15 @@
-import Login from './Pages/Auth/Login.jsx'
-import SignUp from './Pages/Auth/SignUp.jsx'
 import { Routes, Route } from 'react-router'
-import VerifyOTP from './Pages/Auth/VerifyOtp'
+import SignUp from './Components/LoginSignup/SignUp'
+import Login from './Components/LoginSignup/Login'
+import VerifyOtp from './Components/LoginSignup/VerifyOtp'
 
 function App() {
   return (
     <>
       <Routes>
         <Route path="/signUp" element={<SignUp />} />
+        <Route path="/verifyOtp" element={<VerifyOtp />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/verifyOtp" element={<VerifyOTP />} />
       </Routes>
     </>
   )

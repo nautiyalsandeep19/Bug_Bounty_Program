@@ -62,7 +62,7 @@ const OTP = ({ otpCount, setOtp }) => {
           type="text"
           inputMode="numeric"
           maxLength={1}
-          className="w-8 h-8 sm:w-14 sm:h-14 md:w-16 md:h-16 text-center text-base sm:text-2xl text-white bg-[#000814] p-3 rounded-md sm:rounded-lg shadow-[0px_-1px_0px_0px_#FFFFFF2E_inset] outline-none transition-all duration-150 focus:ring-2 focus:ring-blue-400"
+          className="w-8 h-8 sm:w-12 sm:h-12 md:w-14 md:h-14 text-center text-base sm:text-2xl text-white bg-transparent border-1 p-2 rounded-md sm:rounded-lg shadow-[0px_-1px_0px_0px_#FFFFFF2E_inset] outline-none transition-all duration-150 focus:ring-2 focus:ring-blue-400"
         />
       ))}
     </div>
