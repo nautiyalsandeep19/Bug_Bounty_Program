@@ -28,7 +28,14 @@ const hackerSchema = new mongoose.Schema(
         ref: 'Program',
       },
     ],
+    token: {
+      type: String,
+    },
+    resetPasswordExpires: {
+      type: Date,
+    },
   },
+
   { timestamps: true }
 )
 
