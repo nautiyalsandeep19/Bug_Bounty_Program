@@ -5,18 +5,20 @@ import {
   resetPasswordToken,
   resetPassword,
 } from '../Controller/resetPassword.js'
+import { loginLimiter, otpLimiter } from '../Middleware/rateLimiter.js'
 
 const router = express.Router()
 
-router.post('/sendOtp', sendOtp)
-router.post('/signUp', signUp)
-router.post('/login', login)
+router.post('/sendOtp', otpLimiter, sendOtp)
+router.post('/signUp', signUpValidator, validate, signUp);
+router.post('/login', loginLimiter, loginValidator, validate, login);
+
 
 //protected route only uses when the user logged in
-router.post('/changePassword', authMid, changePassword)
+router.post('/changePassword', authMid, changePasswordValidator, validate, changePassword);
 
 //route to reset password token
-router.post('/resetPasswordToken', resetPasswordToken)
+router.post('/resetPasswordToken', otpLimiter,resetPasswordToken)
 
 //route for reset password
 router.post('/resetPassword', resetPassword)
