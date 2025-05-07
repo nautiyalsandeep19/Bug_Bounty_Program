@@ -1,10 +1,10 @@
+import { setToken, setUser } from '../Slices/authSlice'
 import { apiConnector, endPoints } from './ApiConnector/api'
 import toast from 'react-hot-toast'
 
 export const sendOtp = (
   name,
   email,
-  //   country,
   password,
   confirmPassword,
   userType,
@@ -17,7 +17,6 @@ export const sendOtp = (
       const response = await apiConnector('POST', endPoints.SEND_OTP_API, {
         name,
         email,
-        //   country,
         password,
         confirmPassword,
         userType,
@@ -29,7 +28,6 @@ export const sendOtp = (
       console.log(response.success)
 
       // if response.success is false then throw error
-
       if (!response.success) {
         toast.error(response.errors[0].msg)
         throw new Error(response.message)
@@ -42,7 +40,6 @@ export const sendOtp = (
       navigate('/verifyOtp')
     } catch (error) {
       console.log('SENDOTP API ERROR............', error)
-      // toast.error(error?.response?.message)
     }
   }
 }
@@ -50,50 +47,52 @@ export const sendOtp = (
 export const signup = (
   name,
   email,
-  country,
   password,
-  confirmPassword,
   domain,
   otp,
+  userType,
   navigate
 ) => {
   return async () => {
     try {
       // call the signup API
+
       const response = await apiConnector('POST', endPoints.SIGNUP_API, {
         name,
         email,
-        country,
         password,
-        confirmPassword,
         domain,
         otp,
+        userType,
       })
+      console.log(name, email, password, otp, domain, userType)
 
-      console.log('SIGNUP API RESPONSE............', response)
+      // console.log('SIGNUP API RESPONSE............', response)
 
       if (!response.success) {
-        toast.error(response.message)
+        toast.error(response.message, 'hii')
         throw new Error(response.message)
       }
 
       toast.success('Signup Successful')
       navigate('/login')
     } catch (error) {
-      console.log('SIGNUP API ERROR............', error)
-      // toast.error(error.message)
+      // console.log('SIGNUP API ERROR............', error)
+      toast.error(error.message)
     }
   }
 }
 
-export const login = (email, password, navigate) => {
+export const login = (email, password, userType, navigate) => {
   return async (dispatch) => {
     try {
-      const response = await apiConnector('POST', endpoints.LOGIN_API, {
+      const response = await apiConnector('POST', endPoints.LOGIN_API, {
         email,
         password,
+        userType,
       })
 
+      console.log(response)
       if (!response.success) {
         toast.error(response.message)
         throw new Error(response.message)
@@ -101,12 +100,16 @@ export const login = (email, password, navigate) => {
 
       console.log('Response', response)
       toast.success('Login Successful')
-      console.log(response.user)
       dispatch(setToken(response.token))
-      dispatch(setUser(response.user))
+      if (userType === 'hacker') {
+        dispatch(setUser(response.hacker))
+        localStorage.setItem('hacker', JSON.stringify(response.hacker))
+      } else if (userType === 'company') {
+        dispatch(setUser(response.company))
+        localStorage.setItem('company', JSON.stringify(response.company))
+      }
 
       // save the same data in local storage
-      localStorage.setItem('user', JSON.stringify(response.user))
       localStorage.setItem('token', JSON.stringify(response.token))
 
       navigate('/')

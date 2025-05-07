@@ -13,7 +13,7 @@ const Tab = ({ field, setField }) => {
           onClick={() => setField(tab.tabName)}
           className={`${
             field === tab.tabName
-              ? 'bg-blue-600 text-white'
+              ? 'bg-gradient-to-r from-[#00D4FF] to-[#00A6FF] text-white'
               : 'bg-transparent text-gray-300'
           } py-2 px-6 rounded-full transition-colors duration-300 text-sm font-medium`}
         >

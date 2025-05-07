@@ -92,42 +92,21 @@ export const sendOtp = async (req, res) => {
 
 //signup
 export const signUp = async (req, res) => {
-  console.log('req', req)
+  console.log('req', req.body)
 
   try {
-    const { name, email, password, confirmPassword, otp, userType, domain } =
-      req.body
+    const { name, email, password, domain, otp, userType } = req.body
 
-    if (!name || !email || !password || !confirmPassword || !otp || !userType) {
+    if (!otp || !userType) {
       return res.status(400).status({
         success: false,
         message: 'All feilds are required',
       })
     }
-
-    //creating a regexformat password
-    const passwordRegex =
-      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/
-
-    if (!passwordRegex.test(password)) {
-      return res.status(400).json({
-        success: false,
-        message:
-          'Password must contain at least 8 characters, including uppercase, lowercase, number, and special character.',
-      })
-    }
-    if (password !== confirmPassword) {
-      return res.status(409).json({
-        success: false,
-        message: "Password doesn't matched",
-      })
-    }
-
     //  validate Otp
     const recentOtp = await Otp.findOne({ email })
       .sort({ createdAt: -1 })
       .limit(1)
-    // console.log(recentOtp.otp)
 
     if (recentOtp === null) {
       return res.status(400).json({
@@ -140,6 +119,7 @@ export const signUp = async (req, res) => {
         message: 'Otp not matched!',
       })
     }
+    console.log(domain, 'hii')
 
     //password encryption
 
@@ -239,11 +219,18 @@ export const login = async (req, res) => {
           httpOnly: true,
         }
 
-        res.cookie('token', token, options).status(200).json({
+        // res.cookie('token', token, options).status(200).json({
+        //   success: true,
+        //   token,
+        //   hacker,
+        //   message: 'logged in successfully',
+        // })
+
+        return res.status(200).json({
           success: true,
-          token,
+          message: 'User Login Successfully',
           hacker,
-          message: 'logged in successfully',
+          token,
         })
       } else {
         return res.status(401).json({
@@ -285,11 +272,18 @@ export const login = async (req, res) => {
           httpOnly: true,
         }
 
-        res.cookie('token', token, options).status(200).json({
+        // res.cookie('token', token, options).status(200).json({
+        //   success: true,
+        //   token,
+        //   company,
+        //   message: 'logged in successfully',
+        // })
+
+        return res.status(200).json({
           success: true,
-          token,
+          message: 'User Login Successfully',
           company,
-          message: 'logged in successfully',
+          token,
         })
       } else {
         return res.status(401).json({
