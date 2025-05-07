@@ -1,5 +1,7 @@
 import { body } from 'express-validator'
 
+//validation
+
 export const signUpValidator = [
   body('otp').isLength({ min: 6, max: 6 }).withMessage('Invalid OTP format'),
 ]
