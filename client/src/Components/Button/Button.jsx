@@ -30,7 +30,7 @@ const Button = ({
       onClick={onClick}
       type={type}
     >
-      <span className="relative z-10 font-medium text-white group-hover:text-[#00D4FF] transition-colors duration-300">
+      <span className="relative z-10 font-medium text-white group-hover:text-[rgb(0,212,255)] transition-colors duration-300">
         {text}
       </span>
 

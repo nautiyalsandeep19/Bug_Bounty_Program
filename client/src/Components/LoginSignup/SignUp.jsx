@@ -7,6 +7,7 @@ import countryList from '../../assets/country.json'
 import { useDispatch } from 'react-redux'
 import { setSignupData } from '../../Slices/authSlice'
 import { sendOtp } from '../../Services/authApi'
+import Button from '../Button/Button'
 
 const SignUp = () => {
   const navigate = useNavigate()
@@ -33,6 +34,8 @@ const SignUp = () => {
   const handleSubmit = (e) => {
     e.preventDefault()
     const signupformData = { ...formData, userType }
+    console.log(signupformData)
+
     dispatch(setSignupData(signupformData))
     dispatch(
       sendOtp(
@@ -175,6 +178,8 @@ const SignUp = () => {
           >
             Sign Up
           </button>
+
+          <Button text="Sign Up" type="submit" />
 
           <p className="text-center text-sm text-gray-400 mt-3">
             Already have an account?{' '}

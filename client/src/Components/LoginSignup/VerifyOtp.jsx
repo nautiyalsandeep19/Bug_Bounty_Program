@@ -10,26 +10,16 @@ const VerifyOtp = () => {
   const [otp, setOtp] = useState('')
   const navigate = useNavigate()
   const dispatch = useDispatch()
-  const signupData = useSelector((state) => state.auth)
+  const signupData = useSelector((state) => state.auth.signupData)
 
   const handleOnSubmit = (e) => {
     e.preventDefault()
-    const { name, email, country, password, confirmPassword, domain } =
-      signupData
+    console.log('sign data', signupData)
+
+    const { name, email, password, userType, domain } = signupData
 
     setTimeout(() => {
-      dispatch(
-        signup(
-          name,
-          email,
-          country,
-          password,
-          confirmPassword,
-          domain,
-          otp,
-          navigate
-        )
-      )
+      dispatch(signup(name, email, password, domain, otp, userType, navigate))
     }, 5000)
   }
 
