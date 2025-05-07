@@ -4,6 +4,7 @@ import dotenv from 'dotenv'
 import connectDB from './Config/Db.js'
 import authRoute from './Routes/authRoute.js'
 import cookieParser from 'cookie-parser'
+import companyRoute from './Routes/companyRoute.js'
 
 dotenv.config()
 
@@ -19,6 +20,7 @@ app.use(
 app.use(express.json())
 
 app.use('/api/auth', authRoute)
+app.use('/api/company',companyRoute)
 
 app.get('/', (req, res) => {
   res.send('Hello from server!')

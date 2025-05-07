@@ -5,6 +5,8 @@ export const endPoints = {
   SEND_OTP_API: BASE_URL + '/api/auth/sendOtp',
   LOGIN_API: BASE_URL + '/api/auth/login',
   SIGNUP_API: BASE_URL + '/api/auth/signUp',
+
+  GET_COMPANY_PROGRAMS: BASE_URL + '/api/company/companyPrograms'
 }
 
 export const axiosInstance = axios.create({})

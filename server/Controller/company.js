@@ -2,7 +2,7 @@ import Program from "../Models/Program.js";
 // get companys all programs
 export const getCompnayPrograms = async(req,res) =>{
     try {
-        const companyId = req.company.id;
+        const companyId = req.body.id;
 
         // validate the id
         if(!companyId){
