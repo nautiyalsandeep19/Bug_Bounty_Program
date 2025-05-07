@@ -103,10 +103,10 @@ export const login = (email, password, userType, navigate) => {
       dispatch(setToken(response.token))
       if (userType === 'hacker') {
         dispatch(setUser(response.hacker))
-        localStorage.setItem('hacker', JSON.stringify(response.hacker))
+        localStorage.setItem('user', JSON.stringify(response.hacker))
       } else if (userType === 'company') {
         dispatch(setUser(response.company))
-        localStorage.setItem('company', JSON.stringify(response.company))
+        localStorage.setItem('user', JSON.stringify(response.company))
       }
 
       // save the same data in local storage
@@ -129,45 +129,5 @@ export const logout = (navigate) => {
     localStorage.removeItem('user')
     toast.success('Logged Out')
     navigate('/')
-  }
-}
-//
-
-export const handleGoogleSuccess = async (
-  credentialResponse,
-  navigate,
-  dispatch
-) => {
-  const { credential } = credentialResponse
-
-  try {
-    const decoded = jwtDecode(credential)
-    console.log('Decoded Google JWT:', decoded)
-
-    const response = await apiConnector('POST', endpoints.GOOGLE_LOGIN, {
-      token: credential,
-    })
-
-    console.log('Google Auth Backend Response:', response)
-
-    if (!response.success) {
-      toast.error(response.message)
-      throw new Error(response.message)
-    }
-
-    // ✅ Save user data to localStorage
-    localStorage.setItem('user', JSON.stringify(response.user))
-
-    // Dispatch action to update Redux state
-    dispatch(setUser(response.user))
-    dispatch(setToken(response.token))
-
-    // Navigate to the home page or dashboard
-    toast.success('Login successful!')
-    localStorage.setItem('token', JSON.stringify(response.token))
-    navigate('/') // Or any other page you want to navigate to
-  } catch (error) {
-    console.error('Google Login Failed:', error)
-    toast.error('Google login failed')
   }
 }

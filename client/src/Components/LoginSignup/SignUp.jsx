@@ -172,13 +172,6 @@ const SignUp = () => {
             />
           </div>
 
-          <button
-            type="submit"
-            className="mt-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded-lg transition-all duration-200"
-          >
-            Sign Up
-          </button>
-
           <Button text="Sign Up" type="submit" />
 
           <p className="text-center text-sm text-gray-400 mt-3">
