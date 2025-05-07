@@ -2,17 +2,33 @@ import React, { useState } from 'react'
 import Button from '../Button/Button'
 import OTP from './OTP'
 import { assets } from '../../assets/assets'
+import { useNavigate } from 'react-router'
+import { useDispatch, useSelector } from 'react-redux'
+import { signup } from '../../Services/authApi'
 
 const VerifyOtp = () => {
   const [otp, setOtp] = useState('')
+  const navigate = useNavigate()
+  const dispatch = useDispatch()
+  const signupData = useSelector((state) => state.auth)
 
   const handleOnSubmit = (e) => {
     e.preventDefault()
-    const { firstName, lastName, email, password, confirmPass } = signupData
+    const { name, email, country, password, confirmPassword, domain } =
+      signupData
 
     setTimeout(() => {
       dispatch(
-        signup(firstName, lastName, email, password, confirmPass, otp, navigate)
+        signup(
+          name,
+          email,
+          country,
+          password,
+          confirmPassword,
+          domain,
+          otp,
+          navigate
+        )
       )
     }, 5000)
   }

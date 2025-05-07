@@ -92,6 +92,8 @@ export const sendOtp = async (req, res) => {
 
 //signup
 export const signUp = async (req, res) => {
+  console.log('req', req)
+
   try {
     const { name, email, password, confirmPassword, otp, userType, domain } =
       req.body
