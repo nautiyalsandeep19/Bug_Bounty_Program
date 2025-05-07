@@ -8,11 +8,15 @@ import Reports from './Pages/Reports';
 import Leaderboard from './Pages/Leaderboard';
 import Bounties from './Pages/Bounties';
 import Settings from './Pages/Settings';
-import Login from './Components/LoginSignup/Login';
-import SignUp from './Components/LoginSignup/SignUp';
-// import AddProgram from './components/Programs/AddPrograms/AddPrograms';
-// import ProgramTypeModal from './components/AllProgram/ProgramTypeModal';
+// import Login from './Components/LoginSignup/Login';
+// import SignUp from './Components/LoginSignup/SignUp';
+// // import AddProgram from './components/Programs/AddPrograms/AddPrograms';
+// // import ProgramTypeModal from './components/AllProgram/ProgramTypeModal';
 import CreateProgram from "./Pages/CreateProgram/CreateProgram"
+import SignUp from './Components/LoginSignup/SignUp'
+import Login from './Components/LoginSignup/Login'
+import VerifyOtp from './Components/LoginSignup/VerifyOtp'
+
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -40,11 +44,16 @@ function App() {
             <Route path="*" element={<Navigate to="/dashboard" />} />
 
             <Route path='/addprogram' element={<CreateProgram/>}/>
+            <Route path="/signUp" element={<SignUp />} />
+        <Route path="/verifyOtp" element={<VerifyOtp />} />
+        <Route path="/login" element={<Login />} />
           </Routes>
         </main>
       </div>
     )
+  }
 
+  export default App
   // return (
   //   <div className="flex min-h-screen bg-[#0e0e0e] text-white">
   //     <main className="flex-1 p-6 overflow-y-auto">
@@ -57,6 +66,3 @@ function App() {
   //     </main>
   //   </div>
   // );
-}
-
-export default App;

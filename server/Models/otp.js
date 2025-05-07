@@ -7,16 +7,15 @@ const OtpScheema = new mongoose.Schema({
     type: String,
     required: true,
   },
-
   otp: {
     type: String,
     required: true,
   },
-  createdAt: {
-    type: Date,
-    default: Date.now,
-    expires: 15000,
-  },
+  // createdAt: {
+  //   type: Date,
+  //   default: Date.now,
+  //   expires: 600,
+  // },
 })
 
 //middleware for otp

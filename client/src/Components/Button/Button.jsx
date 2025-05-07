@@ -23,14 +23,14 @@ const Button = ({
       }}
       transition={{ duration: 0.3, ease: 'easeInOut' }}
       className={`group px-10 py-3 relative cursor-pointer overflow-hidden
-        bg-gradient-to-r from-[#0A1A4F] to-[#031B36] rounded-full
+        bg-gradient-to-r from-[#254bc8] to-[#042d5b] rounded-full
         border border-blue-500
         shadow-[0px_1px_3px_0px_rgba(0,212,255,0.2),0px_1px_2px_0px_rgba(255,255,255,0.05)_inset]
         ${className}`}
       onClick={onClick}
       type={type}
     >
-      <span className="relative z-10 font-medium text-white group-hover:text-[#00D4FF] transition-colors duration-300">
+      <span className="relative z-10 font-medium text-white group-hover:text-[rgb(0,212,255)] transition-colors duration-300">
         {text}
       </span>
 

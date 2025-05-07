@@ -1,12 +1,16 @@
 import React, { useState } from 'react'
-import { Link } from 'react-router'
+import { Link, useNavigate } from 'react-router'
 import { assets } from '../../assets/assets'
 import Tab from './Tab'
+import { useDispatch } from 'react-redux'
+import { login } from '../../Services/authApi'
 
 const Login = () => {
   const [userType, setUserType] = useState('hacker')
   const [formData, setFormData] = useState({ email: '', password: '' })
   const { email, password } = formData
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
 
   const handleChange = (e) => {
     setFormData((prev) => ({
@@ -17,6 +21,7 @@ const Login = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault()
+    dispatch(login(email, password, userType, navigate))
     console.log('Login with:', { ...formData, userType })
   }
 

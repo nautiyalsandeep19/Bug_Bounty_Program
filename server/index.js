@@ -2,16 +2,22 @@ import express from "express"
 import cors from "cors"
 import Company from "./Models/company.js"
 import dotenv from 'dotenv'
-import connectDB from './Config/DB.js'
+import connectDB from './Config/Db.js'
 import authRoute from './Routes/authRoute.js'
 import cookieParser from 'cookie-parser'
+import companyRoute from './Routes/companyRoute.js'
 import programRoutes from './Routes/programRoutes.js'
 
 dotenv.config()
 const app = express()
 connectDB()
 app.use(cookieParser())
-app.use(cors())
+
+app.use(
+  cors({
+    origin: '*',
+  })
+)
 app.use(express.json())
 app.use(cors())
 
@@ -22,6 +28,7 @@ app.post('/register',(req,res)=>{
 
 
 app.use('/api/auth', authRoute)
+app.use('/api/company',companyRoute)
 app.use("/api/programs", programRoutes);
 
 
