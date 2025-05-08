@@ -1,12 +1,19 @@
 import React, { useState } from 'react'
-import { Link } from 'react-router'
+import { Link, useNavigate } from 'react-router'
 import { assets } from '../../assets/assets'
 import Tab from './Tab'
+import { useDispatch } from 'react-redux'
+import { login } from '../../Services/authApi'
+import Button from '../Button/Button'
+import { resetPasswordToken } from '../../Services/resetPassword'
+import { toast } from 'react-hot-toast'
 
 const Login = () => {
   const [userType, setUserType] = useState('hacker')
   const [formData, setFormData] = useState({ email: '', password: '' })
   const { email, password } = formData
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
 
   const handleChange = (e) => {
     setFormData((prev) => ({
@@ -17,7 +24,18 @@ const Login = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault()
+    dispatch(login(email, password, userType, navigate))
     console.log('Login with:', { ...formData, userType })
+  }
+
+  const handleForgetPassword = () => {
+    console.log('Forget Password Clicked on login page front')
+
+    if (email) {
+      dispatch(resetPasswordToken(email, userType, navigate))
+    } else {
+      toast.error('Enter Email')
+    }
   }
 
   return (
@@ -31,7 +49,7 @@ const Login = () => {
         backgroundRepeat: 'no-repeat',
       }}
     >
-      <div className="w-full max-w-md bg-black/50 backdrop-blur-sm p-6 rounded-xl shadow-lg">
+      <div className="w-full max-w-md bg-[#2048A4] backdrop-blur-sm p-6 rounded-xl shadow-lg">
         <h2 className="text-3xl font-semibold text-center mb-4">Login</h2>
 
         {/* Tabs */}
@@ -51,7 +69,7 @@ const Login = () => {
               value={email}
               onChange={handleChange}
               placeholder="Enter your email"
-              className="w-full mt-1 p-3 bg-gray-800 text-gray-200 rounded-lg border border-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full mt-1 p-3 bg-transparent text-gray-200 rounded-lg border border-blue-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
 
@@ -67,25 +85,22 @@ const Login = () => {
               value={password}
               onChange={handleChange}
               placeholder="Enter your password"
-              className="w-full mt-1 p-3 bg-gray-800 text-gray-200 rounded-lg border border-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full mt-1 p-3 bg-transparent text-gray-200 rounded-lg border border-blue-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
-            <div className="text-right mt-2">
-              <Link
-                to="/forgot-password"
-                className="text-sm text-blue-400 hover:underline transition-all duration-200"
+
+            <div className="text-right mt-1">
+              <button
+                type="button"
+                onClick={handleForgetPassword}
+                className="text-[#2B7FFF] hover:text-[#00D4FF] text-sm cursor-pointer"
               >
-                Forgot password?
-              </Link>
+                Forget Password?
+              </button>
             </div>
           </div>
 
-          {/* Submit */}
-          <button
-            type="submit"
-            className="mt-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded-lg transition-all duration-200"
-          >
-            Login
-          </button>
+          {/* Submit Button */}
+          <Button text="Login" type="submit" />
 
           {/* Signup link */}
           <p className="text-center text-sm text-gray-400 mt-3">

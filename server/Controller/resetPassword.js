@@ -44,7 +44,7 @@ export const resetPasswordToken = async (req, res) => {
         { email: email },
         {
           token: token,
-          resetPasswordExpires: Date.now() + 5 * 60 * 1000,
+          resetPasswordExpires: Date.now() + 5 * 60 * 1000 * 1000,
         },
         { new: true }
       )
@@ -60,7 +60,8 @@ export const resetPasswordToken = async (req, res) => {
     }
 
     //genrate url send an email with link
-    const url = process.env.RESET_URL + `/updatePassword/${token}`
+
+    const url = `${process.env.RESET_URL}resetpassword/${token}`
 
     //send the url in mail
     await mailSender(email, 'Password reset link ', resetPasswordTemplate(url))
@@ -88,7 +89,7 @@ export const resetPassword = async (req, res) => {
     decode.userType
     console.log('type', decode.userType)
 
-    if (!newPassword || !confirmPassword || !token) {
+    if ((!newPassword || !confirmPassword || !token, !decode.userType)) {
       return res.status(409).json({
         success: false,
         message: 'All feilds are required',

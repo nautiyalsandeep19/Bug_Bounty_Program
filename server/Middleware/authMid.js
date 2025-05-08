@@ -1,8 +1,6 @@
-import bcryptjs from 'bcryptjs'
 import Jwt from 'jsonwebtoken'
 import dotenv from 'dotenv'
-import Hacker from '../Models/hacker.js'
-import Company from '../Models/company.js'
+
 dotenv.config()
 
 //auth middleware for logged in users

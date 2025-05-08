@@ -3,20 +3,26 @@ import { useNavigate } from 'react-router'
 import Tab from './Tab'
 import { Link } from 'react-router'
 import { assets } from '../../assets/assets'
+import countryList from '../../assets/country.json'
+import { useDispatch } from 'react-redux'
+import { setSignupData } from '../../Slices/authSlice'
+import { sendOtp } from '../../Services/authApi'
+import Button from '../Button/Button'
 
 const SignUp = () => {
   const navigate = useNavigate()
+  const dispatch = useDispatch()
   const [userType, setUserType] = useState('hacker')
   const [formData, setFormData] = useState({
     name: '',
-
     email: '',
     country: '',
     password: '',
     confirmPassword: '',
+    domain: '',
   })
 
-  const { name, email, country, password, confirmPassword } = formData
+  const { name, email, password, confirmPassword, country, domain } = formData
 
   const handleChange = (e) => {
     setFormData((prev) => ({
@@ -27,6 +33,22 @@ const SignUp = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault()
+    const signupformData = { ...formData, userType }
+    console.log(signupformData)
+
+    dispatch(setSignupData(signupformData))
+    dispatch(
+      sendOtp(
+        name,
+        email,
+        password,
+        confirmPassword,
+        country,
+        userType,
+        domain,
+        navigate
+      )
+    )
     console.log('Signup with:', { ...formData, userType })
   }
 
@@ -41,7 +63,7 @@ const SignUp = () => {
         backgroundRepeat: 'no-repeat',
       }}
     >
-      <div className="w-full max-w-md bg-black/50 backdrop-blur-sm p-6 rounded-xl shadow-lg">
+      <div className="w-full max-w-md bg-[#2048A4] backdrop-blur-sm p-6 rounded-xl shadow-lg">
         <h2 className="text-3xl font-semibold text-center mb-4 text-white">
           Sign Up
         </h2>
@@ -61,11 +83,10 @@ const SignUp = () => {
               value={name}
               onChange={handleChange}
               placeholder="Enter your name"
-              className="w-full mt-1 p-3 bg-gray-800 text-gray-200 rounded-lg border border-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full mt-1 p-3 bg-transparent text-gray-200 rounded-lg border border-blue-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
               required
             />
           </div>
-
           <div>
             <label className="text-sm font-semibold text-gray-300">
               Email
@@ -77,7 +98,7 @@ const SignUp = () => {
               value={email}
               onChange={handleChange}
               placeholder="Enter your email"
-              className="w-full mt-1 p-3 bg-gray-800 text-gray-200 rounded-lg border border-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full mt-1 p-3 bg-transparent text-gray-200 rounded-lg border border-blue-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
               required
             />
           </div>
@@ -85,17 +106,41 @@ const SignUp = () => {
             <label className="text-sm font-semibold text-gray-300">
               Country
               <sup className="text-red-500">*</sup>
-            </label>{' '}
-            <input
-              type="text"
+            </label>
+            <select
               name="country"
               value={country}
               onChange={handleChange}
-              placeholder="Enter your country"
-              className="w-full mt-1 p-3 bg-gray-800 text-gray-200 rounded-lg border border-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
               required
-            />
+              className="w-full mt-1 p-3 bg-transparent text-gray-200 rounded-lg border border-blue-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            >
+              <option value="" disabled className="h-[300px]">
+                Select your country
+              </option>
+              {countryList.map((countryItem, index) => (
+                <option key={index} value={countryItem.country}>
+                  {countryItem.country}
+                </option>
+              ))}
+            </select>
           </div>
+          {userType === 'company' && (
+            <div>
+              <label className="text-sm font-semibold text-gray-300">
+                Domain
+                <sup className="text-red-500">*</sup>
+              </label>{' '}
+              <input
+                type="text"
+                name="domain"
+                value={domain}
+                onChange={handleChange}
+                placeholder="Enter your domain"
+                className="w-full mt-1 p-3 bg-transparent text-gray-200 rounded-lg border border-blue-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                required
+              />
+            </div>
+          )}
           <div>
             <label className="text-sm font-semibold text-gray-300">
               Password
@@ -107,7 +152,7 @@ const SignUp = () => {
               value={password}
               onChange={handleChange}
               placeholder="Enter your password"
-              className="w-full mt-1 p-3 bg-gray-800 text-gray-200 rounded-lg border border-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full mt-1 p-3 bg-transparent text-gray-200 rounded-lg border border-blue-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
               required
             />
           </div>
@@ -122,17 +167,12 @@ const SignUp = () => {
               value={confirmPassword}
               onChange={handleChange}
               placeholder="Confirm your password"
-              className="w-full mt-1 p-3 bg-gray-800 text-gray-200 rounded-lg border border-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full mt-1 p-3 bg-transparent text-gray-200 rounded-lg border border-blue-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
               required
             />
           </div>
 
-          <button
-            type="submit"
-            className="mt-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded-lg transition-all duration-200"
-          >
-            Sign Up
-          </button>
+          <Button text="Sign Up" type="submit" />
 
           <p className="text-center text-sm text-gray-400 mt-3">
             Already have an account?{' '}
