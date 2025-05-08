@@ -4,7 +4,9 @@ import otpGenerator from 'otp-generator'
 import Otp from '../Models/otp.js'
 import bcryptjs from 'bcryptjs'
 import Jwt from 'jsonwebtoken'
+import dotenv from 'dotenv'
 
+dotenv.config()
 //send otp
 export const sendOtp = async (req, res) => {
   try {
@@ -219,19 +221,19 @@ export const login = async (req, res) => {
           httpOnly: true,
         }
 
-        // res.cookie('token', token, options).status(200).json({
-        //   success: true,
-        //   token,
-        //   hacker,
-        //   message: 'logged in successfully',
-        // })
-
-        return res.status(200).json({
+       return res.cookie('token', token, options).status(200).json({
           success: true,
-          message: 'User Login Successfully',
-          hacker,
           token,
+          hacker,
+          message: 'logged in successfully',
         })
+
+        // return res.status(200).json({
+        //   success: true,
+        //   message: 'User Login Successfully',
+        //   hacker,
+        //   token,
+        // })
       } else {
         return res.status(401).json({
           success: false,
@@ -272,19 +274,19 @@ export const login = async (req, res) => {
           httpOnly: true,
         }
 
-        // res.cookie('token', token, options).status(200).json({
-        //   success: true,
-        //   token,
-        //   company,
-        //   message: 'logged in successfully',
-        // })
-
-        return res.status(200).json({
+        return res.cookie('token', token, options).status(200).json({
           success: true,
-          message: 'User Login Successfully',
-          company,
           token,
+          company,
+          message: 'logged in successfully',
         })
+
+        // return res.status(200).json({
+        //   success: true,
+        //   message: 'User Login Successfully',
+        //   company,
+        //   token,
+        // })
       } else {
         return res.status(401).json({
           success: false,

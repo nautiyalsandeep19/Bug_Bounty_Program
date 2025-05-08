@@ -1,4 +1,6 @@
+import toast from "react-hot-toast";
 import { apiConnector, endPoints } from "./ApiConnector/api";
+
 
 export const getProgramsList = () => {
   return async () => {
@@ -11,7 +13,7 @@ export const getProgramsList = () => {
 
        // if response.success is false then throw error
        if (!response.success) {
-        toast.error(response.errors[0].msg)
+        toast.error(response.message)
         throw new Error(response.message)
       }
 

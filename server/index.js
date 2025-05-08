@@ -6,7 +6,7 @@ import connectDB from './Config/Db.js'
 import authRoute from './Routes/authRoute.js'
 import cookieParser from 'cookie-parser'
 import companyRoute from './Routes/companyRoute.js'
-import programRoutes from './Routes/programRoutes.js'
+import programRouter from './Routes/programRoutes.js';
 
 dotenv.config()
 const app = express()
@@ -20,6 +20,7 @@ app.use(
 )
 app.use(express.json())
 app.use(cors())
+app.use(express.urlencoded({ extended: true }));
 
 app.post('/register',(req,res)=>{
     Company.create(req.body).then(employee => res.json(employee)).catch(err =>console.log(err))
@@ -29,8 +30,7 @@ app.post('/register',(req,res)=>{
 
 app.use('/api/auth', authRoute)
 app.use('/api/company',companyRoute)
-app.use("/api/programs", programRoutes);
-
+app.use('/api/program', programRouter);
 
 app.get('/', (req, res) => {
   res.send('Hello from server!')

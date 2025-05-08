@@ -1,16 +1,13 @@
 import express from 'express';
-import Program from '../Models/Program.js';
+import multer from 'multer';
+import { createProgram } from '../Controller/programController.js';
+
 const router = express.Router();
 
-router.post('/', async (req, res) => {
-  try {
-    const newProgram = new Program(req.body);
-    await newProgram.save();
-    res.status(201).json(newProgram);
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: 'Server Error', error });
-  }
-});
+// Setup file upload
+const upload = multer({ dest: 'uploads/' });
+
+// Create a program
+router.post('/add', upload.fields([{ name: 'logo', maxCount: 1 }]), createProgram);
 
 export default router;
