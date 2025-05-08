@@ -8,6 +8,10 @@ export const endPoints = {
   SIGNUP_API: BASE_URL + '/api/auth/signUp',
   RESET_PASSWORD_TOKEN: BASE_URL + '/api/auth/resetPasswordToken',
   RESET_PASSWORD: BASE_URL + '/api/auth/resetpassword',
+
+  GET_COMPANY_DETAILS: BASE_URL + '/api/company/companyDetails',
+  UPDATE_COMPANY_DETAILS: BASE_URL + '/api/company/updateDetails',
+  GET_COMPANY_PROGRAMS: BASE_URL + '/api/company/companyPrograms',
 }
 
 export const axiosInstance = axios.create({ withCredentials: true })

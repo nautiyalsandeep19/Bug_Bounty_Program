@@ -27,11 +27,13 @@ export const authMid = async (req, res, next) => {
     try {
       const decode = Jwt.verify(token, process.env.JWT_SECRET)
       console.log('decoded token', decode)
-      if (decode.userType === 'hacker') {
-        req.hacker = decode
-      } else if (decode.userType === 'company') {
-        req.company = decode
-      }
+      // if (decode.userType === 'hacker') {
+      //   req.hacker = decode
+      // } else if (decode.userType === 'company') {
+      //   req.company = decode
+      // }
+
+      req.user = decode
     } catch (error) {
       console.log(error)
 
