@@ -8,9 +8,7 @@ import Reports from './Pages/Reports';
 import Leaderboard from './Pages/Leaderboard';
 import Bounties from './Pages/Bounties';
 import Settings from './Pages/Settings';
-import SignUp from './Components/LoginSignup/SignUp'
-import Login from './Components/LoginSignup/Login'
-import VerifyOtp from './Components/LoginSignup/VerifyOtp'
+
 import ProgramCreation from './components/CreateProgram/CreateProgramModal';
 
 function App() {
@@ -43,11 +41,6 @@ function App() {
 
 
             <Route path='/addprogram' element={<ProgramCreation/>}/>
-
-
-            <Route path="/signUp" element={<SignUp />} />
-            <Route path="/verifyOtp" element={<VerifyOtp />} />
-            <Route path="/login" element={<Login />} />
           </Routes>
         </main>
       </div>
