@@ -14,13 +14,19 @@ const VerifyOtp = () => {
 
   const handleOnSubmit = (e) => {
     e.preventDefault()
-    console.log('sign data', signupData)
+    console.log('signup data from Redux:', signupData)
+    console.log('Entered OTP:', otp)
 
-    const { name, email, password, userType, domain } = signupData
+    if (!signupData || !otp) {
+      console.error('Missing signupData or OTP')
+      return
+    }
 
-    setTimeout(() => {
-      dispatch(signup(name, email, password, domain, otp, userType, navigate))
-    }, 5000)
+    const { name, email, password, country, domain, userType } = signupData
+
+    dispatch(
+      signup(name, email, password, country, domain, otp, userType, navigate)
+    )
   }
 
   return (
@@ -40,7 +46,8 @@ const VerifyOtp = () => {
             Verify Email OTP
           </h1>
           <p className="text-sm sm:text-base md:text-lg text-gray-400">
-            A verification code has been sent to you. Enter the code below
+            A verification code has been sent to your email. Enter the code
+            below.
           </p>
         </div>
 

@@ -9,8 +9,15 @@ import Jwt from 'jsonwebtoken'
 export const sendOtp = async (req, res) => {
   try {
     //fetch email from body
-    const { name, email, password, confirmPassword, userType, domain } =
-      req.body
+    const {
+      name,
+      email,
+      password,
+      confirmPassword,
+      country,
+      userType,
+      domain,
+    } = req.body
 
     if (!name || !email || !password || !confirmPassword || !userType) {
       return res.status(400).status({
@@ -95,7 +102,7 @@ export const signUp = async (req, res) => {
   console.log('req', req.body)
 
   try {
-    const { name, email, password, domain, otp, userType } = req.body
+    const { name, email, password, country, domain, otp, userType } = req.body
 
     if (!otp || !userType) {
       return res.status(400).status({
@@ -132,6 +139,7 @@ export const signUp = async (req, res) => {
         name,
         email,
         password: hashPassword,
+        country,
         image: `https://api.dicebear.com/9.x/bottts-neutral/svg?seed=${seed}`,
       })
 
@@ -152,6 +160,7 @@ export const signUp = async (req, res) => {
         name,
         email,
         password: hashPassword,
+        country,
         domain,
         image: `https://api.dicebear.com/9.x/initials/svg?seed=${name}`,
       })
@@ -185,24 +194,25 @@ export const login = async (req, res) => {
     }
     console.log(email, password)
 
+    let user
     if (userType === 'hacker') {
-      const hacker = await Hacker.findOne({ email })
-      if (!hacker) {
+      user = await Hacker.findOne({ email })
+      if (!user) {
         return res.status(401).json({
           success: false,
           message: 'hacker not registerd ! please sign up',
         })
       }
-      console.log(hacker)
+      console.log(user)
 
       console.log('frontend', password)
-      console.log('encrypted password from backend', hacker.password)
+      console.log('encrypted password from backend', user.password)
 
       //compare
-      if (await bcryptjs.compare(password, hacker.password)) {
+      if (await bcryptjs.compare(password, user.password)) {
         const payLoad = {
-          email: hacker.email,
-          id: hacker._id,
+          email: user.email,
+          id: user._id,
           userType: userType,
         }
         //genrate jwttoken
@@ -210,8 +220,8 @@ export const login = async (req, res) => {
           expiresIn: '4h',
         })
 
-        hacker.token = token
-        hacker.password = undefined
+        user.token = token
+        user.password = undefined
 
         //create cookie
         const options = {
@@ -219,19 +229,19 @@ export const login = async (req, res) => {
           httpOnly: true,
         }
 
-        // res.cookie('token', token, options).status(200).json({
-        //   success: true,
-        //   token,
-        //   hacker,
-        //   message: 'logged in successfully',
-        // })
-
-        return res.status(200).json({
+        res.cookie('token', token, options).status(200).json({
           success: true,
-          message: 'User Login Successfully',
-          hacker,
           token,
+          user,
+          message: 'logged in successfully',
         })
+
+        // return res.status(200).json({
+        //   success: true,
+        //   message: 'User Login Successfully',
+        //   user,
+        //   token,
+        // })
       } else {
         return res.status(401).json({
           success: false,
@@ -239,31 +249,31 @@ export const login = async (req, res) => {
         })
       }
     } else if (userType === 'company') {
-      const company = await Company.findOne({ email })
-      if (!company) {
+      user = await Company.findOne({ email })
+      if (!user) {
         return res.status(401).json({
           success: false,
-          message: 'company not registerd ! please sign up',
+          message: 'user not registerd ! please sign up',
         })
       }
-      console.log(company)
+      console.log(user)
 
       console.log('frontend', password)
-      console.log('encrypted password from backend', company.password)
+      console.log('encrypted password from backend', user.password)
 
       //genrate jwttoken
-      if (await bcryptjs.compare(password, company.password)) {
+      if (await bcryptjs.compare(password, user.password)) {
         const payLoad = {
-          email: company.email,
-          id: company._id,
+          email: user.email,
+          id: user._id,
           userType: userType,
         }
         const token = Jwt.sign(payLoad, process.env.JWT_SECRET, {
           expiresIn: '4h',
         })
 
-        company.token = token
-        company.password = undefined
+        user.token = token
+        user.password = undefined
 
         //create cookie
 
@@ -272,19 +282,19 @@ export const login = async (req, res) => {
           httpOnly: true,
         }
 
-        // res.cookie('token', token, options).status(200).json({
-        //   success: true,
-        //   token,
-        //   company,
-        //   message: 'logged in successfully',
-        // })
-
-        return res.status(200).json({
+        res.cookie('token', token, options).status(200).json({
           success: true,
-          message: 'User Login Successfully',
-          company,
           token,
+          user,
+          message: 'logged in successfully',
         })
+
+        // return res.status(200).json({
+        //   success: true,
+        //   message: 'User Login Successfully',
+        //  user,
+        //   token,
+        // })
       } else {
         return res.status(401).json({
           success: false,

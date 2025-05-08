@@ -7,6 +7,7 @@ export const sendOtp = (
   email,
   password,
   confirmPassword,
+  country,
   userType,
   domain,
   navigate
@@ -19,6 +20,7 @@ export const sendOtp = (
         email,
         password,
         confirmPassword,
+        country,
         userType,
         domain,
       })
@@ -48,6 +50,7 @@ export const signup = (
   name,
   email,
   password,
+  country,
   domain,
   otp,
   userType,
@@ -61,11 +64,21 @@ export const signup = (
         name,
         email,
         password,
+        country,
         domain,
         otp,
         userType,
       })
-      console.log(name, email, password, otp, domain, userType)
+      console.log(
+        ' data is :',
+        name,
+        email,
+        password,
+        otp,
+        domain,
+        userType,
+        country
+      )
 
       // console.log('SIGNUP API RESPONSE............', response)
 
@@ -101,16 +114,17 @@ export const login = (email, password, userType, navigate) => {
       console.log('Response', response)
       toast.success('Login Successful')
       dispatch(setToken(response.token))
-      if (userType === 'hacker') {
-        dispatch(setUser(response.hacker))
-        localStorage.setItem('user', JSON.stringify(response.hacker))
-      } else if (userType === 'company') {
-        dispatch(setUser(response.company))
-        localStorage.setItem('user', JSON.stringify(response.company))
-      }
+      dispatch(setUser(response.user))
+      // if (userType === 'hacker') {
+      //   dispatch(setUser(response.hacker))
+      //   localStorage.setItem('user', JSON.stringify(response.hacker))
+      // } else if (userType === 'company') {
+      //   dispatch(setUser(response.company))
+      //   localStorage.setItem('user', JSON.stringify(response.company))
+      // }
 
       // save the same data in local storage
-      localStorage.setItem('token', JSON.stringify(response.token))
+      // localStorage.setItem('token', JSON.stringify(response.token))
 
       navigate('/')
     } catch (error) {

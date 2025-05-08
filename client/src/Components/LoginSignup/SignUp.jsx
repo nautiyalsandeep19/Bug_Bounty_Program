@@ -22,7 +22,7 @@ const SignUp = () => {
     domain: '',
   })
 
-  const { name, email, country, password, confirmPassword, domain } = formData
+  const { name, email, password, confirmPassword, country, domain } = formData
 
   const handleChange = (e) => {
     setFormData((prev) => ({
@@ -42,8 +42,8 @@ const SignUp = () => {
         name,
         email,
         password,
-        //   country,
         confirmPassword,
+        country,
         userType,
         domain,
         navigate

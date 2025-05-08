@@ -7,24 +7,23 @@ const initialState = {
   user: localStorage.getItem('user')
     ? JSON.parse(localStorage.getItem('user'))
     : null,
+  signupData: null, // ✅ ADD THIS to avoid undefined errors
 }
-
-//slice
 
 export const authSlice = createSlice({
   name: 'auth',
   initialState: initialState,
   reducers: {
-    setToken(state, value) {
-      state.token = value.payload
-      localStorage.setItem('token', JSON.stringify(value.payload))
+    setToken(state, action) {
+      state.token = action.payload
+      localStorage.setItem('token', JSON.stringify(action.payload))
     },
-    setSignupData(state, value) {
-      state.signupData = value.payload
+    setSignupData(state, action) {
+      state.signupData = action.payload
     },
-    setUser(state, value) {
-      state.user = value.payload
-      localStorage.setItem('user', JSON.stringify(value.payload))
+    setUser(state, action) {
+      state.user = action.payload
+      localStorage.setItem('user', JSON.stringify(action.payload))
     },
   },
 })

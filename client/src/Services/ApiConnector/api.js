@@ -10,7 +10,7 @@ export const endPoints = {
   RESET_PASSWORD: BASE_URL + '/api/auth/resetpassword',
 }
 
-export const axiosInstance = axios.create({})
+export const axiosInstance = axios.create({ withCredentials: true })
 
 export const apiConnector = async (
   method,
