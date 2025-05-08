@@ -9,7 +9,7 @@ const Logout = () => {
   const navigate = useNavigate()
 
   const handleLogout = () => {
-    dispatch(logout(navigate()))
+    dispatch(logout(navigate('/signup')))
   }
   return (
     <Button

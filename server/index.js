@@ -7,6 +7,7 @@ import authRoute from './Routes/authRoute.js'
 import cookieParser from 'cookie-parser'
 import companyRoute from './Routes/companyRoute.js'
 import programRouter from './Routes/programRoutes.js'
+import assetRouter from './Routes/assetRoute.js'
 
 dotenv.config()
 const app = express()
@@ -32,6 +33,7 @@ app.post('/register', (req, res) => {
 app.use('/api/auth', authRoute)
 app.use('/api/company', companyRoute)
 app.use('/api/program', programRouter)
+app.use('/api/assets', assetRouter)
 
 app.get('/', (req, res) => {
   res.send('Hello from server!')

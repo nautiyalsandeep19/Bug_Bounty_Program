@@ -1,10 +1,8 @@
-// import { Routes, Route } from 'react-router'
 import SignUp from './Components/LoginSignup/SignUp'
 import Login from './Components/LoginSignup/Login'
 import VerifyOtp from './Components/LoginSignup/VerifyOtp'
 import ResetPassword from './Components/LoginSignup/ResetPassword'
 import CheckEmailPage from './Components/LoginSignup/CheckEmailpage'
-import Logout from './Components/LoginSignup/Logout'
 import React, { useState, useEffect } from 'react'
 import { Routes, Route, Navigate, useLocation } from 'react-router'
 import Sidebar from './components/Sidebar/Sidebar'
@@ -15,7 +13,6 @@ import Reports from './Pages/Reports'
 import Leaderboard from './Pages/Leaderboard'
 import Bounties from './Pages/Bounties'
 import Settings from './Pages/Settings'
-
 import ProgramCreation from './components/CreateProgram/CreateProgramModal'
 
 function App() {
