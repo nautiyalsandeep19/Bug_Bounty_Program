@@ -41,8 +41,8 @@ const SignUp = () => {
       sendOtp(
         name,
         email,
-        //   country,
         password,
+        //   country,
         confirmPassword,
         userType,
         domain,
@@ -63,7 +63,7 @@ const SignUp = () => {
         backgroundRepeat: 'no-repeat',
       }}
     >
-      <div className="w-full max-w-md bg-black/50 backdrop-blur-sm p-6 rounded-xl shadow-lg">
+      <div className="w-full max-w-md bg-[#2048A4] backdrop-blur-sm p-6 rounded-xl shadow-lg">
         <h2 className="text-3xl font-semibold text-center mb-4 text-white">
           Sign Up
         </h2>
@@ -83,7 +83,7 @@ const SignUp = () => {
               value={name}
               onChange={handleChange}
               placeholder="Enter your name"
-              className="w-full mt-1 p-3 bg-gray-800 text-gray-200 rounded-lg border border-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full mt-1 p-3 bg-transparent text-gray-200 rounded-lg border border-blue-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
               required
             />
           </div>
@@ -98,7 +98,7 @@ const SignUp = () => {
               value={email}
               onChange={handleChange}
               placeholder="Enter your email"
-              className="w-full mt-1 p-3 bg-gray-800 text-gray-200 rounded-lg border border-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full mt-1 p-3 bg-transparent text-gray-200 rounded-lg border border-blue-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
               required
             />
           </div>
@@ -112,7 +112,7 @@ const SignUp = () => {
               value={country}
               onChange={handleChange}
               required
-              className="w-full mt-1 px-3 py-2 bg-gray-800 text-gray-200 rounded-lg border border-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 h-12"
+              className="w-full mt-1 p-3 bg-transparent text-gray-200 rounded-lg border border-blue-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
               <option value="" disabled className="h-[300px]">
                 Select your country
@@ -136,7 +136,7 @@ const SignUp = () => {
                 value={domain}
                 onChange={handleChange}
                 placeholder="Enter your domain"
-                className="w-full mt-1 p-3 bg-gray-800 text-gray-200 rounded-lg border border-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full mt-1 p-3 bg-transparent text-gray-200 rounded-lg border border-blue-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
                 required
               />
             </div>
@@ -152,7 +152,7 @@ const SignUp = () => {
               value={password}
               onChange={handleChange}
               placeholder="Enter your password"
-              className="w-full mt-1 p-3 bg-gray-800 text-gray-200 rounded-lg border border-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full mt-1 p-3 bg-transparent text-gray-200 rounded-lg border border-blue-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
               required
             />
           </div>
@@ -167,7 +167,7 @@ const SignUp = () => {
               value={confirmPassword}
               onChange={handleChange}
               placeholder="Confirm your password"
-              className="w-full mt-1 p-3 bg-gray-800 text-gray-200 rounded-lg border border-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full mt-1 p-3 bg-transparent text-gray-200 rounded-lg border border-blue-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
               required
             />
           </div>

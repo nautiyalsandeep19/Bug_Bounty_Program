@@ -16,6 +16,9 @@ const hackerSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    country: {
+      type: String,
+    },
     image: {
       type: String,
     },

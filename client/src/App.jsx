@@ -4,6 +4,7 @@ import Login from './Components/LoginSignup/Login'
 import VerifyOtp from './Components/LoginSignup/VerifyOtp'
 import ResetPassword from './Components/LoginSignup/ResetPassword'
 import CheckEmailPage from './Components/LoginSignup/CheckEmailpage'
+import Logout from './Components/LoginSignup/Logout'
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="resetPassword/:token" element={<ResetPassword />} />
         <Route path="checkemail" element={<CheckEmailPage />} />
+        <Route path="logout" element={<Logout />} />
       </Routes>
     </>
   )

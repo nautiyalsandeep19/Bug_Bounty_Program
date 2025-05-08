@@ -122,7 +122,6 @@ export const login = (email, password, userType, navigate) => {
 
 export const logout = (navigate) => {
   return (dispatch) => {
-    googleLogout()
     dispatch(setToken(null))
     dispatch(setUser(null))
     localStorage.removeItem('token')

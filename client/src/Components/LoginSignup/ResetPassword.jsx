@@ -4,7 +4,6 @@ import Button from '../Button/Button'
 import { useDispatch } from 'react-redux'
 import { assets } from '../../assets/assets'
 import { resetPassword } from '../../Services/resetPassword'
-// import { resetPassword } from '../../services/operations/resetPassword'
 
 const ResetPassword = () => {
   const navigate = useNavigate()
@@ -58,7 +57,7 @@ const ResetPassword = () => {
     >
       <form
         onSubmit={handleOnSubmit}
-        className="bg-[#0e1629]/70 backdrop-blur-md p-8 rounded-lg shadow-lg w-full max-w-md flex flex-col gap-4"
+        className="bg-[#2048A4] backdrop-blur-md p-8 rounded-lg shadow-lg w-full max-w-md flex flex-col gap-4"
       >
         <h1 className="text-2xl font-semibold text-center mb-2">
           Reset Your Password
@@ -67,7 +66,7 @@ const ResetPassword = () => {
         {error && <p className="text-red-500 text-sm text-center">{error}</p>}
 
         <div className="flex flex-col gap-1.5">
-          <label className="text-sm font-medium">
+          <label className="text-sm font-semibold text-gray-300">
             New Password <sup className="text-red-500">*</sup>
           </label>
           <input
@@ -77,12 +76,12 @@ const ResetPassword = () => {
             name="newPassword"
             value={newPassword}
             onChange={handleOnChange}
-            className="w-full p-3 rounded-lg bg-[#111f3a] text-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-600"
+            className="w-full mt-1 p-3 bg-transparent text-gray-200 rounded-lg border border-blue-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
         </div>
 
         <div className="flex flex-col gap-1.5">
-          <label className="text-sm font-medium">
+          <label className="text-sm font-semibold text-gray-300">
             Confirm New Password <sup className="text-red-500">*</sup>
           </label>
           <input
@@ -92,7 +91,7 @@ const ResetPassword = () => {
             name="confirmNewPassword"
             value={confirmNewPassword}
             onChange={handleOnChange}
-            className="w-full p-3 rounded-lg bg-[#111f3a] text-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-600"
+            className="w-full mt-1 p-3 bg-transparent text-gray-200 rounded-lg border border-blue-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
         </div>
 
