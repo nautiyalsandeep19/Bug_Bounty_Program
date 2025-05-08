@@ -4,7 +4,9 @@ import otpGenerator from 'otp-generator'
 import Otp from '../Models/otp.js'
 import bcryptjs from 'bcryptjs'
 import Jwt from 'jsonwebtoken'
+import dotenv from 'dotenv'
 
+dotenv.config()
 //send otp
 export const sendOtp = async (req, res) => {
   try {

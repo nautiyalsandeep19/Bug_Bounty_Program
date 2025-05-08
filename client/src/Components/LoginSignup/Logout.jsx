@@ -12,10 +12,12 @@ const Logout = () => {
     dispatch(logout(navigate()))
   }
   return (
-    <section className="h-full justify-center flex items-center">
-      this is logout button
-      <Button text="Logout" type="submit" onClick={handleLogout} />
-    </section>
+    <Button
+      text="Logout"
+      type="submit"
+      onClick={handleLogout}
+      className="w-fit"
+    />
   )
 }
 

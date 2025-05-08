@@ -10,7 +10,6 @@ const hackerSchema = new mongoose.Schema(
       type: String,
       required: true,
       unique: true,
-      //   match: [/\S+@\S+\.\S+/, "is invalid"],
     },
     password: {
       type: String,
