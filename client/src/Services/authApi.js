@@ -106,8 +106,10 @@ export const login = (email, password, userType, navigate) => {
       })
 
       console.log(response)
+
       if (!response.success) {
-        toast.error(response.message)
+        toast.error(response.message || response.errors[0].msg)
+        // toast.error(response.errors[0].msg)
         throw new Error(response.message)
       }
 
@@ -129,7 +131,6 @@ export const login = (email, password, userType, navigate) => {
       navigate('/')
     } catch (error) {
       console.log('LOGIN API ERROR............', error)
-      // toast.error(error.message)
     }
   }
 }

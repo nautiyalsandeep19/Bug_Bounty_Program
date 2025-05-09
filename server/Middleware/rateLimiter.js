@@ -9,7 +9,7 @@ const rateLimitHandler = (req, res) => {
 };
 
 export const loginLimiter = rateLimit({
-  windowMs: 15 * 60 * 1000,
+  windowMs: 1 * 60 * 1000,
   max: 5,
   handler: rateLimitHandler,
   standardHeaders: true,
@@ -22,4 +22,4 @@ export const otpLimiter = rateLimit({
   handler: rateLimitHandler,
   standardHeaders: true,
   legacyHeaders: false,
-});
+})

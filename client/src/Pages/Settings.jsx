@@ -19,10 +19,10 @@ const ProfilDetails = () => {
   useEffect(() => {
     if (user) {
       setPersonalInfo({
-        representative: user.contactPerson?.representative || '',
-        position: user.contactPerson?.position || '',
-        phone: user.contactPerson?.phone || '',
-        domain: user.domain || '',
+        representative: user?.contactPerson?.representative || '',
+        position: user?.contactPerson?.position || '',
+        phone: user?.contactPerson?.phone || '',
+        domain: user?.domain || '',
       })
     }
   }, [user])
@@ -38,10 +38,15 @@ const ProfilDetails = () => {
     setEdit(false)
   }
 
-  const contactPerson = user?.contactPerson
-  if (!user || !contactPerson) {
-    return <div>No contact person information available.</div>
+  if (!user) {
+    return (
+      <div className="text-white text-center p-4">
+        Loading user information...
+      </div>
+    )
   }
+
+  const contactPerson = user.contactPerson
 
   return (
     <div className="w-full bg-[#111f3a] text-white p-8 rounded-lg shadow-[inset_0px_-1px_0px_0px_#FFFFFF2E] flex flex-col gap-8">
@@ -50,7 +55,7 @@ const ProfilDetails = () => {
         Personal Details
       </h2>
 
-      {/* Non-editable fields section */}
+      {/* User Information */}
       <div className="flex flex-col gap-6">
         <div className="flex flex-col p-4 bg-[#1E293B] rounded-lg shadow-lg">
           <div className="flex flex-col gap-3 text-sm text-gray-400">
@@ -60,8 +65,8 @@ const ProfilDetails = () => {
             <div className="flex gap-2">
               <img
                 src={user?.image}
-                alt=""
-                className="w-20 h-20 rounded-full"
+                alt="User avatar"
+                className="w-20 h-20 rounded-full object-cover"
               />
             </div>
             <div className="flex gap-2">
@@ -79,66 +84,57 @@ const ProfilDetails = () => {
           </div>
         </div>
 
-        {/* Editable fields section */}
+        {/* Contact Person Section */}
         {edit ? (
-          <div className="flex flex-col gap-6">
-            <div className="p-4 bg-[#1E293B] rounded-lg shadow-lg">
-              <h3 className="text-xl font-medium text-white mb-4">
-                Edit Contact Person
-              </h3>
-              {['representative', 'position', 'phone', 'domain'].map(
-                (field) => (
-                  <div key={field} className="mb-4">
-                    <label className="text-sm mb-2 block text-gray-400 capitalize">
-                      {field}
-                    </label>
-                    <input
-                      type="text"
-                      name={field}
-                      value={personalInfo[field] || ''}
-                      onChange={handleChange}
-                      placeholder={`Enter ${field}`}
-                      className="w-full p-3 bg-[#0F172A] text-gray-400 rounded-lg focus:ring-2 focus:ring-blue-500"
-                    />
-                  </div>
-                )
-              )}
-            </div>
+          <div className="p-4 bg-[#1E293B] rounded-lg shadow-lg">
+            <h3 className="text-xl font-medium text-white mb-4">
+              Edit Contact Person
+            </h3>
+            {['representative', 'position', 'phone', 'domain'].map((field) => (
+              <div key={field} className="mb-4">
+                <label className="text-sm mb-2 block text-gray-400 capitalize">
+                  {field}
+                </label>
+                <input
+                  type="text"
+                  name={field}
+                  value={personalInfo[field]}
+                  onChange={handleChange}
+                  placeholder={`Enter ${field}`}
+                  className="w-full p-3 bg-[#0F172A] text-gray-400 rounded-lg focus:ring-2 focus:ring-blue-500"
+                />
+              </div>
+            ))}
           </div>
         ) : (
-          <div className="flex flex-col gap-6">
-            <div className="p-4 bg-[#1E293B] rounded-lg shadow-lg">
-              <h3 className="text-xl font-medium text-white mb-4">
-                Contact Person Information
-              </h3>
-              <div className="flex flex-col gap-4 text-sm text-gray-400">
-                {/* Display representative, position, and phone from contactPerson */}
-                <div className="flex gap-2">
-                  <span className="font-medium text-white capitalize">
-                    Representative:
-                  </span>
-                  <span>{contactPerson.representative || 'N/A'}</span>
-                </div>
-                <div className="flex gap-2">
-                  <span className="font-medium text-white capitalize">
-                    Position:
-                  </span>
-                  <span>{contactPerson.position || 'N/A'}</span>
-                </div>
-                <div className="flex gap-2">
-                  <span className="font-medium text-white capitalize">
-                    Phone:
-                  </span>
-                  <span>{contactPerson.phone || 'N/A'}</span>
-                </div>
-
-                {/* Display domain separately */}
-                <div className="flex gap-2">
-                  <span className="font-medium text-white capitalize">
-                    Domain:
-                  </span>
-                  <span>{user.domain || 'N/A'}</span>
-                </div>
+          <div className="p-4 bg-[#1E293B] rounded-lg shadow-lg">
+            <h3 className="text-xl font-medium text-white mb-4">
+              Contact Person Information
+            </h3>
+            <div className="flex flex-col gap-4 text-sm text-gray-400">
+              <div className="flex gap-2">
+                <span className="font-medium text-white capitalize">
+                  Representative:
+                </span>
+                <span>{contactPerson?.representative || 'N/A'}</span>
+              </div>
+              <div className="flex gap-2">
+                <span className="font-medium text-white capitalize">
+                  Position:
+                </span>
+                <span>{contactPerson?.position || 'N/A'}</span>
+              </div>
+              <div className="flex gap-2">
+                <span className="font-medium text-white capitalize">
+                  Phone:
+                </span>
+                <span>{contactPerson?.phone || 'N/A'}</span>
+              </div>
+              <div className="flex gap-2">
+                <span className="font-medium text-white capitalize">
+                  Domain:
+                </span>
+                <span>{user?.domain || 'N/A'}</span>
               </div>
             </div>
           </div>

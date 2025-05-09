@@ -36,6 +36,6 @@ router.post(
 router.post('/resetPasswordToken', otpLimiter, resetPasswordToken)
 
 //route for reset password
-router.post('/resetPassword', resetPasswordValidator,resetPassword)
+router.post('/resetPassword', resetPasswordValidator, resetPassword)
 
 export default router

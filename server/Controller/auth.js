@@ -264,6 +264,8 @@ export const login = async (req, res) => {
       console.log('encrypted password from backend', user.password)
 
       //genrate jwttoken
+
+      console.log('hiii', await bcryptjs.compare(password, user.password))
       if (await bcryptjs.compare(password, user.password)) {
         const payLoad = {
           email: user.email,
