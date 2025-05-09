@@ -96,38 +96,71 @@ export const signup = (
   }
 }
 
+// export const login = (email, password, userType, navigate) => {
+//   return async (dispatch) => {
+//     try {
+//       const response = await apiConnector('POST', endPoints.LOGIN_API, {
+//         email,
+//         password,
+//         userType,
+//       })
+
+//       console.log(response)
+
+//       if (!response.success) {
+//         toast.error(response.message || response.errors[0].msg)
+//         // toast.error(response.errors[0].msg)
+//         throw new Error(response.message)
+//       }
+
+//       console.log('Response', response)
+//       toast.success('Login Successful')
+//       dispatch(setToken(response.token))
+//       dispatch(setUser(response.user))
+//       // if (userType === 'hacker') {
+//       //   dispatch(setUser(response.hacker))
+//       //   localStorage.setItem('user', JSON.stringify(response.hacker))
+//       // } else if (userType === 'company') {
+//       //   dispatch(setUser(response.company))
+//       //   localStorage.setItem('user', JSON.stringify(response.company))
+//       // }
+
+//       // save the same data in local storage
+//       // localStorage.setItem('token', JSON.stringify(response.token))
+
+//       navigate('/')
+//     } catch (error) {
+//       console.log('LOGIN API ERROR............', error)
+//     }
+//   }
+// }
+
 export const login = (email, password, userType, navigate) => {
   return async (dispatch) => {
     try {
-      const response = await apiConnector('POST', endPoints.LOGIN_API, {
-        email,
-        password,
-        userType,
-      })
+      const response = await apiConnector(
+        'POST',
+        endPoints.LOGIN_API,
+        {
+          email,
+          password,
+          userType,
+        },
+        {
+          withCredentials: true, // 👈 IMPORTANT to send cookies!
+        }
+      )
 
       console.log(response)
 
       if (!response.success) {
         toast.error(response.message || response.errors[0].msg)
-        // toast.error(response.errors[0].msg)
+
         throw new Error(response.message)
       }
 
-      console.log('Response', response)
       toast.success('Login Successful')
-      dispatch(setToken(response.token))
-      dispatch(setUser(response.user))
-      // if (userType === 'hacker') {
-      //   dispatch(setUser(response.hacker))
-      //   localStorage.setItem('user', JSON.stringify(response.hacker))
-      // } else if (userType === 'company') {
-      //   dispatch(setUser(response.company))
-      //   localStorage.setItem('user', JSON.stringify(response.company))
-      // }
-
-      // save the same data in local storage
-      // localStorage.setItem('token', JSON.stringify(response.token))
-
+      dispatch(setUser(response.user)) // Only user is needed from response
       navigate('/')
     } catch (error) {
       console.log('LOGIN API ERROR............', error)
@@ -135,12 +168,36 @@ export const login = (email, password, userType, navigate) => {
   }
 }
 
+// export const logout = (navigate) => {
+//   return (dispatch) => {
+//     dispatch(setToken(null))
+//     dispatch(setUser(null))
+//     localStorage.removeItem('token')
+//     localStorage.removeItem('user')
+
+//     toast.success('Logged Out')
+//     navigate('/signup')
+//   }
+// }
+
+// Helper function to delete a cookie
+const deleteCookie = (name) => {
+  document.cookie = `${name}=; Max-Age=0; path=/;`
+}
+
 export const logout = (navigate) => {
   return (dispatch) => {
     dispatch(setToken(null))
     dispatch(setUser(null))
+
+    // Remove from localStorage
     localStorage.removeItem('token')
     localStorage.removeItem('user')
+
+    // Remove from cookies
+    deleteCookie('token')
+    deleteCookie('user')
+
     toast.success('Logged Out')
     navigate('/signup')
   }

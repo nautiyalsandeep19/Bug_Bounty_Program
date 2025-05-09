@@ -28,12 +28,12 @@ export const resetPasswordToken = async (req, res) => {
       user = await Company.findOne({ email: email })
     }
 
-    if (!user) {
-      return res.status(400).json({
-        success: false,
-        message: 'Unable not found with this email ',
-      })
-    }
+    // if (!user) {
+    //   return res.status(400).json({
+    //     success: false,
+    //     message: 'Unable not found with this email ',
+    //   })
+    // }
 
     //gen token uuid
     const token = Jwt.sign({ userType: userType }, process.env.JWT_SECRET)

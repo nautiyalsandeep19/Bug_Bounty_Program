@@ -14,7 +14,12 @@ import Leaderboard from './Pages/Leaderboard'
 import Bounties from './Pages/Bounties'
 import Settings from './Pages/Settings'
 import ProgramCreation from './components/CreateProgram/CreateProgramModal'
+
 import ProgramsPage from './Pages/ProgramsPage'
+
+import HackerSettings from './Hackerpages/HackerSettings'
+import HackerDashboard from './Hackerpages/HackerDashboard'
+
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false)
@@ -51,10 +56,18 @@ function App() {
           <Route path="/leaderboard" element={<Leaderboard />} />
           <Route path="/bounties" element={<Bounties />} />
           <Route path="/settings" element={<Settings />} />
-          {/* <Route path="*" element={<Navigate to="/dashboard" />} /> */}
 
           <Route path="/addprogram" element={<ProgramCreation />} />
+
           <Route path="/programsPage" element={<ProgramsPage/>} />
+
+
+          {/* Routes for the hackers */}
+
+          <Route path="hacker/setting" element={<HackerSettings />} />
+          <Route path="hacker/dashboard" element={<HackerDashboard />} />
+          {/* <Route path="sidebarin" /> */}
+
         </Routes>
       </main>
     </div>
