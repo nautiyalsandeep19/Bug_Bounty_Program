@@ -11,6 +11,7 @@ import { loginLimiter, otpLimiter } from '../Middleware/rateLimiter.js'
 import {
   changePasswordValidator,
   otpValidator,
+  resetPasswordValidator,
   signUpValidator,
 } from '../Validator/authValidator.js'
 import { validate } from '../Middleware/validate.js'
@@ -35,6 +36,6 @@ router.post(
 router.post('/resetPasswordToken', otpLimiter, resetPasswordToken)
 
 //route for reset password
-router.post('/resetPassword', resetPassword)
+router.post('/resetPassword', resetPasswordValidator, resetPassword)
 
 export default router
