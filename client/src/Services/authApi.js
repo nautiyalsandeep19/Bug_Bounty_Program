@@ -27,7 +27,7 @@ export const sendOtp = (
 
       console.log('SENDOTP API RESPONSE............', response)
 
-      console.log(response.success)
+      console.log(response)
 
       // if response.success is false then throw error
       if (!response.success) {

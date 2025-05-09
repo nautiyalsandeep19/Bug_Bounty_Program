@@ -22,7 +22,7 @@ export const sendOtp = async (req, res) => {
     } = req.body
 
     if (!name || !email || !password || !confirmPassword || !userType) {
-      return res.status(400).status({
+      return res.status(400).json({
         success: false,
         message: 'All feilds are required',
       })
@@ -107,7 +107,7 @@ export const signUp = async (req, res) => {
     const { name, email, password, country, domain, otp, userType } = req.body
 
     if (!otp || !userType) {
-      return res.status(400).status({
+      return res.status(400).json({
         success: false,
         message: 'All feilds are required',
       })
@@ -209,9 +209,9 @@ export const login = async (req, res) => {
 
       console.log('frontend', password)
       console.log('encrypted password from backend', user.password)
-
       //compare
-      if (await bcryptjs.compare(password, user.password)) {
+      if(await bcryptjs.compare(password, user.password)) {
+
         const payLoad = {
           email: user.email,
           id: user._id,

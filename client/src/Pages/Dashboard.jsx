@@ -1,19 +1,20 @@
 import React, { useEffect, useState } from 'react'
-
+import { useDispatch } from 'react-redux'
 import { getCompanyDetails } from '../Services/companyApi'
 
 const Dashboard = () => {
   const [company, setCompany] = useState(null)
+  const dispatch = useDispatch()
 
   useEffect(() => {
     const fetchCompany = async () => {
-      const data = await getCompanyDetails()
+      const data = await dispatch(getCompanyDetails())
       if (data) {
-        setCompany(data)
+        setUser(data)
       }
     }
     fetchCompany()
-  }, [])
+  }, [dispatch])
 
   if (!company) {
     return (

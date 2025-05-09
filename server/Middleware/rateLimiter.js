@@ -1,17 +1,25 @@
-import rateLimit from 'express-rate-limit'
+import rateLimit from 'express-rate-limit';
+
+// Common handler for rate limit responses
+const rateLimitHandler = (req, res) => {
+  return res.status(429).json({
+    success: false,
+    errors: [{ msg: 'Too many requests. Please try again later.' }],
+  });
+};
 
 export const loginLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
   max: 5,
-  limit: 100,
-  message: 'Too many login attempts. Please try again after 15 minutes.',
+  handler: rateLimitHandler,
   standardHeaders: true,
   legacyHeaders: false,
-})
+});
 
 export const otpLimiter = rateLimit({
   windowMs: 10 * 60 * 1000,
   max: 3,
-  message: 'Too many OTP requests. Please try again later.',
-  limit: 100,
-})
+  handler: rateLimitHandler,
+  standardHeaders: true,
+  legacyHeaders: false,
+});
