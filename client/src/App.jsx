@@ -14,6 +14,7 @@ import Leaderboard from './Pages/Leaderboard'
 import Bounties from './Pages/Bounties'
 import Settings from './Pages/Settings'
 import ProgramCreation from './components/CreateProgram/CreateProgramModal'
+import ProgramsPage from './Pages/ProgramsPage'
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false)
@@ -53,6 +54,7 @@ function App() {
           {/* <Route path="*" element={<Navigate to="/dashboard" />} /> */}
 
           <Route path="/addprogram" element={<ProgramCreation />} />
+          <Route path="/programsPage" element={<ProgramsPage/>} />
         </Routes>
       </main>
     </div>

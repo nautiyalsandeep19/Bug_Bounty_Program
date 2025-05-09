@@ -12,6 +12,9 @@ export const endPoints = {
   GET_COMPANY_DETAILS: BASE_URL + '/api/company/companyDetails',
   UPDATE_COMPANY_DETAILS: BASE_URL + '/api/company/updateDetails',
   GET_COMPANY_PROGRAMS: BASE_URL + '/api/company/companyPrograms',
+  GET_ALL_PROGRAMS: BASE_URL + '/api/programs/allPrograms',
+  GET_PRIVATE_PROGRAMS: BASE_URL + '/api/programs/privatePrograms',
+
 }
 
 export const axiosInstance = axios.create({ withCredentials: true })

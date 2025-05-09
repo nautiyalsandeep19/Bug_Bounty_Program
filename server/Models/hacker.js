@@ -1,4 +1,5 @@
 import mongoose from 'mongoose'
+import { nanoid } from 'nanoid'
 
 const hackerSchema = new mongoose.Schema(
   {
@@ -15,14 +16,23 @@ const hackerSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    country: {
+    country: String,
+    image: String,
+    skills: [String],
+    username: {
       type: String,
+      unique: true,
     },
-    image: {
-      type: String,
+    basicDetails: {
+      bio: String,
+      website: String,
+      companywebsite: String,
     },
-    skills: {
-      type: [String],
+    socialLinks: {
+      linkedin: String,
+      instagram: String,
+      github: String,
+      twitter: String,
     },
     programs: [
       {
@@ -30,16 +40,35 @@ const hackerSchema = new mongoose.Schema(
         ref: 'Program',
       },
     ],
-    token: {
-      type: String,
+    KYCstatus: {
+      type: Boolean,
+      default: false,
     },
-    resetPasswordExpires: {
-      type: Date,
+    KYC: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'KYC',
     },
+    token: String,
+    resetPasswordExpires: Date,
   },
-
   { timestamps: true }
 )
+
+// Pre-save middleware to assign unique username if not provided
+hackerSchema.pre('save', async function (next) {
+  if (!this.username) {
+    let unique = false
+    while (!unique) {
+      const generated = `${this.name}-${nanoid(5)}`
+      const existing = await mongoose.models.Hacker.findOne({ username: generated })
+      if (!existing) {
+        this.username = generated
+        unique = true
+      }
+    }
+  }
+  next()
+})
 
 const Hacker = mongoose.model('Hacker', hackerSchema)
 export default Hacker
