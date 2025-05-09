@@ -1,13 +1,16 @@
 import express from 'express';
-import multer from 'multer';
-import { createProgram } from '../Controller/programController.js';
+import { createInitialProgram, fetchAllPrograms, fetchPrivateProgramsForHacker, updateProgram } from '../Controller/programController.js';
+import { authMid } from '../Middleware/authMid.js';
 
 const router = express.Router();
 
-// Setup file upload
-const upload = multer({ dest: 'uploads/' });
 
-// Create a program
-router.post('/add', upload.fields([{ name: 'logo', maxCount: 1 }]), createProgram);
+router.post('/create-initial', createInitialProgram);
+
+
+router.put('/update/:id', updateProgram);
+
+router.get('/allPrograms',fetchAllPrograms);
+router.get('/privatePrograms',authMid, fetchPrivateProgramsForHacker);
 
 export default router;

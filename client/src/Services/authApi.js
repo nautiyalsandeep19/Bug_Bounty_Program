@@ -27,7 +27,7 @@ export const sendOtp = (
 
       console.log('SENDOTP API RESPONSE............', response)
 
-      console.log(response.success)
+      console.log(response)
 
       // if response.success is false then throw error
       if (!response.success) {
@@ -155,6 +155,7 @@ export const login = (email, password, userType, navigate) => {
 
       if (!response.success) {
         toast.error(response.message || response.errors[0].msg)
+
         throw new Error(response.message)
       }
 

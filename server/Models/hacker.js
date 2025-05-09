@@ -60,9 +60,10 @@ hackerSchema.pre('save', async function (next) {
     let unique = false
     while (!unique) {
       const generated = `${this.name}-${nanoid(5)}`
-      const existing = await mongoose.models.Hacker.findOne({
-        username: generated,
-      })
+
+      const existing = await mongoose.models.Hacker.findOne({ username: generated })
+
+
       if (!existing) {
         this.username = generated
         unique = true
