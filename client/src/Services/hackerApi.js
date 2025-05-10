@@ -21,6 +21,7 @@ export const getHackerDetails = async () => {
 }
 
 export const updateHackerProfile = (
+  phone,
   bio,
   website,
   companywebsite,
@@ -35,6 +36,7 @@ export const updateHackerProfile = (
         'PUT',
         endPoints.UPDATE_HACKER_DETAILS,
         {
+          phone,
           bio,
           website,
           companywebsite,

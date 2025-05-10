@@ -16,7 +16,7 @@ const Sidebar = () => {
       <h1 className="text-green-500 text-2xl font-bold mb-8">Versantix</h1>
       <nav className="flex flex-col gap-4">
         <NavLink
-          to="/"
+          to="/hacker/dashboard"
           className={({ isActive }) =>
             `flex items-center gap-2 p-2 rounded ${
               isActive ? 'bg-gray-400' : 'hover:bg-[#1f1f1f]'
@@ -66,7 +66,7 @@ const Sidebar = () => {
           <FaGift /> Bounties
         </NavLink>
         <NavLink
-          to="/settings"
+          to="hacker/setting"
           className={({ isActive }) =>
             `flex items-center gap-2 p-2 rounded ${
               isActive ? 'bg-gray-600' : 'hover:bg-[#1f1f1f]'
