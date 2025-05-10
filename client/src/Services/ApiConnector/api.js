@@ -23,6 +23,9 @@ export const endPoints = {
   GET_HACKER_DETAILS: BASE_URL + '/api/hacker/hackerDetails',
   UPDATE_HACKER_DETAILS: BASE_URL + '/api/hacker/updateHackerDetails',
 
+  //leaderBoard
+  GET_LEADERBOARD: BASE_URL + '/api/hacker/leaderBoard'
+
 }
 
 export const axiosInstance = axios.create({ withCredentials: true })

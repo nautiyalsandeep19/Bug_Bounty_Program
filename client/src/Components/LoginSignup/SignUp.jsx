@@ -112,7 +112,7 @@ const SignUp = () => {
               value={country}
               onChange={handleChange}
               required
-              className="w-full mt-1 p-3 bg-transparent text-gray-200 rounded-lg border border-blue-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full mt-1 p-3 bg-transparent text-gray-300 rounded-lg border border-blue-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
               <option value="" disabled className="h-[300px]">
                 Select your country
