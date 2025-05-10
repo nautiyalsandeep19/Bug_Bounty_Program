@@ -6,7 +6,7 @@ dotenv.config()
 //auth middleware for logged in users
 
 export const authMid = async (req, res, next) => {
-  console.log('auth working')
+  console.log('auth middleware working')
 
   try {
     //extracts the token
@@ -52,3 +52,4 @@ export const authMid = async (req, res, next) => {
     })
   }
 }
+
