@@ -8,7 +8,7 @@ const companySchema = new mongoose.Schema({
   country: { type: String },
   createdAt: { type: Date, default: Date.now },
   description: { type: String },
-  programs: { type: mongoose.Schema.Types.ObjectId, ref: 'Program' },
+  programs:[ { type: mongoose.Schema.Types.ObjectId, ref: 'Program' }],
   invitedHackers: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Hacker' }],
   contactPerson: {
     representative: { type: String },
