@@ -67,3 +67,24 @@ export const updateHackerProfile = (
     }
   }
 }
+
+
+
+export const getLeaderBoard = async () => {
+  try {
+    const response = await apiConnector('GET', endPoints.GET_LEADERBOARD);
+
+    if (!response.success) {
+      toast.error(response.message || 'Failed to fetch leaderboard');
+      throw new Error(response.message);
+    }
+
+    console.log('LEADERBOARD:', response.leaderBoard);
+    return response.leaderBoard;
+
+  } catch (error) {
+    console.error("Leaderboard fetch error:", error);
+    toast.error("Something went wrong while loading leaderboard");
+    return [];
+  }
+};
