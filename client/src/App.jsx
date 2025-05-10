@@ -58,7 +58,7 @@ function App() {
 
           <Route path="/addprogram" element={<ProgramCreation />} />
 
-          {/* Routes for the hackers */}
+
 
           <Route path="hacker/setting" element={<HackerSettings />} />
           <Route path="hacker/dashboard" element={<HackerDashboard />} />
