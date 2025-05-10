@@ -51,7 +51,7 @@ export const updateProgram = async (req, res) => {
 
 export const fetchAllPrograms = async (req, res) => {
   try {
-    const publicPrograms = await Program.find({ visibility: "public" });
+    const publicPrograms = await Program.find({ visibility: "public" }).populate("company");
 
     res.status(200).json({
       success: true,

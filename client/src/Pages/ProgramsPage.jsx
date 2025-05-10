@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { toast } from 'react-toastify';
 import { getAllPrograms, getPrivatePrograms } from '../Services/programsApi';
+import ProgramCards from '../Components/Common/ProgramCards';
 
 const ProgramsPage = () => {
   const [activeTab, setActiveTab] = useState('allPrograms');
@@ -49,6 +50,7 @@ const ProgramsPage = () => {
     }
   };
 
+  console.log("ProgramDetails",programs)
   return (
     <div className="p-6 bg-black min-h-screen text-white">
       <h2 className="text-3xl font-semibold mb-2">Programs</h2>
@@ -79,48 +81,26 @@ const ProgramsPage = () => {
       {/* Cards Grid */}
       {loading ? (
         <div>Loading...</div>
-      ) : (
-        <div className="grid md:grid-cols-3 sm:grid-cols-2 gap-6">
-          {programs.map((program) => (
-            <div
-              key={program._id}
-              className="bg-[#1e1e1e] rounded-xl p-4 shadow-md border border-gray-700"
-            >
-              <div className="flex items-center justify-between mb-2">
-                {renderTag(program.type)}
-                <div className="text-xs text-white">Managed</div>
-              </div>
-              <div className="flex items-center gap-3 mb-4">
-                {program.logo ? (
-                  <img
-                    src={program.logo}
-                    alt="logo"
-                    className="w-10 h-10 rounded-full bg-white"
-                  />
-                ) : (
-                  <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center text-black font-bold">
-                    {program.title[0]}
-                  </div>
-                )}
-                <div>
-                  <div className="text-lg font-semibold">{program.title}</div>
-                  <div className="text-sm text-gray-400">
-                    {program.company?.name || 'Unknown Company'}
-                  </div>
-                </div>
-              </div>
-              <div className="flex gap-2 mb-3">
-                {/* Tags (hardcoded here for simplicity) */}
-                <span className="bg-orange-600 text-white text-xs px-2 py-1 rounded">Bounty</span>
-                <span className="bg-green-600 text-white text-xs px-2 py-1 rounded">Thanks</span>
-              </div>
-              <button className="w-full mt-auto bg-gray-800 text-white text-sm py-2 rounded hover:bg-gray-700">
-                View Program
-              </button>
-            </div>
-          ))}
-        </div>
-      )}
+      ) : (<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+  {
+    programs.map((program) => (
+      <ProgramCards
+        key={program._id}
+        title={program.title}
+        companyName={program.company?.name}
+        companyImage={program.company?.image}
+        bountyRange={program.bountyRange}
+        type={program.type}
+      />
+    ))
+  }
+</div>)}
+
+
+
+
+
+      {/* <ProgramCards title={"Hello"} company={programs?.company} type={"BugBounty"}/> */}
     </div>
   );
 };

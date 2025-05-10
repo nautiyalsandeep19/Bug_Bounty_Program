@@ -8,14 +8,6 @@ const rateLimitHandler = (req, res) => {
   });
 };
 
-// Common handler for rate limit responses
-const rateLimitHandler = (req, res) => {
-  return res.status(429).json({
-    success: false,
-    errors: [{ msg: 'Too many requests. Please try again later.' }],
-  })
-}
-
 export const loginLimiter = rateLimit({
   windowMs: 1 * 60 * 1000,
   max: 5,
