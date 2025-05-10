@@ -47,13 +47,19 @@ export const updateHackerPerson = async (req, res) => {
       phone = '',
       bio = '',
       website = '',
-      companywebsite = '',
+      companyname = '',
       linkedin = '',
       instagram = '',
       github = '',
       twitter = '',
     } = req.body
 
+    if (phone && !/^\d{10}$/.test(phone)) {
+      return res.status(400).json({
+        success: false,
+        message: 'Phone number must be exactly 10 digits',
+      })
+    }
     // Directly update the two nested objects
     const updatedHacker = await Hacker.findByIdAndUpdate(
       userId,
@@ -62,7 +68,7 @@ export const updateHackerPerson = async (req, res) => {
         basicDetails: {
           bio,
           website,
-          companywebsite,
+          companyname,
         },
         socialLinks: {
           linkedin,

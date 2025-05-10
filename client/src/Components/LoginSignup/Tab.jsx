@@ -1,5 +1,3 @@
-import React from 'react'
-
 const Tab = ({ field, setField }) => {
   const tabData = [
     { id: 1, tabName: 'hacker' },

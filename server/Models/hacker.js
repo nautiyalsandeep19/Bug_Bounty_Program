@@ -19,7 +19,11 @@ const hackerSchema = new mongoose.Schema(
     country: String,
     image: String,
     skills: [String],
-    phone: Number,
+    phone: {
+      type: Number,
+      match: /^[0-9]{10}$/,
+      message: 'Phone number must be exactly 10 digits',
+    },
     username: {
       type: String,
       unique: true,
@@ -27,7 +31,7 @@ const hackerSchema = new mongoose.Schema(
     basicDetails: {
       bio: String,
       website: String,
-      companywebsite: String,
+      companyname: String,
     },
     socialLinks: {
       linkedin: String,
