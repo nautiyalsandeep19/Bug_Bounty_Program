@@ -19,6 +19,7 @@ const hackerSchema = new mongoose.Schema(
     country: String,
     image: String,
     skills: [String],
+    phone: Number,
     username: {
       type: String,
       unique: true,
@@ -59,7 +60,7 @@ hackerSchema.pre('save', async function (next) {
   if (!this.username) {
     let unique = false
     while (!unique) {
-      const generated = `${this.name}-${nanoid(5)}`
+      const generated = `${this.name.trim().split(' ')[0]}-${nanoid(5)}`
       const existing = await mongoose.models.Hacker.findOne({
         username: generated,
       })

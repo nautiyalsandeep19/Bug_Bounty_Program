@@ -10,6 +10,7 @@ const HackerSettings = () => {
 
   const [edit, setEdit] = useState(false)
   const [personalInfo, setPersonalInfo] = useState({
+    phone: '',
     bio: '',
     website: '',
     companywebsite: '',
@@ -22,6 +23,7 @@ const HackerSettings = () => {
   useEffect(() => {
     if (user) {
       setPersonalInfo({
+        phone: user?.phone || '',
         bio: user?.basicDetails?.bio || '',
         website: user?.basicDetails?.website || '',
         companywebsite: user?.basicDetails?.companywebsite || '',
@@ -40,6 +42,7 @@ const HackerSettings = () => {
 
   const handleSave = () => {
     const {
+      phone,
       bio,
       website,
       companywebsite,
@@ -51,6 +54,7 @@ const HackerSettings = () => {
 
     dispatch(
       updateHackerProfile(
+        phone,
         bio,
         website,
         companywebsite,
@@ -130,6 +134,10 @@ const HackerSettings = () => {
               Basic Details
             </h3>
             <div className="flex flex-col gap-4 text-sm text-gray-400">
+              <div>
+                <strong className="text-white">Phone:</strong>{' '}
+                {user?.phone || 'N/A'}
+              </div>
               <div>
                 <strong className="text-white">Bio:</strong>{' '}
                 {basicDetails?.bio || 'N/A'}

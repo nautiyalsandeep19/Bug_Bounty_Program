@@ -44,6 +44,7 @@ export const updateHackerPerson = async (req, res) => {
     const userId = req.user.id
 
     const {
+      phone = '',
       bio = '',
       website = '',
       companywebsite = '',
@@ -57,6 +58,7 @@ export const updateHackerPerson = async (req, res) => {
     const updatedHacker = await Hacker.findByIdAndUpdate(
       userId,
       {
+        phone,
         basicDetails: {
           bio,
           website,

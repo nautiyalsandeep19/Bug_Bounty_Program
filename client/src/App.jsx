@@ -45,13 +45,13 @@ function App() {
           <Route path="checkemail" element={<CheckEmailPage />} />
 
           <Route path="/" element={<Navigate to="/dashboard" />} />
-          <Route path="/dashboard" element={<Dashboard />} />
+          {/* <Route path="/dashboard" element={<Dashboard />} /> */}
           <Route path="/programs" element={<Programs />} />
           <Route path="/program/:slug" element={<ProgramDetail />} />
           <Route path="/reports" element={<Reports />} />
           <Route path="/leaderboard" element={<Leaderboard />} />
           <Route path="/bounties" element={<Bounties />} />
-          <Route path="/settings" element={<Settings />} />
+          {/* <Route path="/settings" element={<Settings />} /> */}
 
           <Route path="/addprogram" element={<ProgramCreation />} />
 
