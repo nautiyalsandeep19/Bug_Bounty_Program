@@ -144,7 +144,7 @@ const HackerSettings = () => {
       <div className="flex justify-center mt-8">
         <Button
           onClick={handleSave}
-          text="Save"
+          text="Update Profile"
           className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg transition-all"
         />
       </div>
