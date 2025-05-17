@@ -8,12 +8,9 @@ import cookieParser from 'cookie-parser'
 import companyRoute from './Routes/companyRoute.js'
 import programRouter from './Routes/programRoutes.js'
 import assetRouter from './Routes/assetRoute.js'
-
-import programRoutes from './Routes/programRoutes.js';
-
-
+import programRoutes from './Routes/programRoutes.js'
 import hackerRoute from './Routes/hackerRoutes.js'
-
+import uploaderRouter from './Routes/uploaderRoute.js'
 
 dotenv.config()
 const app = express()
@@ -26,6 +23,9 @@ app.use(
     credentials: true,
   })
 )
+
+//for cloudinary
+app.use('/api', uploaderRouter)
 
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
@@ -41,10 +41,9 @@ app.use('/api/company', companyRoute)
 app.use('/api/program', programRouter)
 app.use('/api/assets', assetRouter)
 
-app.use('/api/programs', programRoutes);
+app.use('/api/programs', programRoutes)
 
 app.use('/api/hacker', hackerRoute)
-
 
 app.get('/', (req, res) => {
   res.send('Hello from server!')
