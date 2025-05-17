@@ -20,7 +20,7 @@ export const getHackerDetails = async (req, res) => {
     //   validate HackerDetails
     if (!hackerDetails) {
       return res.status(400).json({
-        success: true,
+        success: false,
         message: 'Hacker Details Not Found',
       })
     }
