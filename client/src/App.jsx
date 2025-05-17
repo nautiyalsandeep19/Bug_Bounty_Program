@@ -16,10 +16,10 @@ import Settings from './Pages/Settings'
 import ProgramCreation from './components/CreateProgram/CreateProgramModal'
 
 import ProgramsPage from './Pages/ProgramsPage'
-
 import HackerSettings from './Hackerpages/HackerSettings'
 import HackerDashboard from './Hackerpages/HackerDashboard'
 
+// import Editor from './Components/HackerComponents/Editior'
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false)
   const location = useLocation()
@@ -62,7 +62,10 @@ function App() {
 
           <Route path="hacker/setting" element={<HackerSettings />} />
           <Route path="hacker/dashboard" element={<HackerDashboard />} />
-          {/* <Route path="sidebarin" /> */}
+
+          {/* editior */}
+
+          {/* <Route path="/editor" element={<Editor />} /> */}
         </Routes>
       </main>
     </div>
