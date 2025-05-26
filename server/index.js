@@ -13,6 +13,7 @@ import hackerRoute from './Routes/hackerRoutes.js'
 import uploaderRouter from './Routes/uploaderRoute.js'
 import { authMid } from './Middleware/authMid.js'
 import logRequest from './Middleware/logRequest.js'
+import reportRoute from './Routes/reportRoute.js'
 
 
 dotenv.config()
@@ -50,6 +51,8 @@ app.use('/api/programs', programRoutes)
 
 // app.use('/api/programs', programRoutes);
 app.use('/api/hacker', hackerRoute)
+
+app.use('/api/reports', reportRoute)
 
 app.get('/', (req, res) => {
   res.send('Hello from server!')

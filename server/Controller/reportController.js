@@ -1,10 +1,84 @@
-export const createReport = async(req, res)=>{
-    try {
-
-        
-        const hackerId = req.user.id;
-
-    } catch (error) {
-        
+import Report from "../Models/report.js";
+export const createReport = async (req, res) => {
+  try {
+    const hackerId = req.user.id;
+    const { programId, reportType, reportData } = req.body;
+    if (!programId || !reportType || !reportData) {
+      return res.status(400).json({success:false, message: "All fields are required" });
     }
-}
+    const {
+      scope,
+      vulnerableEndpoint,
+      vulnerabilityType,
+      title,
+      severity,
+      POC,
+      summary,
+      attachments,
+      vulnerabilityImpact,
+      ip,
+      testingEmail,
+    } = reportData;
+    if (
+      !scope ||
+      !vulnerabilityType ||
+      !title ||
+      !severity ||
+      !POC ||
+      !summary ||
+      !vulnerabilityImpact ||
+      !ip
+    ) {
+      return res
+        .status(400)
+        .json({success:false, message: "All fields in reportData are required" });
+    }
+    const report = {
+      hackerId,
+      programId,
+      scope,
+      vulnerableEndpoint,
+      vulnerabilityType,
+      title,
+      severity,
+      POC,
+      summary,
+      attachments: attachments || [],
+      vulnerabilityImpact,
+      ip,
+      testingEmail,
+    };
+    const newReport = await Report.create(report);
+    res
+      .status(201)
+      .json({success:true,  message: "Report created successfully", report: newReport });
+  } catch (error) {
+    res.status(500).json({success:false, message: "Server error", error: error.message });
+  }
+};
+
+
+export const updateStatus = async (req, res) => {
+    try {
+        const { reportId } = req.params;
+        const { status } = req.body;
+    
+        if (!reportId || !status) {
+        return res.status(400).json({success:false, message: "Report ID and status are required" });
+        }
+    
+        const report = await Report.findByIdAndUpdate(
+        reportId,
+        { status },
+        { new: true }
+        );
+    
+        if (!report) {
+        return res.status(404).json({success:false, message: "Report not found" });
+        }
+    
+        res.status(200).json({success:true, message: "Report status updated successfully", report });
+    } catch (error) {
+        res.status(500).json({success:false, message: "Server error", error: error.message });
+    }
+    }
