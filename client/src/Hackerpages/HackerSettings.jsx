@@ -74,7 +74,7 @@ const HackerSettings = () => {
   }
 
   return (
-    <div className="w-full bg-[#111f3a] text-white p-8 rounded-lg shadow-lg flex flex-col gap-8">
+    <div className="w-full bg-[#111f3a] text-white p-8 rounded-lg shadow-lg flex flex-col gap-8 overflow-y-scroll">
       <h2 className="text-3xl font-semibold mb-6">Settings</h2>
 
       <div className="flex flex-col gap-8">

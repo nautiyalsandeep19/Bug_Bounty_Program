@@ -5,7 +5,6 @@ import { createReport } from '../../Services/reportApi'
 
 const Report = () => {
   const [ip, setIp] = useState('')
-
   const [scope, setScope] = useState('')
   const [endpoint, setEndpoint] = useState('')
   const [vulnerabilityType, setVulnerabilityType] = useState('')
@@ -30,19 +29,32 @@ const Report = () => {
   const handleReportSubmission = async () => {
     const reportData = {
       scope,
-      vulnerabilityEndpoint: endpoint,
+      vulnerableEndpoint: endpoint,
       vulnerabilityType,
       title: reportTitle,
-      reportSummary,
-      reportPOC,
-      ipAddress: ip,
-
+      summary: reportSummary,
+      POC: reportPOC,
       severity: severityData.severity,
+      vulnerabilityImpact: reportSummary,
+      ip: ip,
+      attachments: [], // Optional
+      testingEmail: '', // Optional
     }
-    console.log(reportData)
 
-    await createReport(reportData)
-    // resetForm()
+    const payload = {
+      programId: '6652f7c0d7289f1b443cc10a', // <-- Replace with actual programId (can be from props, context, or selection)
+      reportType: 'vulnerability', // <-- Replace with actual type if needed
+      reportData,
+    }
+
+    console.log('Submitting payload:', payload)
+
+    try {
+      await createReport(payload)
+      // Optionally reset form here
+    } catch (error) {
+      console.error('Report submission failed:', error.message)
+    }
   }
 
   const RequiredMark = () => <span className="text-red-500 ml-1">*</span>
@@ -60,7 +72,7 @@ const Report = () => {
           <select
             value={scope}
             onChange={(e) => setScope(e.target.value)}
-            className="w-full border border-gray-300 p-2 rounded"
+            className="w-full border border-gray-500 p-2 rounded"
             required
           >
             <option value="">-- Choose scope --</option>
@@ -78,7 +90,7 @@ const Report = () => {
             type="url"
             value={endpoint}
             onChange={(e) => setEndpoint(e.target.value)}
-            className="w-full border border-gray-300 p-2 rounded"
+            className="w-full border border-gray-500 p-2 rounded"
             placeholder="https://example.com/endpoint"
           />
         </div>
@@ -91,7 +103,7 @@ const Report = () => {
           <select
             value={vulnerabilityType}
             onChange={(e) => setVulnerabilityType(e.target.value)}
-            className="w-full border border-gray-300 p-2 rounded"
+            className="w-full border border-gray-500 p-2 rounded"
             required
           >
             <option value="">-- Choose vulnerability --</option>
@@ -119,7 +131,7 @@ const Report = () => {
             type="text"
             value={reportTitle}
             onChange={(e) => setReportTitle(e.target.value)}
-            className="w-full border border-gray-300 p-2 rounded"
+            className="w-full border border-gray-500 p-2 rounded"
             placeholder="Report Title"
             required
           />
@@ -127,7 +139,7 @@ const Report = () => {
             type="text"
             value={reportSummary}
             onChange={(e) => setReportSummary(e.target.value)}
-            className="w-full border border-gray-300 p-2 rounded"
+            className="w-full border border-gray-500 p-2 rounded"
             placeholder="Report Summary"
             required
           />
@@ -135,7 +147,7 @@ const Report = () => {
             rows={5}
             value={reportPOC}
             onChange={(e) => setReportPOC(e.target.value)}
-            className="w-full border border-gray-300 p-2 rounded"
+            className="w-full border border-gray-500 p-2 rounded"
             placeholder="Describe the impact of the vulnerability..."
             required
           />
@@ -143,7 +155,7 @@ const Report = () => {
           <div className="flex flex-col sm:flex-row sm:items-center gap-4">
             <input
               type="text"
-              className="flex-1 border border-gray-300 p-2 rounded"
+              className="flex-1 border border-gray-500 p-2 rounded"
               placeholder="Your IP Address"
               value={ip}
               readOnly
