@@ -15,6 +15,17 @@ const reportScheema = new mongoose.Schema(
       type: Date,
       default: Date.now,
     },
+    scope: {
+      type: String,
+      required: true,
+    },
+    vulnerableEndpoint: {
+      type: String,
+    },
+    vulnerabilityType: {
+      type: String,
+      required: true,
+    },
     title: {
       type: String,
       required: true,
@@ -23,24 +34,41 @@ const reportScheema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    POC: {
+      type: String,
+      required: true,
+    },
 
-    description: {
+    summary: {
       type: String,
       required: true,
     },
     attachments: [
       {
-        type: [String],
-        required: true,
+        type: String,
       },
     ],
-
+    vulnerabilityImpact: {
+      type: String,
+      required: true,
+    },
+    ip: {
+      type: String,
+      required: true,
+    },
+    testingEmail: {
+      type: String,
+    },
     bountyReward: {
       type: Number,
     },
     status: {
       type: String,
-      enum: ['completed', 'rejected', 'underreview', 'draft'],
+      enum: ['completed', 'rejected', 'underreview', 'draft', 'triage'],
+      default: 'draft',
+    },
+    tags: {
+      type: [String],
     },
   },
   { timestamps: true }
