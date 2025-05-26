@@ -69,7 +69,7 @@ export const fetchAllPrograms = async (req, res) => {
 
 export const fetchPrivateProgramsForHacker = async (req, res) => {
   try {
-    if (!req.user || req.user.userType !== "hacker") {
+    if (!req.user && req.user.userType !== "hacker") { // made changes && 
       return res.status(403).json({
         success: false,
         message: "Access denied. Only hackers can access private programs.",

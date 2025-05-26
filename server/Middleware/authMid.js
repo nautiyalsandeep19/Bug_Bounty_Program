@@ -1,55 +1,57 @@
-import Jwt from 'jsonwebtoken'
-import dotenv from 'dotenv'
+// Middleware to authenticate user based on JWT token
+import Jwt from 'jsonwebtoken';
+import dotenv from 'dotenv';
 
-dotenv.config()
-
-//auth middleware for logged in users
+dotenv.config();
 
 export const authMid = async (req, res, next) => {
-  console.log('auth middleware working')
-
   try {
-    //extracts the token
+    // Extract token from headers, cookies, or body
+    const authHeader = req.header('Authorization');
     const token =
-      req.cookies.token ||
-      req.body.token ||
-      req.header('Authorization').replace('Bearer ', '')
-
-    //if token missed then return response
+      req.cookies?.token ||
+      req.body?.token ||
+      (authHeader && authHeader.startsWith('Bearer ')
+        ? authHeader.split(' ')[1]
+        : null);
 
     if (!token) {
-      return res.status(409).json({
+      return res.status(401).json({
         success: false,
-        message: 'Token is missing User not logged in',
-      })
+        message: 'Token is missing. User not logged in.',
+      });
     }
 
     try {
-      const decode = Jwt.verify(token, process.env.JWT_SECRET)
-      console.log('decoded token', decode)
-      // if (decode.userType === 'hacker') {
-      //   req.hacker = decode
-      // } else if (decode.userType === 'company') {
-      //   req.company = decode
-      // }
+      const decoded = Jwt.verify(token, process.env.JWT_SECRET);
 
-      req.user = decode
-    } catch (error) {
-      console.log(error)
+      // Attach user info to request object
+      req.user = decoded;
 
+      next(); // Proceed to next middleware/route
+    } catch (err) {
       return res.status(401).json({
         success: false,
-        message: 'Token is invalid ',
-      })
+        message: 'Token is invalid or expired.',
+      });
     }
-    next()
-  } catch (error) {
-    console.log(error)
-
+  } catch (err) {
+    console.error('Auth middleware error:', err);
     return res.status(500).json({
       success: false,
-      message: 'Something went wrong while vaildating toke ',
-    })
+      message: 'Internal server error during token validation.',
+    });
   }
-}
+};
 
+
+export const isCompany = (req, res, next) => {
+  if (req.user && req.user.role === 'company') {
+    next(); // User is a company, proceed to next middleware/route
+  } else {
+    return res.status(403).json({
+      success: false,
+      message: 'Access denied. Not authorized as a company.',
+    });
+  }
+};
