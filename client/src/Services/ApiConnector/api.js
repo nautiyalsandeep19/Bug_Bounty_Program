@@ -24,7 +24,11 @@ export const endPoints = {
   UPDATE_HACKER_DETAILS: BASE_URL + '/api/hacker/updateHackerDetails',
 
   //leaderBoard
-  GET_LEADERBOARD: BASE_URL + '/api/hacker/leaderBoard'
+  GET_LEADERBOARD: BASE_URL + '/api/hacker/leaderBoard',
+
+  //reports
+  CREATE_REPORT: BASE_URL + '/api/reports/createReport',
+  UPDATE_REPORT_STATUS: BASE_URL + '/api/reports/updateStatus',
 
 }
 
