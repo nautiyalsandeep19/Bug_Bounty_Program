@@ -12,7 +12,7 @@ import {
 
 const Sidebar = () => {
   return (
-    <div className="w-64 bg-[#121212] p-4 hidden sm:block">
+    <div className="w-64 bg-[#121212] p-4 hidden sm:block sticky top-0 z-10">
       <h1 className="text-blue-500 text-3xl font-bold mb-8">Versantix</h1>
       <nav className="flex flex-col gap-4">
         <NavLink

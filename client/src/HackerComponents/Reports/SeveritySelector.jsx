@@ -204,7 +204,7 @@ const SeveritySelector = () => {
                   : 'text-white'
               }`}
             >
-              {severity} Severity
+              {severity}
             </span>
           </div>
         </div>
