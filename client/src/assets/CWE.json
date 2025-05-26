@@ -1,9 +1,37 @@
 {
-  "name": "main",
-  "items": [
+  "Access Control": [
+    { "codeId": 22, "name": "path traversal" },
+    { "codeId": 200, "name": "Information Disclosure" },
+    { "codeId": 209, "name": "Information Exposure Through an Error Message" },
+    { "codeId": 215, "name": "Information Exposure Through Debug Information" },
+    { "codeId": 269, "name": "Privilage Escalation" },
+    { "codeId": 284, "name": "Improper Access Control" },
+    { "codeId": 287, "name": "Improper Authentication" },
+    { "codeId": 307, "name": "Brute Force" },
+    { "codeId": 313, "name": "Insufficient Session Expiration" },
+    { "codeId": 322, "name": "Key Exchange without Entity Authentication" },
+    { "codeId": 359, "name": "Privacy Violation" },
+    { "codeId": 425, "name": "Forced Browsing" },
+    { "codeId": 639, "name": "Insecure Direct Object Reference" }
+  ],
+  "Broken Authentication": [
+    { "codeId": 384, "name": "Session Fixation" },
+    { "codeId": 613, "name": "Insufficient Session Expiration" },
     {
-      "ID": "0",
-      "Name": "type name"
-    }
+      "codeId": 640,
+      "name": "Weak Password Recovery Mechanism for Forgotten Password"
+    },
+    { "codeId": 287, "name": "Improper Authentication (Generic)" },
+    { "codeId": 798, "name": "Use of Hard-coded Credentials" },
+    { "codeId": 256, "name": "Plaintext Storage of a Password" },
+    { "codeId": 307, "name": "Brute Force" },
+    { "codeId": 620, "name": "Unverified Password Change" }
+  ],
+  "Broken Access Control": [
+    { "codeId": 233, "name": "Horizontal Privilege Escalation" },
+    { "codeId": 425, "name": "Forced Browsing" },
+    { "codeId": 639, "name": "Insecure Direct Object Reference" },
+    { "codeId": 22, "name": "Path Traversal" },
+    { "codeId": 200, "name": "Information Disclosure" }
   ]
 }
