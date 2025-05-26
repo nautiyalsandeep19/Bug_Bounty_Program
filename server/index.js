@@ -11,6 +11,9 @@ import assetRouter from './Routes/assetRoute.js'
 import programRoutes from './Routes/programRoutes.js'
 import hackerRoute from './Routes/hackerRoutes.js'
 import uploaderRouter from './Routes/uploaderRoute.js'
+import { authMid } from './Middleware/authMid.js'
+import logRequest from './Middleware/logRequest.js'
+
 
 dotenv.config()
 const app = express()
@@ -35,14 +38,17 @@ app.post('/register', (req, res) => {
     .then((employee) => res.json(employee))
     .catch((err) => console.log(err))
 })
-
 app.use('/api/auth', authRoute)
+
+app.use(authMid);    // Should populate req.user
+app.use(logRequest);        // Logs every request
+
 app.use('/api/company', companyRoute)
-app.use('/api/program', programRouter)
 app.use('/api/assets', assetRouter)
 
 app.use('/api/programs', programRoutes)
 
+// app.use('/api/programs', programRoutes);
 app.use('/api/hacker', hackerRoute)
 
 app.get('/', (req, res) => {

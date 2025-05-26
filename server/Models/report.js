@@ -62,14 +62,14 @@ const reportScheema = new mongoose.Schema(
     bountyReward: {
       type: Number,
     },
-    status: {
-      type: String,
-      enum: ['completed', 'rejected', 'underreview', 'draft', 'triage'],
-      default: 'draft',
+    status:{
+      type:String,
+      enum:["completed","rejected","underreview","draft","triage"],
+      default:"draft"
     },
-    tags: {
-      type: [String],
-    },
+    tags:{
+      type:[String],
+    }
   },
   { timestamps: true }
 )
