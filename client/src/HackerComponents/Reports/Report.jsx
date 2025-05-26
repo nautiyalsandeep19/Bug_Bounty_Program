@@ -18,16 +18,17 @@ const Report = () => {
   const RequiredMark = () => <span className="text-red-500 ml-1">*</span>
 
   return (
-    <section className="max-w-5xl h-full flex justify-start">
-      <div className="w-full max-w-3xl p-6 space-y-10">
-        <h1 className="text-3xl font-bold">Submit Report</h1>
+    <section className="max-w-5xl w-full h-full mx-auto ">
+      <div className="w-full md:max-w-3xl mx-auto  md:p-6 space-y-10 bg-white dark:bg-gray-900 rounded-lg shadow-md">
+        <h1 className="text-2xl md:text-3xl font-bold">Submit Report</h1>
 
+        {/* Scope */}
         <div className="space-y-2">
-          <h2 className="text-xl font-semibold">
+          <h2 className="text-lg md:text-xl font-semibold">
             Select Your Scope
             <RequiredMark />
           </h2>
-          <p className="text-sm text-gray-100">
+          <p className="text-sm text-gray-500 dark:text-gray-300">
             Select the scope under which the bug was identified.
           </p>
           <select
@@ -41,11 +42,12 @@ const Report = () => {
           </select>
         </div>
 
+        {/* Endpoint */}
         <div className="space-y-2">
-          <h2 className="text-xl font-semibold">
+          <h2 className="text-lg md:text-xl font-semibold">
             Vulnerable Endpoint / Affected URL (Optional)
           </h2>
-          <p className="text-sm text-gray-100">
+          <p className="text-sm text-gray-500 dark:text-gray-300">
             If you have a specific endpoint or URL, enter it here.
           </p>
           <input
@@ -55,12 +57,13 @@ const Report = () => {
           />
         </div>
 
+        {/* Vulnerability Type */}
         <div className="space-y-2">
-          <h2 className="text-xl font-semibold">
+          <h2 className="text-lg md:text-xl font-semibold">
             Vulnerability Type
             <RequiredMark />
           </h2>
-          <p className="text-sm text-gray-100">
+          <p className="text-sm text-gray-500 dark:text-gray-300">
             Select the type of vulnerability that was found.
           </p>
           <select
@@ -74,12 +77,13 @@ const Report = () => {
           </select>
         </div>
 
+        {/* Severity */}
         <div className="space-y-2">
-          <h2 className="text-xl font-semibold">
+          <h2 className="text-lg md:text-xl font-semibold">
             Severity
             <RequiredMark />
           </h2>
-          <p className="text-sm text-gray-100">
+          <p className="text-sm text-gray-500 dark:text-gray-300">
             Estimate how critical the bug is (e.g., using CVSS score).
           </p>
           <Severity />
@@ -87,7 +91,7 @@ const Report = () => {
 
         {/* Report Details */}
         <div className="space-y-4">
-          <h2 className="text-xl font-semibold">
+          <h2 className="text-lg md:text-xl font-semibold">
             Report Details
             <RequiredMark />
           </h2>
@@ -111,8 +115,8 @@ const Report = () => {
             required
           />
 
-          {/* IP Address with button on the right */}
-          <div className="flex items-center space-x-4">
+          {/* IP Input with Button */}
+          <div className="flex flex-col sm:flex-row sm:items-center gap-4">
             <input
               type="text"
               className="flex-1 border border-gray-300 p-2 rounded"
@@ -126,11 +130,13 @@ const Report = () => {
 
         {/* Submit */}
         <div className="space-y-2">
-          <h2 className="text-xl font-semibold">Review and Submit</h2>
-          <p className="text-sm text-gray-100">
-            Please double-check all fields. You cannot edit after submission.
+          <h2 className="text-lg md:text-xl font-semibold">
+            Review and Submit
+          </h2>
+          <p className="text-sm text-gray-500 dark:text-gray-300">
+            Please Review your report details before submitting.
           </p>
-          <CTAButton text="Submit Report " />
+          <CTAButton text="Submit Report" />
         </div>
       </div>
     </section>

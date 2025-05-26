@@ -4,9 +4,9 @@ import ProgramBox from '../Hackerpages/ProgramBox'
 
 const Reports = () => {
   return (
-    <div className="flex flex-row w-full h-full p-4 gap-4">
+    <div className="flex flex-col-reverse md:flex-row w-full h-full p-4 gap-4 ">
       <Report />
-      <ProgramBox />
+      <ProgramBox className="sticky top-0" />
     </div>
   )
 }
