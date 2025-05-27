@@ -1,39 +1,39 @@
-import React, { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
-import Loader from './Loader';
-import { getLeaderBoard } from '../Services/hackerApi';
+import React, { useEffect, useState } from 'react'
+import { useSelector } from 'react-redux'
+import Loader from '../Common/Loader'
+import { getLeaderBoard } from '../Services/hackerApi'
 
-const Leaderboard = () => {
-  const [leaderboard, setLeaderboard] = useState([]);
-  const [myRank, setMyRank] = useState(null);
-  const [myHacker, setMyHacker] = useState(null);
-  const [loading, setLoading] = useState(true);
+const HackerLeaderboard = () => {
+  const [leaderboard, setLeaderboard] = useState([])
+  const [myRank, setMyRank] = useState(null)
+  const [myHacker, setMyHacker] = useState(null)
+  const [loading, setLoading] = useState(true)
 
-  const user = useSelector(state => state.auth.user);
+  const user = useSelector((state) => state.auth.user)
 
   useEffect(() => {
     const loadData = async () => {
-      setLoading(true);
+      setLoading(true)
 
-      const board = await getLeaderBoard();
-      board.sort((a, b) => b.totalPoints - a.totalPoints);
-      setLeaderboard(board);
+      const board = await getLeaderBoard()
+      board.sort((a, b) => b.totalPoints - a.totalPoints)
+      setLeaderboard(board)
 
       if (user?._id) {
-        const index = board.findIndex(hacker => hacker._id === user._id);
+        const index = board.findIndex((hacker) => hacker._id === user._id)
         if (index !== -1) {
-          setMyRank(index + 1);
-          setMyHacker(board[index]);
+          setMyRank(index + 1)
+          setMyHacker(board[index])
         }
       }
 
-      setLoading(false);
-    };
+      setLoading(false)
+    }
 
-    loadData();
-  }, [user]);
+    loadData()
+  }, [user])
 
-  if (loading) return <Loader />;
+  if (loading) return <Loader />
 
   return (
     <div className="max-w-6xl mx-auto px-4 py-8 flex flex-col-reverse lg:flex-row justify-between gap-10">
@@ -97,13 +97,15 @@ const Leaderboard = () => {
             <div className="flex flex-col gap-2 items-center">
               <p className="text-lg text-blue-300">Your Rank</p>
               <p className="text-6xl font-extrabold text-blue-100">#{myRank}</p>
-              <p className="text-lg text-blue-300">{myHacker.totalPoints} pts</p>
+              <p className="text-lg text-blue-300">
+                {myHacker.totalPoints} pts
+              </p>
             </div>
           </div>
         </div>
       )}
     </div>
-  );
-};
+  )
+}
 
-export default Leaderboard;
+export default HackerLeaderboard

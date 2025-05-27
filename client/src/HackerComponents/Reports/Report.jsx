@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import CTAButton from '../../Components/Button/CTAButton'
+import CTAButton from '../../Common/Button/CTAButton'
 import Severity from './SeveritySelector'
 
 import {
@@ -12,33 +12,20 @@ import { ChevronDownIcon } from '@heroicons/react/24/solid'
 import vulnerabilityTypes from '../../assets/CWE_list.json'
 
 import { createReport } from '../../Services/reportApi'
+import TiptapEditor from '../../Common/Editor/TiptapEditor'
 
 const Report = () => {
-  const [ip, setIp] = useState('')
   const [scope, setScope] = useState('')
   const [endpoint, setEndpoint] = useState('')
   const [reportTitle, setReportTitle] = useState('')
   const [reportSummary, setReportSummary] = useState('')
   const [reportPOC, setReportPOC] = useState('')
-  const [severityData, setSeverityData] = useState({
-    baseScore: 0,
-    severity: 'None',
-  })
-
+  const [severityData, setSeverityData] = useState({})
   const [vulnerabilityType, setVulnerabilityType] = useState('')
   const [selected, setSelected] = useState('')
   const [selectedVulnerability, setSelectedVulnerability] = useState('')
   const [filteredTypes, setFilteredTypes] = useState(vulnerabilityTypes)
-
-  const fetchIP = async () => {
-    try {
-      const res = await fetch('https://api.ipify.org?format=json')
-      const data = await res.json()
-      setIp(data.ip)
-    } catch (err) {
-      console.error('Failed to fetch IP:', err)
-    }
-  }
+  const [vulnerabilityImpact, setVulnerabilityImpact] = useState('')
 
   useEffect(() => {
     if (!selected?.label) {
@@ -64,11 +51,43 @@ const Report = () => {
       summary: reportSummary,
       POC: reportPOC,
       severity: severityData.severity,
-      vulnerabilityImpact: reportSummary,
-      ip,
+      vulnerabilityImpact,
       attachments: [],
       testingEmail: '',
       status: 'submitted',
+      submitDate: new Date().toISOString(),
+    }
+
+    const payload = {
+      programId: '6652f7c0d7289f1b443cc10a',
+
+      reportData,
+    }
+
+    console.log('Submitting payload:', payload)
+
+    try {
+      await createReport(payload)
+      // Optionally reset form here
+    } catch (error) {
+      console.error('Report submission failed:', error.message)
+    }
+  }
+
+  const handleReportDraft = async () => {
+    const reportData = {
+      scope,
+      vulnerableEndpoint: endpoint,
+      vulnerabilityType,
+      title: reportTitle,
+      summary: reportSummary,
+      POC: reportPOC,
+      severity: severityData.severity,
+      vulnerabilityImpact: vulnerabilityImpact,
+
+      attachments: [],
+      testingEmail: '',
+      status: 'draft',
     }
 
     const payload = {
@@ -86,7 +105,6 @@ const Report = () => {
       console.error('Report submission failed:', error.message)
     }
   }
-
   const RequiredMark = () => <span className="text-red-500 ml-1">*</span>
 
   return (
@@ -234,27 +252,27 @@ const Report = () => {
             placeholder="Report Summary"
             required
           />
-          <textarea
-            rows={5}
-            value={reportPOC}
-            onChange={(e) => setReportPOC(e.target.value)}
-            className="w-full border border-gray-500 p-2 rounded"
-            placeholder="Describe the impact of the vulnerability..."
-            required
-          />
-
-          <div className="flex flex-col sm:flex-row sm:items-center gap-4">
-            <input
-              type="text"
-              className="flex-1 border border-gray-500 p-2 rounded"
-              placeholder="Your IP Address"
-              value={ip}
-              readOnly
-            />
-            <CTAButton onClick={fetchIP} text="Fetch IP" />
+          <div>
+            <h2 className="text-lg md:text-xl font-semibold mb-4">
+              Report Description
+            </h2>
+            <TiptapEditor setReportPOC={setReportPOC} />
           </div>
         </div>
-
+        <div className="space-y-4">
+          <h2 className="text-lg md:text-xl font-semibold">
+            Vulnerability Impact
+            <RequiredMark />
+          </h2>
+          <input
+            type="text"
+            value={vulnerabilityImpact}
+            onChange={(e) => setVulnerabilityImpact(e.target.value)}
+            className="w-full border border-gray-500 p-2 rounded"
+            placeholder="Explain the impact of the vulnerability"
+            required
+          />
+        </div>
         {/* Submit */}
         <div className="space-y-2">
           <h2 className="text-lg md:text-xl font-semibold">

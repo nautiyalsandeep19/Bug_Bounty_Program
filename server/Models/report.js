@@ -54,7 +54,6 @@ const reportScheema = new mongoose.Schema(
     },
     ip: {
       type: String,
-      required: true,
     },
     testingEmail: {
       type: String,

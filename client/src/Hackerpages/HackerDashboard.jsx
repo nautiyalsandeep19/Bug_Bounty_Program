@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { getHackerDetails } from '../Services/hackerApi'
-import Button from '../Components/Button/Button'
+import Button from '../Common/Button/CTAButton'
 import { FaBug, FaBullhorn, FaSyncAlt, FaUserPlus } from 'react-icons/fa'
 
 const FeedDashboard = () => {

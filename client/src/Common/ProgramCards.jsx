@@ -1,6 +1,6 @@
 import React from 'react'
-import Button from '../Button/Button.jsx'
-import CTAButton from '../Button/CTAButton.jsx'
+
+import CTAButton from './Button/CTAButton'
 
 const ProgramCards = ({
   type,

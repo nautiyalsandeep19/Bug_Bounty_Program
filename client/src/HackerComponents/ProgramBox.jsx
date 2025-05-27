@@ -1,5 +1,5 @@
 import React from 'react'
-import CTAButton from '../Components/Button/CTAButton'
+import CTAButton from '../Common/Button/CTAButton'
 
 const ProgramBox = ({ className = '' }) => {
   return (

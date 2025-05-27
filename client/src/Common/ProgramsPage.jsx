@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { toast } from 'react-toastify'
 import { getAllPrograms, getPrivatePrograms } from '../Services/programsApi'
-import ProgramCards from '../Components/Common/ProgramCards'
+import ProgramCards from './ProgramCards'
 
 const ProgramsPage = () => {
   const [activeTab, setActiveTab] = useState('allPrograms')
