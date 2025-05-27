@@ -92,7 +92,7 @@ const SeveritySelector = () => {
     }
   }
 
-  React.useEffect(() => {
+  useEffect(() => {
     calculateScoreAndSeverity(cvssFields)
   }, [cvssFields])
 
@@ -101,8 +101,9 @@ const SeveritySelector = () => {
   }
 
   return (
-    <div className="max-w-5xl bg-black text-white min-h-[400px]">
-      <div className="mb-4 flex items-center gap-6 border border-gray-700 rounded px-4 py-2">
+    <div className="w-full  text-white md:max-w-[800px] h-fit p-4 rounded-lg space-y-4">
+      {/* Mode Toggle */}
+      <div className="flex flex-wrap items-center gap-6 border border-gray-500 rounded px-4 py-2">
         {['severity', 'cvss'].map((m) => (
           <label
             key={m}
@@ -124,38 +125,34 @@ const SeveritySelector = () => {
                 <span className="w-2.5 h-2.5 bg-blue-500 rounded-full"></span>
               )}
             </span>
-            <span className="text-white capitalize">
+            <span className="capitalize">
               {m === 'severity' ? 'Severity Picker' : 'CVSS Calculator'}
             </span>
           </label>
         ))}
       </div>
 
+      {/* Severity Picker Mode */}
       {mode === 'severity' ? (
-        <div className="flex items-center gap-2 border border-gray-700 rounded px-4 py-2">
+        <div className="flex flex-wrap items-center gap-2 border border-gray-700 rounded px-4 py-2">
           {severityLevels.map((level) => {
             const isSelected = level === severity
-            const isCritical = level === 'Critical'
-
             return (
               <button
                 key={level}
                 onClick={() => setSeverity(level)}
-                className={`px-4 py-2 rounded border transition-colors duration-200
-            ${
-              isSelected
-                ? ' border-green-600 text-green'
-                : 'border-gray-600 text-white hover:border-gray-400 hover:bg-gray-800'
-            }
-          `}
+                className={`px-3 py-1 rounded text-sm border transition-colors duration-200 cursor-pointer ${
+                  isSelected
+                    ? 'border-blue-500 text-blue-400'
+                    : 'border-gray-600 text-white hover:border-gray-400 hover:bg-gray-800'
+                }`}
               >
                 {level}
               </button>
             )
           })}
 
-          {/* Dynamic color box and label on the right side */}
-          <div className="ml-auto flex items-center gap-2 font-semibold">
+          <div className="ml-auto flex items-center gap-2 font-semibold text-sm">
             <div
               className={`w-4 h-4 rounded-sm ${
                 severityColors[severity] || 'bg-gray-600'
@@ -165,18 +162,18 @@ const SeveritySelector = () => {
           </div>
         </div>
       ) : (
-        // CVSS Calculator UI here (unchanged)
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 bg-gray-900 p-4 rounded-lg mt-4">
+        // CVSS Calculator Mode
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 bg-gray-900 p-4 rounded-lg ">
           {Object.keys(cvssFields).map((field) => (
             <div key={field}>
-              <label className="block font-bold mb-1">
+              <label className="block font-bold mb-1 text-sm ">
                 {fieldFullNames[field]} ({field})
               </label>
-              <div className="flex gap-2 flex-wrap">
-                {(fieldOptions[field] || ['None', 'Low', 'High']).map((opt) => (
+              <div className="flex flex-wrap gap-2">
+                {(fieldOptions[field] || []).map((opt) => (
                   <button
                     key={opt}
-                    className={`px-2 py-1 rounded ${
+                    className={`px-2 py-1 rounded text-sm cursor-pointer ${
                       cvssFields[field] === opt
                         ? 'bg-blue-600'
                         : 'bg-gray-700 hover:bg-gray-600'
@@ -190,8 +187,8 @@ const SeveritySelector = () => {
             </div>
           ))}
 
-          {/* Base Score and Severity */}
-          <div className="col-span-full mt-4 text-xl">
+          {/* Score Summary */}
+          <div className="col-span-full mt-4 text-base sm:text-lg ">
             Base Score: <strong>{baseScore}</strong> <br />
             Severity:{' '}
             <span
@@ -207,7 +204,7 @@ const SeveritySelector = () => {
                   : 'text-white'
               }`}
             >
-              {severity} Severity
+              {severity}
             </span>
           </div>
         </div>

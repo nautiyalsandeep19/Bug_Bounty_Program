@@ -1,10 +1,12 @@
 import React from 'react'
 import CTAButton from '../Components/Button/CTAButton'
 
-const ProgramBox = () => {
+const ProgramBox = ({ className = '' }) => {
   return (
-    <section className="max-w-4xl h-fit p-6 border rounded-lg shadow-md space-y-6  sticky top-0 left-0 ">
-      <div className="flex items-center border-b border-green-500 pb-4">
+    <section
+      className={`w-full md:max-w-[400px] h-fit p-6 border border-gray-500 rounded-lg shadow-md space-y-6 bg-[#121212] ${className}`}
+    >
+      <div className="flex items-center border-b border-blue-500 pb-4">
         <img
           src="https://via.placeholder.com/60"
           alt="company img"
@@ -19,7 +21,7 @@ const ProgramBox = () => {
           href="https://example.com"
           target="_blank"
           rel="noopener noreferrer"
-          className="text-blue-600 hover:underline"
+          className="text-blue-600 hover:underline break-all"
         >
           https://example.com
         </a>
@@ -36,7 +38,7 @@ const ProgramBox = () => {
             <span className="text-2xl font-bold block">1</span>
             <span>Assets in Scope</span>
           </div>
-          <div>
+          <div className="sm:col-span-2">
             <span className="text-2xl font-bold block">$100 - $200</span>
             <span>Bounty Range</span>
           </div>

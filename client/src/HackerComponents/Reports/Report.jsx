@@ -10,9 +10,21 @@ import {
 import { ChevronDownIcon } from "@heroicons/react/24/solid";
 import vulnerabilityTypes from "../../assets/CWE_list.json"; // Assuming you have a file with vulnerability types
 import { use } from "react";
+import { createReport } from '../../Services/reportApi'
 
 const Report = () => {
   const [ip, setIp] = useState("");
+  const [ip, setIp] = useState('')
+  const [scope, setScope] = useState('')
+  const [endpoint, setEndpoint] = useState('')
+  const [vulnerabilityType, setVulnerabilityType] = useState('')
+  const [reportTitle, setReportTitle] = useState('')
+  const [reportSummary, setReportSummary] = useState('')
+  const [reportPOC, setReportPOC] = useState('')
+  const [severityData, setSeverityData] = useState({
+    baseScore: 0,
+    severity: 'None',
+  })
 
   const fetchIP = async () => {
     try {
@@ -23,6 +35,38 @@ const Report = () => {
       console.error("Failed to fetch IP:", err);
     }
   };
+  }
+
+  const handleReportSubmission = async () => {
+    const reportData = {
+      scope,
+      vulnerableEndpoint: endpoint,
+      vulnerabilityType,
+      title: reportTitle,
+      summary: reportSummary,
+      POC: reportPOC,
+      severity: severityData.severity,
+      vulnerabilityImpact: reportSummary,
+      ip: ip,
+      attachments: [], // Optional
+      testingEmail: '', // Optional
+    }
+
+    const payload = {
+      programId: '6652f7c0d7289f1b443cc10a', // <-- Replace with actual programId (can be from props, context, or selection)
+      reportType: 'vulnerability', // <-- Replace with actual type if needed
+      reportData,
+    }
+
+    console.log('Submitting payload:', payload)
+
+    try {
+      await createReport(payload)
+      // Optionally reset form here
+    } catch (error) {
+      console.error('Report submission failed:', error.message)
+    }
+  }
 
   const RequiredMark = () => <span className="text-red-500 ml-1">*</span>;
 
@@ -47,20 +91,19 @@ const Report = () => {
   console.log("Selected Vulnerability:", selectedVulnerability);
   const [selectedType, setSelectedType] = useState("");
   return (
-    <section className="max-w-5xl h-full flex justify-start">
-      <div className="w-full max-w-3xl p-6 space-y-10">
-        <h1 className="text-3xl font-bold">Submit Report</h1>
+    <section className="max-w-5xl w-full h-full mx-auto">
+      <div className="w-full md:max-w-3xl mx-auto md:p-6 space-y-10 bg-white dark:bg-gray-900 rounded-lg shadow-md">
+        <h1 className="text-2xl md:text-3xl font-bold">Submit Report</h1>
 
         <div className="space-y-2">
-          <h2 className="text-xl font-semibold">
+          <h2 className="text-lg md:text-xl font-semibold">
             Select Your Scope
             <RequiredMark />
           </h2>
-          <p className="text-sm text-gray-100">
-            Select the scope under which the bug was identified.
-          </p>
           <select
-            className="w-full border border-gray-300 p-2 rounded"
+            value={scope}
+            onChange={(e) => setScope(e.target.value)}
+            className="w-full border border-gray-500 p-2 rounded"
             required
           >
             <option value="">-- Choose scope --</option>
@@ -71,29 +114,27 @@ const Report = () => {
         </div>
 
         <div className="space-y-2">
-          <h2 className="text-xl font-semibold">
+          <h2 className="text-lg md:text-xl font-semibold">
             Vulnerable Endpoint / Affected URL (Optional)
           </h2>
-          <p className="text-sm text-gray-100">
-            If you have a specific endpoint or URL, enter it here.
-          </p>
           <input
             type="url"
-            className="w-full border border-gray-300 p-2 rounded"
+            value={endpoint}
+            onChange={(e) => setEndpoint(e.target.value)}
+            className="w-full border border-gray-500 p-2 rounded"
             placeholder="https://example.com/endpoint"
           />
         </div>
 
         <div className="space-y-2">
-          <h2 className="text-xl font-semibold">
+          <h2 className="text-lg md:text-xl font-semibold">
             Vulnerability Type
             <RequiredMark />
           </h2>
-          <p className="text-sm text-gray-100">
-            Select the type of vulnerability that was found.
-          </p>
           {/* <select
-            className="w-full border border-gray-300 p-2 rounded"
+            value={vulnerabilityType}
+            onChange={(e) => setVulnerabilityType(e.target.value)}
+            className="w-full border border-gray-500 p-2 rounded"
             required
           >
             <option value="">-- Choose vulnerability --</option>
@@ -179,47 +220,48 @@ const Report = () => {
         </div>
 
         <div className="space-y-2">
-          <h2 className="text-xl font-semibold">
+          <h2 className="text-lg md:text-xl font-semibold">
             Severity
             <RequiredMark />
           </h2>
-          <p className="text-sm text-gray-100">
-            Estimate how critical the bug is (e.g., using CVSS score).
-          </p>
-          <Severity />
+          <Severity setSeverityData={setSeverityData} />
         </div>
 
-        {/* Report Details */}
         <div className="space-y-4">
-          <h2 className="text-xl font-semibold">
+          <h2 className="text-lg md:text-xl font-semibold">
             Report Details
             <RequiredMark />
           </h2>
 
           <input
             type="text"
-            className="w-full border border-gray-300 p-2 rounded"
+            value={reportTitle}
+            onChange={(e) => setReportTitle(e.target.value)}
+            className="w-full border border-gray-500 p-2 rounded"
             placeholder="Report Title"
             required
           />
           <input
             type="text"
-            className="w-full border border-gray-300 p-2 rounded"
+            value={reportSummary}
+            onChange={(e) => setReportSummary(e.target.value)}
+            className="w-full border border-gray-500 p-2 rounded"
             placeholder="Report Summary"
             required
           />
           <textarea
             rows={5}
-            className="w-full border border-gray-300 p-2 rounded"
+            value={reportPOC}
+            onChange={(e) => setReportPOC(e.target.value)}
+            className="w-full border border-gray-500 p-2 rounded"
             placeholder="Describe the impact of the vulnerability..."
             required
           />
 
-          {/* IP Address with button on the right */}
-          <div className="flex items-center space-x-4">
+          <div className="flex flex-col sm:flex-row sm:items-center gap-4">
             <input
               type="text"
-              className="flex-1 border border-gray-300 p-2 rounded"
+              className="flex-1 border border-gray-500 p-2 rounded"
               placeholder="Your IP Address"
               value={ip}
               readOnly
@@ -228,13 +270,11 @@ const Report = () => {
           </div>
         </div>
 
-        {/* Submit */}
         <div className="space-y-2">
-          <h2 className="text-xl font-semibold">Review and Submit</h2>
-          <p className="text-sm text-gray-100">
-            Please double-check all fields. You cannot edit after submission.
-          </p>
-          <CTAButton text="Submit Report " />
+          <h2 className="text-lg md:text-xl font-semibold">
+            Review and Submit
+          </h2>
+          <CTAButton text="Submit Report" onClick={handleReportSubmission} />
         </div>
       </div>
     </section>
