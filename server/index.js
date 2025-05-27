@@ -15,7 +15,6 @@ import { authMid } from './Middleware/authMid.js'
 import logRequest from './Middleware/logRequest.js'
 import reportRoute from './Routes/reportRoute.js'
 
-
 dotenv.config()
 const app = express()
 connectDB()
@@ -41,8 +40,8 @@ app.post('/register', (req, res) => {
 })
 app.use('/api/auth', authRoute)
 
-app.use(authMid);    // Should populate req.user
-app.use(logRequest);        // Logs every request
+app.use(authMid) // Should populate req.user
+app.use(logRequest) // Logs every request
 
 app.use('/api/company', companyRoute)
 app.use('/api/assets', assetRouter)
