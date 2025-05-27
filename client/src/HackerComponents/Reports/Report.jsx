@@ -1,17 +1,22 @@
+
 import React, { useEffect, useState } from 'react'
 import CTAButton from '../../Components/Button/CTAButton'
 import Severity from './SeveritySelector'
+
 import {
   Listbox,
   ListboxButton,
   ListboxOption,
   ListboxOptions,
+
 } from '@headlessui/react'
 import { ChevronDownIcon } from '@heroicons/react/24/solid'
 import vulnerabilityTypes from '../../assets/CWE_list.json'
+
 import { createReport } from '../../Services/reportApi'
 
 const Report = () => {
+  const [ip, setIp] = useState("");
   const [ip, setIp] = useState('')
   const [scope, setScope] = useState('')
   const [endpoint, setEndpoint] = useState('')
@@ -30,12 +35,13 @@ const Report = () => {
 
   const fetchIP = async () => {
     try {
-      const res = await fetch('https://api.ipify.org?format=json')
-      const data = await res.json()
-      setIp(data.ip)
+      const res = await fetch("https://api.ipify.org?format=json");
+      const data = await res.json();
+      setIp(data.ip);
     } catch (err) {
-      console.error('Failed to fetch IP:', err)
+      console.error("Failed to fetch IP:", err);
     }
+  };
   }
 
   useEffect(() => {
@@ -85,8 +91,28 @@ const Report = () => {
     }
   }
 
-  const RequiredMark = () => <span className="text-red-500 ml-1">*</span>
+  const RequiredMark = () => <span className="text-red-500 ml-1">*</span>;
 
+  const [selected, setSelected] = useState("");
+  const [selectedVulnerability, setSelectedVulnerability] = useState("");
+
+  const [filteredTypes, setFilteredTypes] = useState(vulnerabilityTypes);
+  useEffect(() => {
+    if (!selected?.label) {
+      setFilteredTypes(vulnerabilityTypes); // Show all if no selection
+      return;
+    }
+
+    const filter = vulnerabilityTypes.filter(
+      (type) => type.label.toLowerCase() === selected.label.toLowerCase()
+    );
+
+    setFilteredTypes(filter);
+  }, [selected]);
+
+  console.log("Filtered Types:", filteredTypes);
+  console.log("Selected Vulnerability:", selectedVulnerability);
+  const [selectedType, setSelectedType] = useState("");
   return (
     <section className="max-w-5xl w-full h-full mx-auto">
       <div className="w-full md:max-w-3xl mx-auto md:p-6 space-y-10 bg-white dark:bg-gray-900 rounded-lg shadow-md">
@@ -132,6 +158,7 @@ const Report = () => {
             <RequiredMark />
           </h2>
 
+
           <div className="flex flex-col gap-2 mb-4">
             <Listbox value={selected} onChange={setSelected}>
               <div className="relative w-full">
@@ -166,15 +193,18 @@ const Report = () => {
               </div>
             </Listbox>
 
+
             <div>
               {filteredTypes.length > 0 ? (
                 <div className="h-40 overflow-y-auto border border-gray-300 rounded p-2 space-y-2">
                   {filteredTypes.map((type, idx) => (
                     <div key={idx}>
+
                       <div className="ml-4 flex flex-col gap-2">
                         {type.children.map((child, i) => (
                           <div
                             key={i}
+
                             onClick={() =>
                               setSelectedVulnerability(child.label)
                             }
@@ -182,6 +212,7 @@ const Report = () => {
                               selectedVulnerability === child.label
                                 ? 'bg-indigo-600 text-white'
                                 : 'bg-gray-800 text-gray-200 hover:bg-indigo-500 hover:text-white'
+
                             }`}
                           >
                             {child.label}
@@ -196,11 +227,13 @@ const Report = () => {
               )}
             </div>
 
+
             {selectedVulnerability && (
               <div className="mt-2 text-sm text-green-500">
                 Selected Vulnerability: <strong>{selectedVulnerability}</strong>
               </div>
             )}
+
           </div>
         </div>
 
@@ -266,7 +299,7 @@ const Report = () => {
         </div>
       </div>
     </section>
-  )
-}
+  );
+};
 
-export default Report
+export default Report;
