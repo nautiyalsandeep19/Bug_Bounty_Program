@@ -1,18 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit'
 
-// const initialState = {
-//   token: localStorage.getItem('token')
-//     ? JSON.parse(localStorage.getItem('token'))
-//     : null,
-//   user: localStorage.getItem('user')
-//     ? JSON.parse(localStorage.getItem('user'))
-//     : null,
-//   signupData: null, // ✅ ADD THIS to avoid undefined errors
-// }
-
-// Utility to get cookie value by name
-
-// Utility to get cookie value by name
 function getCookie(name) {
   const match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'))
   return match ? decodeURIComponent(match[2]) : null
