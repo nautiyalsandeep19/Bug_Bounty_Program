@@ -1,15 +1,18 @@
-import React, { useEffect, useState } from "react";
-import CTAButton from "../../Components/Button/CTAButton";
-import Severity from "./SeveritySelector";
+
+import React, { useEffect, useState } from 'react'
+import CTAButton from '../../Components/Button/CTAButton'
+import Severity from './SeveritySelector'
+
 import {
   Listbox,
   ListboxButton,
   ListboxOption,
   ListboxOptions,
-} from "@headlessui/react";
-import { ChevronDownIcon } from "@heroicons/react/24/solid";
-import vulnerabilityTypes from "../../assets/CWE_list.json"; // Assuming you have a file with vulnerability types
-import { use } from "react";
+
+} from '@headlessui/react'
+import { ChevronDownIcon } from '@heroicons/react/24/solid'
+import vulnerabilityTypes from '../../assets/CWE_list.json'
+
 import { createReport } from '../../Services/reportApi'
 
 const Report = () => {
@@ -17,7 +20,6 @@ const Report = () => {
   const [ip, setIp] = useState('')
   const [scope, setScope] = useState('')
   const [endpoint, setEndpoint] = useState('')
-  const [vulnerabilityType, setVulnerabilityType] = useState('')
   const [reportTitle, setReportTitle] = useState('')
   const [reportSummary, setReportSummary] = useState('')
   const [reportPOC, setReportPOC] = useState('')
@@ -25,6 +27,11 @@ const Report = () => {
     baseScore: 0,
     severity: 'None',
   })
+
+  const [vulnerabilityType, setVulnerabilityType] = useState('')
+  const [selected, setSelected] = useState('')
+  const [selectedVulnerability, setSelectedVulnerability] = useState('')
+  const [filteredTypes, setFilteredTypes] = useState(vulnerabilityTypes)
 
   const fetchIP = async () => {
     try {
@@ -37,6 +44,21 @@ const Report = () => {
   };
   }
 
+  useEffect(() => {
+    if (!selected?.label) {
+      setFilteredTypes(vulnerabilityTypes)
+    } else {
+      const filter = vulnerabilityTypes.filter(
+        (type) => type.label.toLowerCase() === selected.label.toLowerCase()
+      )
+      setFilteredTypes(filter)
+    }
+  }, [selected])
+
+  useEffect(() => {
+    setVulnerabilityType(selectedVulnerability)
+  }, [selectedVulnerability])
+
   const handleReportSubmission = async () => {
     const reportData = {
       scope,
@@ -47,14 +69,15 @@ const Report = () => {
       POC: reportPOC,
       severity: severityData.severity,
       vulnerabilityImpact: reportSummary,
-      ip: ip,
-      attachments: [], // Optional
-      testingEmail: '', // Optional
+      ip,
+      attachments: [],
+      testingEmail: '',
+      status: 'submitted',
     }
 
     const payload = {
-      programId: '6652f7c0d7289f1b443cc10a', // <-- Replace with actual programId (can be from props, context, or selection)
-      reportType: 'vulnerability', // <-- Replace with actual type if needed
+      programId: '6652f7c0d7289f1b443cc10a',
+      reportType: 'vulnerability',
       reportData,
     }
 
@@ -95,6 +118,7 @@ const Report = () => {
       <div className="w-full md:max-w-3xl mx-auto md:p-6 space-y-10 bg-white dark:bg-gray-900 rounded-lg shadow-md">
         <h1 className="text-2xl md:text-3xl font-bold">Submit Report</h1>
 
+        {/* Scope */}
         <div className="space-y-2">
           <h2 className="text-lg md:text-xl font-semibold">
             Select Your Scope
@@ -113,6 +137,7 @@ const Report = () => {
           </select>
         </div>
 
+        {/* Endpoint */}
         <div className="space-y-2">
           <h2 className="text-lg md:text-xl font-semibold">
             Vulnerable Endpoint / Affected URL (Optional)
@@ -126,75 +151,68 @@ const Report = () => {
           />
         </div>
 
+        {/* Vulnerability Type */}
         <div className="space-y-2">
           <h2 className="text-lg md:text-xl font-semibold">
             Vulnerability Type
             <RequiredMark />
           </h2>
-          {/* <select
-            value={vulnerabilityType}
-            onChange={(e) => setVulnerabilityType(e.target.value)}
-            className="w-full border border-gray-500 p-2 rounded"
-            required
-          >
-            <option value="">-- Choose vulnerability --</option>
-            <option value="xss">Cross Site Scripting (XSS)</option>
-            <option value="sqli">SQL Injection</option>
-            <option value="rce">Remote Code Execution</option>
-          </select> */}
+
 
           <div className="flex flex-col gap-2 mb-4">
-            <div className="flex gap-4 mb-4 w-full items-start">
-              
+            <Listbox value={selected} onChange={setSelected}>
+              <div className="relative w-full">
+                <ListboxButton className="flex items-center justify-between w-full border border-gray-300 bg-black text-white p-2 rounded text-left">
+                  {selected?.label || 'Select Vulnerability Type'}
+                  <ChevronDownIcon className="size-5 ml-2" />
+                </ListboxButton>
 
-              <Listbox value={selected} onChange={setSelected}>
-                <div className="relative w-full">
-                  <ListboxButton className="flex items-center justify-between w-full border border-gray-300 bg-black text-white p-2 rounded text-left">
-                    {selected?.label || "Select Vulnerability Type"}
-                    <ChevronDownIcon className="size-5 ml-2" />
-                  </ListboxButton>
+                <ListboxOptions className="absolute z-10 mt-1 w-full max-h-40 overflow-y-auto bg-black border border-gray-300 rounded shadow-lg">
+                  {vulnerabilityTypes.map((type, index) => (
+                    <ListboxOption
+                      key={index}
+                      value={type}
+                      className={({ active }) =>
+                        `cursor-default select-none py-2 pl-3 pr-9 ${
+                          active ? 'bg-indigo-600 text-white' : 'text-white'
+                        }`
+                      }
+                    >
+                      {({ selected }) => (
+                        <span
+                          className={`block truncate ${
+                            selected ? 'font-semibold' : 'font-normal'
+                          }`}
+                        >
+                          {type.label}
+                        </span>
+                      )}
+                    </ListboxOption>
+                  ))}
+                </ListboxOptions>
+              </div>
+            </Listbox>
 
-                  <ListboxOptions className="absolute z-10 mt-1 w-full max-h-40 overflow-y-auto bg-black border border-gray-300 rounded shadow-lg">
-                    {vulnerabilityTypes.map((type, index) => (
-                      <ListboxOption
-                        key={index}
-                        value={type}
-                        className={({ active }) =>
-                          `cursor-default select-none py-2 pl-3 pr-9 ${
-                            active ? "bg-indigo-600 text-white" : "text-white"
-                          }`
-                        }
-                      >
-                        {({ selected }) => (
-                          <span
-                            className={`block truncate ${
-                              selected ? "font-semibold" : "font-normal"
-                            }`}
-                          >
-                            {type.label}
-                          </span>
-                        )}
-                      </ListboxOption>
-                    ))}
-                  </ListboxOptions>
-                </div>
-              </Listbox>
-            </div>
+
             <div>
               {filteredTypes.length > 0 ? (
                 <div className="h-40 overflow-y-auto border border-gray-300 rounded p-2 space-y-2">
                   {filteredTypes.map((type, idx) => (
                     <div key={idx}>
-                      
+
                       <div className="ml-4 flex flex-col gap-2">
                         {type.children.map((child, i) => (
                           <div
                             key={i}
-                            onClick={() => setSelectedVulnerability(child.label)}
+
+                            onClick={() =>
+                              setSelectedVulnerability(child.label)
+                            }
                             className={`cursor-pointer px-3 py-1 rounded border ${
-                              selectedType === child.label
-                                ? "bg-indigo-600 text-white"
-                                : "bg-gray-800 text-gray-200 hover:bg-indigo-500 hover:text-white"
+                              selectedVulnerability === child.label
+                                ? 'bg-indigo-600 text-white'
+                                : 'bg-gray-800 text-gray-200 hover:bg-indigo-500 hover:text-white'
+
                             }`}
                           >
                             {child.label}
@@ -209,16 +227,17 @@ const Report = () => {
               )}
             </div>
 
-            <div>
-              {selectedVulnerability && (
-                <div className="mt-2 text-sm text-green-500">
-                  Selected Vulnerability: <strong>{selectedVulnerability}</strong>
-                </div>
-              )}
-            </div>
+
+            {selectedVulnerability && (
+              <div className="mt-2 text-sm text-green-500">
+                Selected Vulnerability: <strong>{selectedVulnerability}</strong>
+              </div>
+            )}
+
           </div>
         </div>
 
+        {/* Severity */}
         <div className="space-y-2">
           <h2 className="text-lg md:text-xl font-semibold">
             Severity
@@ -227,6 +246,7 @@ const Report = () => {
           <Severity setSeverityData={setSeverityData} />
         </div>
 
+        {/* Report Details */}
         <div className="space-y-4">
           <h2 className="text-lg md:text-xl font-semibold">
             Report Details
@@ -270,6 +290,7 @@ const Report = () => {
           </div>
         </div>
 
+        {/* Submit */}
         <div className="space-y-2">
           <h2 className="text-lg md:text-xl font-semibold">
             Review and Submit
