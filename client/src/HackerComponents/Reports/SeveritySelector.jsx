@@ -101,9 +101,9 @@ const SeveritySelector = () => {
   }
 
   return (
-    <div className="w-full bg-black text-white md:max-w-[800px] h-fit p-4 rounded-lg space-y-4">
+    <div className="w-full  text-white md:max-w-[800px] h-fit p-4 rounded-lg space-y-4">
       {/* Mode Toggle */}
-      <div className="flex flex-wrap items-center gap-6 border border-gray-700 rounded px-4 py-2">
+      <div className="flex flex-wrap items-center gap-6 border border-gray-500 rounded px-4 py-2">
         {['severity', 'cvss'].map((m) => (
           <label
             key={m}
@@ -204,7 +204,7 @@ const SeveritySelector = () => {
                   : 'text-white'
               }`}
             >
-              {severity} Severity
+              {severity}
             </span>
           </div>
         </div>

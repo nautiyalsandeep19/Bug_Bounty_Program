@@ -1,9 +1,11 @@
 import React from 'react'
 import CTAButton from '../Components/Button/CTAButton'
 
-const ProgramBox = () => {
+const ProgramBox = ({ className = '' }) => {
   return (
-    <section className="w-full md:max-w-[400px] h-fit p-6 border rounded-lg shadow-md space-y-6 sticky top-0 left-0">
+    <section
+      className={`w-full md:max-w-[400px] h-fit p-6 border border-gray-500 rounded-lg shadow-md space-y-6 bg-[#121212] ${className}`}
+    >
       <div className="flex items-center border-b border-blue-500 pb-4">
         <img
           src="https://via.placeholder.com/60"
