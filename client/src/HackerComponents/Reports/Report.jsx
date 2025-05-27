@@ -196,11 +196,12 @@ const Report = () => {
 
             <div>
               {filteredTypes.length > 0 ? (
-                <div className="h-40 overflow-y-auto border border-gray-300 rounded p-2 space-y-2">
+                <div className="h-40 overflow-y-auto border border-gray-300 rounded  space-y-2 py-2 ">
                   {filteredTypes.map((type, idx) => (
                     <div key={idx}>
 
-                      <div className="ml-4 flex flex-col gap-2">
+                      <div className=" flex flex-col  ">
+
                         {type.children.map((child, i) => (
                           <div
                             key={i}
@@ -208,12 +209,12 @@ const Report = () => {
                             onClick={() =>
                               setSelectedVulnerability(child.label)
                             }
-                            className={`cursor-pointer px-3 py-1 rounded border ${
+                            className={`cursor-pointer px-3 py-2 rounded ${
                               selectedVulnerability === child.label
                                 ? 'bg-indigo-600 text-white'
-                                : 'bg-gray-800 text-gray-200 hover:bg-indigo-500 hover:text-white'
 
-                            }`}
+                                : 'bg-black text-gray-200 hover:bg-indigo-500 hover:text-white'
+
                           >
                             {child.label}
                           </div>
@@ -229,7 +230,7 @@ const Report = () => {
 
 
             {selectedVulnerability && (
-              <div className="mt-2 text-sm text-green-500">
+              <div className="mt-2 text-sm text-blue-500">
                 Selected Vulnerability: <strong>{selectedVulnerability}</strong>
               </div>
             )}
