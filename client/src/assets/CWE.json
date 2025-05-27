@@ -1,37 +1,602 @@
-{
-  "Access Control": [
-    { "codeId": 22, "name": "path traversal" },
-    { "codeId": 200, "name": "Information Disclosure" },
-    { "codeId": 209, "name": "Information Exposure Through an Error Message" },
-    { "codeId": 215, "name": "Information Exposure Through Debug Information" },
-    { "codeId": 269, "name": "Privilage Escalation" },
-    { "codeId": 284, "name": "Improper Access Control" },
-    { "codeId": 287, "name": "Improper Authentication" },
-    { "codeId": 307, "name": "Brute Force" },
-    { "codeId": 313, "name": "Insufficient Session Expiration" },
-    { "codeId": 322, "name": "Key Exchange without Entity Authentication" },
-    { "codeId": 359, "name": "Privacy Violation" },
-    { "codeId": 425, "name": "Forced Browsing" },
-    { "codeId": 639, "name": "Insecure Direct Object Reference" }
-  ],
-  "Broken Authentication": [
-    { "codeId": 384, "name": "Session Fixation" },
-    { "codeId": 613, "name": "Insufficient Session Expiration" },
-    {
-      "codeId": 640,
-      "name": "Weak Password Recovery Mechanism for Forgotten Password"
-    },
-    { "codeId": 287, "name": "Improper Authentication (Generic)" },
-    { "codeId": 798, "name": "Use of Hard-coded Credentials" },
-    { "codeId": 256, "name": "Plaintext Storage of a Password" },
-    { "codeId": 307, "name": "Brute Force" },
-    { "codeId": 620, "name": "Unverified Password Change" }
-  ],
-  "Broken Access Control": [
-    { "codeId": 233, "name": "Horizontal Privilege Escalation" },
-    { "codeId": 425, "name": "Forced Browsing" },
-    { "codeId": 639, "name": "Insecure Direct Object Reference" },
-    { "codeId": 22, "name": "Path Traversal" },
-    { "codeId": 200, "name": "Information Disclosure" }
-  ]
-}
+[
+  {
+    "label": "Access Control",
+    "children": [
+      {
+        "id": "CWE-22",
+        "label": "CWE-22 Path traversal"
+      },
+      {
+        "id": "CWE-200",
+        "label": "CWE-200 Information Disclosure"
+      },
+      {
+        "id": "CWE-209",
+        "label": "CWE-209 Information Exposure Through an Error Message"
+      },
+      {
+        "id": "CWE-215",
+        "label": "CWE-215 Information Exposure Through Debug Information"
+      },
+      {
+        "id": "CWE-269",
+        "label": "CWE-269 Privilege Escalation"
+      },
+      {
+        "id": "CWE-284",
+        "label": "CWE-284 Improper Access Control"
+      },
+      {
+        "id": "CWE-287",
+        "label": "CWE-287 Improper Authentication"
+      },
+      {
+        "id": "CWE-307",
+        "label": "CWE-307 Brute Force"
+      },
+      {
+        "id": "CWE-313",
+        "label": "CWE-313 Insufficient Session Expiration"
+      },
+      {
+        "id": "CWE-322",
+        "label": "CWE-322 Key Exchange without Entity Authentication"
+      },
+      {
+        "id": "CWE-359",
+        "label": "CWE-359 Privacy violation"
+      },
+      {
+        "id": "CWE-425",
+        "label": "CWE-425 Forced Browsing"
+      },
+      {
+        "id": "CWE-639",
+        "label": "CWE-639 Insecure Direct Object Reference"
+      }
+    ]
+  },
+  {
+    "label": "Broken Authentication",
+    "children": [
+      {
+        "id": "CWE-384",
+        "label": "CWE-384 Session Fixation"
+      },
+      {
+        "id": "CWE-613",
+        "label": "CWE-613 Insufficient Session Expiration"
+      },
+      {
+        "id": "CWE-640",
+        "label": "CWE-640 Weak Password Recovery Mechanism for Forgotten Password"
+      },
+      {
+        "id": "CWE-287",
+        "label": "CWE-287 Improper Authentication (Generic)"
+      },
+      {
+        "id": "CWE-798",
+        "label": "CWE-798 Use of Hard-coded Credentials"
+      },
+      {
+        "id": "CWE-256",
+        "label": "CWE-256 Plaintext Storage of a Password"
+      },
+      {
+        "id": "CWE-307",
+        "label": "CWE-307 Brute Force"
+      },
+      {
+        "id": "CWE-620",
+        "label": "CWE-620 Unverified Password Change"
+      }
+    ]
+  },
+  {
+    "label": "Broken Access Control",
+    "children": [
+      {
+        "id": "CAPE-233",
+        "label": "CAPEC-233 Horizontal Privilege Escalation"
+      },
+      {
+        "id": "CAPE-233",
+        "label": "CAPEC-233 Vertical Privilege Escalation"
+      },
+      {
+        "id": "CWE-639",
+        "label": "CWE-639 Insecure Direct Object Reference"
+      },
+      {
+        "id": "CWE-285",
+        "label": "CWE-285 Improper Authorization"
+      },
+      {
+        "id": "CWE-22",
+        "label": "CWE-22 Path Traversal"
+      },
+      {
+        "id": "CWE-284",
+        "label": "CWE-284 Improper Access Control (Generic)"
+      },
+      {
+        "id": "CWE-425",
+        "label": "CWE-425 Forced Browsing"
+      }
+    ]
+  },
+  {
+    "label": "Cryptographic issues",
+    "children": [
+      {
+        "id": "CWE-311",
+        "label": "CWE-311 Missing Encryption of Sensitive Data"
+      },
+      {
+        "id": "CWE-312",
+        "label": "CWE-312 Cleartext Storage of Sensitive Information"
+      }
+    ]
+  },
+  {
+    "label": "Cross-Site Scripting",
+    "children": [
+      {
+        "id": "CWE-79",
+        "label": "CWE-79 Blind Cross-Site Scripting"
+      },
+      {
+        "id": "CWE-79",
+        "label": "CWE-79 Reflected Cross-Site Scripting"
+      },
+      {
+        "id": "CWE-79",
+        "label": "CWE-79 Stored Cross-Site Scripting"
+      },
+      {
+        "id": "CWE-79",
+        "label": "CWE-79 DOM-Based Cross-Site Scripting"
+      },
+      {
+        "id": "CWE-79",
+        "label": "CWE-79 Self Cross-Site Scripting"
+      },
+      {
+        "id": "CWE-79",
+        "label": "Cross-Site Scripting (Generic)"
+      }
+    ]
+  },
+  {
+    "label": "Injection",
+    "children": [
+      {
+        "id": "CWE-96",
+        "label": "CWE-96 Client-Side Template Injection"
+      },
+      {
+        "id": "CWE-96",
+        "label": "CWE-96 Server-Side Template Injection"
+      },
+      {
+        "id": "CWE-89",
+        "label": "CWE-89 SQL Injection"
+      },
+      {
+        "id": "None",
+        "label": "NoSQL Injection"
+      },
+      {
+        "id": "CWE-90",
+        "label": "CWE-90 LDAP Injection"
+      },
+      {
+        "id": "CWE-91",
+        "label": "CWE-91 XML Injection"
+      },
+      {
+        "id": "None",
+        "label": "CSV Injection"
+      },
+      {
+        "id": "None",
+        "label": "SOAP Injection"
+      },
+      {
+        "id": "None",
+        "label": "Injection (Generic)"
+      },
+      {
+        "id": "CAPEC-83",
+        "label": "CAPEC-83 XPath Injection"
+      }
+    ]
+  },
+  {
+    "label": "Insecure Deserialization",
+    "children": [
+      {
+        "id": "CWE-502",
+        "label": "CWE-502 Deserialization of Untrusted Data"
+      }
+    ]
+  },
+  {
+    "label": "Misconfiguration",
+    "children": [
+      {
+        "id": "CWE-548",
+        "label": "CWE-548 Information Exposure Through Directory Listing"
+      },
+      {
+        "id": "CWE-209",
+        "label": "CWE-209 Information Exposure Through an Error Message"
+      },
+      {
+        "id": "None",
+        "label": "Security Misconfiguration (Generic)"
+      }
+    ]
+  },
+  {
+    "label": "Vulnerable Components",
+    "children": [
+      {
+        "id": "CWE-190",
+        "label": "CWE-190 Integer Overflow"
+      },
+      {
+        "id": "CWE-327",
+        "label": "CWE-327 Use of a Broken or Risky Cryptographic Algorithm"
+      },
+      {
+        "id": "CWE-657",
+        "label": "CWE-657 Violation of Secure Design Principles"
+      }
+    ]
+  },
+  {
+    "label": "XML External Entity",
+    "children": [
+      {
+        "id": "CWE-611",
+        "label": "CWE-611 XML External Entity (XXE) Injection"
+      }
+    ]
+  },
+  {
+    "label": "Mobile",
+    "children": [
+      {
+        "id": "CWE-96",
+        "label": "CWE-96 Client-Side Template Injection"
+      },
+      {
+        "id": "CAPEC-233",
+        "label": "CAPEC-233 Horizontal Privilege Escalation"
+      },
+      {
+        "id": "CAPEC-233",
+        "label": "CAPEC-233 Vertical Privilege Escalation"
+      },
+      {
+        "id": "CWE-639",
+        "label": "CWE-639 Insecure Direct Object Reference"
+      },
+      {
+        "id": "CWE-79",
+        "label": "CWE-79 Blind Cross-Site Scripting"
+      },
+      {
+        "id": "CWE-79",
+        "label": "CWE-79 Reflected Cross-Site Scripting"
+      },
+      {
+        "id": "CWE-79",
+        "label": "CWE-79 Stored Cross-Site Scripting"
+      },
+      {
+        "id": "CWE-79",
+        "label": "CWE-79 DOM-Based Cross-Site Scripting"
+      },
+      {
+        "id": "CWE-79",
+        "label": "CWE-79 Self Cross-Site Scripting"
+      },
+      {
+        "id": "CWE-77",
+        "label": "CWE-77 Command Injection (Generic)"
+      },
+      {
+        "id": "CWE-89",
+        "label": "CWE-89 SQL Injection"
+      },
+      {
+        "id": "CWE-613",
+        "label": "CWE-613 Insufficient Session Expiration"
+      },
+      {
+        "id": "CWE-640",
+        "label": "CWE-640 Weak Password Recovery Mechanism for Forgotten Password"
+      },
+      {
+        "id": "CWE-200",
+        "label": "CWE-200 Information Disclosure (Generic)"
+      },
+      {
+        "id": "CWE-285",
+        "label": "CWE-285 Improper Authorization"
+      },
+      {
+        "id": "CWE-287",
+        "label": "CWE-287 Improper Authentication (Generic)"
+      },
+      {
+        "id": "CWE-22",
+        "label": "CWE-22 Path Traversal"
+      },
+      {
+        "id": "CWE-798",
+        "label": "CWE-798 Use of Hard-coded Credentials"
+      },
+      {
+        "id": "CWE-215",
+        "label": "CWE-215 Information Exposure Through a Debug Message"
+      },
+      {
+        "id": "CWE-548",
+        "label": "CWE-548 Information Exposure Through Directory Listing"
+      },
+      {
+        "id": "CWE-209",
+        "label": "CWE-209 Information Exposure Through an Error Message"
+      },
+      {
+        "id": "CWE-327",
+        "label": "CWE-327 Use of a Broken or Risky Cryptographic Algorithm"
+      },
+      {
+        "id": "CWE-312",
+        "label": "CWE-312 Cleartext Storage of Sensitive Information"
+      },
+      {
+        "id": "CWE-502",
+        "label": "CWE-502 Deserialization of Untrusted Data"
+      },
+      {
+        "id": "CWE-256",
+        "label": "CWE-256 Plaintext Storage of a Password"
+      },
+      {
+        "id": "CWE-91",
+        "label": "CWE-91 XML Injection"
+      },
+      {
+        "id": "CSV Injection",
+        "label": "CSV Injection"
+      },
+      {
+        "id": "CWE-284",
+        "label": "CWE-284 Improper Access Control (Generic)"
+      },
+      {
+        "id": "CWE-319",
+        "label": "CWE-319 Cleartext Transmission of Sensitive Information"
+      },
+      {
+        "id": "CWE-425",
+        "label": "CWE-425 Forced Browsing"
+      },
+      {
+        "id": "CWE-307",
+        "label": "CWE-307 Brute Force"
+      },
+      {
+        "id": "CWE-657",
+        "label": "CWE-657 Violation of Secure Design Principles"
+      },
+      {
+        "id": "CWE-620",
+        "label": "CWE-620 Unverified Password Change"
+      },
+      {
+        "id": "CWE-922",
+        "label": "CWE-922 Insecure Storage of Sensitive Information"
+      },
+      {
+        "id": "CWE-325",
+        "label": "CWE-325 Missing Required Cryptographic Step"
+      },
+      {
+        "id": "CWE-190",
+        "label": "CWE-190 Integer Overflow"
+      },
+      {
+        "id": "None",
+        "label": "Injection (Generic)"
+      },
+      {
+        "id": "None",
+        "label": "Security Misconfiguration (Generic)"
+      },
+      {
+        "id": "None",
+        "label": "No/Bypass SSL Certificate Pinning"
+      },
+      {
+        "id": "None",
+        "label": "Mobile Security Misconfiguration (Generic)"
+      }
+    ]
+  },
+  {
+    "label": "Other",
+    "children": [
+      {
+        "id": "",
+        "label": "Remote Code Execution"
+      },
+      {
+        "id": "",
+        "label": "Email Spoofing"
+      },
+      {
+        "id": "",
+        "label": "Homograph Attack"
+      },
+      {
+        "id": "",
+        "label": "CWE-918 Server-Side Request Forgery"
+      },
+      {
+        "id": "",
+        "label": "CWE-352 Cross-Site Request Forgery"
+      },
+      {
+        "id": "",
+        "label": "CAPEC-101 Server-Side Include Injection"
+      },
+      {
+        "id": "",
+        "label": "Fingerprinting"
+      },
+      {
+        "id": "",
+        "label": "Banner Grabbing"
+      },
+      {
+        "id": "",
+        "label": "CWE-98 Local File Inclusion"
+      },
+      {
+        "id": "",
+        "label": "CWE-98 Remote File Inclusion"
+      },
+      {
+        "id": "",
+        "label": "Buffer Overflow"
+      },
+      {
+        "id": "",
+        "label": "CWE-400 Denial of Service"
+      },
+      {
+        "id": "",
+        "label": "Reflected File Download"
+      },
+      {
+        "id": "",
+        "label": "CWE-601 Open Redirect"
+      },
+      {
+        "id": "",
+        "label": "Weak or Default Credentials"
+      },
+      {
+        "id": "",
+        "label": "CWE-203 Information Exposure Through Discrepancy ('Enumeration')"
+      },
+      {
+        "id": "",
+        "label": "Missing Cookie Flag"
+      },
+      {
+        "id": "",
+        "label": "CAPEC-103 UI Redressing (Clickjacking)"
+      },
+      {
+        "id": "",
+        "label": "No Rate Limiting"
+      },
+      {
+        "id": "",
+        "label": "Missing Security Header"
+      },
+      {
+        "id": "",
+        "label": "CAPEC-148 Content Injection"
+      },
+      {
+        "id": "",
+        "label": "Web Cache Poisoning"
+      },
+      {
+        "id": "",
+        "label": "CAPEC-460 HTTP Parameter Pollution"
+      },
+      {
+        "id": "",
+        "label": "CWE-434 Unrestricted file upload"
+      },
+      {
+        "id": "",
+        "label": "CWE-362 Race Condition"
+      },
+      {
+        "id": "",
+        "label": "CWE-444 HTTP Request Smuggling"
+      },
+      {
+        "id": "",
+        "label": "CWE-300 Man-in-the-Middle"
+      },
+      {
+        "id": "",
+        "label": "CWE-840 Business Logic Error"
+      },
+      {
+        "id": "",
+        "label": "CRLF Injection"
+      },
+      {
+        "id": "",
+        "label": "CWE-121 Stack Overflow disclosure"
+      },
+      {
+        "id": "",
+        "label": "Subdomain Takeover"
+      },
+      {
+        "id": "",
+        "label": "Web Cache Deception"
+      },
+      {
+        "id": "",
+        "label": "Host Header Injection"
+      },
+      {
+        "id": "",
+        "label": "HTML Injection"
+      },
+      {
+        "id": "",
+        "label": "CWE 602 Client-Side Enforcement of Server-Side Security"
+      },
+      {
+        "id": "",
+        "label": "CWE-776 XML Entity Expansion"
+      },
+      {
+        "id": "",
+        "label": "CWE-125 Out-of-bounds read"
+      },
+      {
+        "id": "",
+        "label": "CWE-476 Null pointer Dereference"
+      },
+      {
+        "id": "",
+        "label": "CWE-122 Heap Overflow"
+      },
+      {
+        "id": "",
+        "label": "CAPEC-549 Malware"
+      },
+      {
+        "id": "",
+        "label": "CWE-119 Memory Corruption (Generic)"
+      }
+    ]
+  }
+]
