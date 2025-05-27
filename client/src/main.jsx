@@ -1,5 +1,4 @@
 import { createRoot } from 'react-dom/client'
-import React from 'react'
 import './index.css'
 import App from './App.jsx'
 import { BrowserRouter } from 'react-router'
@@ -9,9 +8,11 @@ import { store } from './Store.js'
 
 createRoot(document.getElementById('root')).render(
   <BrowserRouter>
-    <Provider store={store}>
-      <App />
-      <Toaster />
-    </Provider>
+    <div className="font-lato">
+      <Provider store={store}>
+        <App />
+        <Toaster />
+      </Provider>
+    </div>
   </BrowserRouter>
 )
