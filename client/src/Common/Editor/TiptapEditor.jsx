@@ -111,7 +111,7 @@ const MenuBar = ({ editor }) => {
   }
 
   return (
-    <div className="flex flex-wrap gap-2 p-4 border rounded-md border-gray-300 bg-black w-full">
+    <div className="flex flex-wrap gap-2 p-4 border rounded-md border-gray-300 bg-black w-full mb-4">
       {formatButton(
         <Bold size={18} />,
         () => editor.chain().focus().toggleBold().run(),
@@ -242,7 +242,7 @@ const MenuBar = ({ editor }) => {
 
 const TiptapOutput = ({ html }) => (
   <div
-    className="ProseMirror prose prose-invert max-w-none bg-gray-900 text-white p-4 rounded mt-6"
+    className="ProseMirror prose prose-invert max-w-none bg-gray-900 text-white p-4 rounded mt-6 overflow-y-auto max-h-[500px] border-t-2 border-blue-500"
     dangerouslySetInnerHTML={{ __html: html }}
   />
 )
@@ -288,8 +288,6 @@ const TiptapEditor = ({ setReportPOC }) => {
       editor.off('update', updateOutput)
     }
   }, [editor])
-
-  console.log('TiptapEditor rendered', output)
 
   return (
     <div className="max-w-3xl mx-auto p-6 bg-black rounded-lg shadow-md">

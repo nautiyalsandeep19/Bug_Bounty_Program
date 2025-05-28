@@ -101,7 +101,7 @@ const SeveritySelector = ({ setSeverityData }) => {
   }
 
   useEffect(() => {
-    setSeverityData({ severity }) // Pass the severity string up to parent
+    setSeverityData({ severity })
   }, [severity, setSeverityData])
 
   return (

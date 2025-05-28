@@ -126,6 +126,8 @@ export const login = (email, password, userType, navigate) => {
         navigate('/company/dashboard')
       } else if (userType === 'hacker') {
         navigate('/hacker/dashboard')
+      } else {
+        navigate('/login')
       }
     } catch (error) {
       console.log('LOGIN API ERROR............', error)

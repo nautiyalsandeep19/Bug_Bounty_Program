@@ -32,6 +32,9 @@ function App() {
     <div className="flex min-h-screen bg-[#0e0e0e] text-white">
       <main className="flex-1 overflow-y-auto">
         <Routes>
+          {/* for / route */}
+          <Route path="/" element={<Login />} />
+
           {/* Public / Auth Routes (No sidebar) */}
           <Route path="/signup" element={<SignUp />} />
           <Route path="/login" element={<Login />} />

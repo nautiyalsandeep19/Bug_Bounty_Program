@@ -9,3 +9,7 @@
   --color-textColor: white;
   --font-lato: 'Lato', sans-serif;
 }
+
+body {
+  background-color: black;
+}

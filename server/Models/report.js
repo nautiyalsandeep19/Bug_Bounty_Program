@@ -45,7 +45,7 @@ const reportScheema = new mongoose.Schema(
     },
     attachments: [
       {
-        type: String,
+        type: Array,
       },
     ],
     vulnerabilityImpact: {
