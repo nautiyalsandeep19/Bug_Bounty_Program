@@ -19,7 +19,6 @@ import CompanyLeaderBoard from './CompanyPages/CompanyLeaderboard'
 import CompanyAssets from './CompanyPages/CompanyAssets'
 import CompanyBounties from './CompanyPages/CompanyBounties'
 import ProgramList from './CompanyComponents/Programs/ProgramDetails/ProgramList'
-// TODO: Import company pages
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false)
@@ -39,9 +38,6 @@ function App() {
           <Route path="/verifyOtp" element={<VerifyOtp />} />
           <Route path="/resetPassword/:token" element={<ResetPassword />} />
           <Route path="/checkemail" element={<CheckEmailPage />} />
-
-          {/* Shared Page (Optional sidebar depending on where it's used) */}
-          {/* <Route path="/programs" element={<ProgramsPage />} /> */}
 
           {/* Hacker Routes with HackerSidebar */}
           <Route path="/hacker/*" element={<HackerLayout />}>

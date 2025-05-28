@@ -89,6 +89,18 @@ const Login = () => {
               className="w-full mt-1 p-3 bg-transparent text-gray-200 rounded-lg border border-blue-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
 
+            <div className="flex items-center gap-2 text-sm mt-2">
+              <input
+                type="checkbox"
+                id="showPassword"
+                checked={showPassword}
+                onChange={() => setShowPassword(!showPassword)}
+                className="cursor-pointer"
+              />
+              <label htmlFor="showPassword" className="cursor-pointer">
+                Show Password
+              </label>
+            </div>
             <div className="text-right mt-1">
               <button
                 type="button"

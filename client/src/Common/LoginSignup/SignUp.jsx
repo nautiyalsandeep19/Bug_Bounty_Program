@@ -12,6 +12,7 @@ import Button from '../Button/Button'
 const SignUp = () => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
+  const [showPassword, setShowPassword] = useState(false)
   const [userType, setUserType] = useState('hacker')
   const [formData, setFormData] = useState({
     name: '',
@@ -147,7 +148,7 @@ const SignUp = () => {
               <sup className="text-red-500">*</sup>
             </label>{' '}
             <input
-              type="password"
+              type={showPassword ? 'text' : 'password'}
               name="password"
               value={password}
               onChange={handleChange}
@@ -156,13 +157,14 @@ const SignUp = () => {
               required
             />
           </div>
+
           <div>
             <label className="text-sm font-semibold text-gray-300">
               Confirm Password
               <sup className="text-red-500">*</sup>
             </label>{' '}
             <input
-              type="password"
+              type={showPassword ? 'text' : 'password'}
               name="confirmPassword"
               value={confirmPassword}
               onChange={handleChange}
@@ -171,7 +173,18 @@ const SignUp = () => {
               required
             />
           </div>
-
+          <div className="flex items-center gap-2 text-sm">
+            <input
+              type="checkbox"
+              id="showPassword"
+              checked={showPassword}
+              onChange={() => setShowPassword(!showPassword)}
+              className="cursor-pointer"
+            />
+            <label htmlFor="showPassword" className="cursor-pointer">
+              Show Password
+            </label>
+          </div>
           <Button text="Sign Up" type="submit" />
 
           <p className="text-center text-sm text-gray-400 mt-3">
