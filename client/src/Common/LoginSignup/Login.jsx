@@ -11,6 +11,7 @@ import { toast } from 'react-hot-toast'
 const Login = () => {
   const [userType, setUserType] = useState('hacker')
   const [formData, setFormData] = useState({ email: '', password: '' })
+  const [showPassword, setShowPassword] = useState(false)
   const { email, password } = formData
   const dispatch = useDispatch()
   const navigate = useNavigate()
@@ -80,7 +81,7 @@ const Login = () => {
             </label>
             <input
               required
-              type="password"
+              type={showPassword ? 'text' : 'password'}
               name="password"
               value={password}
               onChange={handleChange}

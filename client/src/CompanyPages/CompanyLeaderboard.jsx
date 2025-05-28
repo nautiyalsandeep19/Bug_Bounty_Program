@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 
-const LeaderBoard = () => {
+const CompanyLeaderBoard = () => {
   const [showModal, setShowModal] = useState(false)
   const [campaignName, setCampaignName] = useState('')
   const [selectedProgram, setSelectedProgram] = useState('')
@@ -248,4 +248,4 @@ const LeaderBoard = () => {
   )
 }
 
-export default LeaderBoard
+export default CompanyLeaderBoard

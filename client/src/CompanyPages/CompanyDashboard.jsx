@@ -8,7 +8,7 @@ import {
   FiAward,
 } from 'react-icons/fi'
 
-const Dashboard = () => {
+const CompanyDashboard = () => {
   // Sample company data - replace with your actual data
   const companyInfo = {
     name: 'Versantix',
@@ -167,4 +167,4 @@ const Dashboard = () => {
   )
 }
 
-export default Dashboard
+export default CompanyDashboard

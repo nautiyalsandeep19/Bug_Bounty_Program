@@ -122,7 +122,11 @@ export const login = (email, password, userType, navigate) => {
       toast.success('Login Successful')
       dispatch(setUser(response.user))
       dispatch(setUserType(response.userType))
-      navigate('/')
+      if (userType === 'company') {
+        navigate('/company/dashboard')
+      } else if (userType === 'hacker') {
+        navigate('/hacker/dashboard')
+      }
     } catch (error) {
       console.log('LOGIN API ERROR............', error)
     }
@@ -130,22 +134,26 @@ export const login = (email, password, userType, navigate) => {
 }
 
 // Helper function to delete a cookie
-const deleteCookie = (name) => {
-  document.cookie = `${name}=; Max-Age=0; path=/;`
+
+function deleteCookie(name) {
+  document.cookie = `${name}=; Max-Age=0; Path=/; SameSite=Lax`
 }
 
 export const logout = (navigate) => {
   return (dispatch) => {
     dispatch(setToken(null))
     dispatch(setUser(null))
+    dispatch(setUserType(null))
 
     // Remove from localStorage
     localStorage.removeItem('token')
     localStorage.removeItem('user')
+    localStorage.removeItem('userType')
 
     // Remove from cookies
     deleteCookie('token')
     deleteCookie('user')
+    deleteCookie('userType')
 
     toast.success('Logged Out')
     navigate('/signup')

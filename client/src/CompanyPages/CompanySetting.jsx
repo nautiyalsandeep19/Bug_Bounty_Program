@@ -1,7 +1,7 @@
 import React, { useState, useRef } from 'react'
 import axios from 'axios'
 
-const Settings = () => {
+const CompanySetting = () => {
   const [formData, setFormData] = useState({
     username: '',
     email: '',
@@ -199,4 +199,4 @@ const Settings = () => {
   )
 }
 
-export default Settings
+export default CompanySetting
