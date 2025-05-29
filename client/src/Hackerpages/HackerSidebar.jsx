@@ -17,7 +17,7 @@ const HackerSidebar = () => {
     }`
 
   return (
-    <div className="w-64 bg-[#121212] p-4 hidden sm:block fixed top-0 h-screen overflow-y-auto z-10 ">
+    <div className="w-64 bg-[#121212] p-4 hidden sm:block fixed top-0 h-screen overflow-y-auto z-10 border-r-1 border-blue-500 ">
       <h1 className="text-blue-500 text-3xl font-bold mb-8">Versantix</h1>
       <nav className="flex flex-col gap-4">
         <NavLink to="/hacker/dashboard" className={linkClass}>
