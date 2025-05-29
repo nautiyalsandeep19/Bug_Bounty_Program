@@ -39,37 +39,6 @@ export const getCompanyDetails = async () => {
   }
 }
 
-
-
-
-// export const getCompanyDetails = () => {
-//   return async (dispatch) => {
-//     try {
-//       const response = await apiConnector('GET', endPoints.GET_COMPANY_DETAILS)
-//       console.log('Company Details Response:', response)
-
-//       if (!response.success) {
-//         toast.error(response.message || 'Failed to fetch company details')
-//         throw new Error(response.message)
-//       }
-
-//       // Optional: store in Redux and/or localStorage
-//       if (response.companyDetails) {
-//         dispatch(setUser(response.companyDetails))
-//         localStorage.setItem('user', JSON.stringify(response.companyDetails))
-//       }
-
-//       return response.companyDetails
-//     } catch (error) {
-//       console.error('Error fetching company details:', error)
-//       toast.error('Failed to load company details')
-//       return null
-//     }
-//   }
-// }
-
-
-
 export const updateCompanyProfile = (
   domain,
   representative,

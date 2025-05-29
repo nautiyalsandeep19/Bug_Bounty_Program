@@ -17,8 +17,6 @@ export const endPoints = {
   GET_ALL_PROGRAMS: BASE_URL + '/api/programs/allPrograms',
   GET_PRIVATE_PROGRAMS: BASE_URL + '/api/programs/privatePrograms',
 
-
-
   //hackers
   GET_HACKER_DETAILS: BASE_URL + '/api/hacker/hackerDetails',
   UPDATE_HACKER_DETAILS: BASE_URL + '/api/hacker/updateHackerDetails',
@@ -30,6 +28,8 @@ export const endPoints = {
   CREATE_REPORT: BASE_URL + '/api/reports/createReport',
   UPDATE_REPORT_STATUS: BASE_URL + '/api/reports/updateStatus',
 
+  //upload
+  UPLOAD: BASE_URL + '/api/upload',
 }
 
 export const axiosInstance = axios.create({ withCredentials: true })

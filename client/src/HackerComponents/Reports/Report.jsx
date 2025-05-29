@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
-import CTAButton from '../../Components/Button/CTAButton'
+import CTAButton from '../../Common/Button/CTAButton'
 import Severity from './SeveritySelector'
-
+import { UploadCloud } from 'lucide-react'
 import {
   Listbox,
   ListboxButton,
@@ -12,31 +12,50 @@ import { ChevronDownIcon } from '@heroicons/react/24/solid'
 import vulnerabilityTypes from '../../assets/CWE_list.json'
 
 import { createReport } from '../../Services/reportApi'
+import TiptapEditor from '../../Common/Editor/TiptapEditor'
+import { uploadFiles } from '../../Services/uploaderApi'
+import toast from 'react-hot-toast'
 
 const Report = () => {
-  const [ip, setIp] = useState('')
   const [scope, setScope] = useState('')
   const [endpoint, setEndpoint] = useState('')
   const [reportTitle, setReportTitle] = useState('')
   const [reportSummary, setReportSummary] = useState('')
   const [reportPOC, setReportPOC] = useState('')
-  const [severityData, setSeverityData] = useState({
-    baseScore: 0,
-    severity: 'None',
-  })
-
+  const [severityData, setSeverityData] = useState({})
   const [vulnerabilityType, setVulnerabilityType] = useState('')
   const [selected, setSelected] = useState('')
   const [selectedVulnerability, setSelectedVulnerability] = useState('')
   const [filteredTypes, setFilteredTypes] = useState(vulnerabilityTypes)
+  const [vulnerabilityImpact, setVulnerabilityImpact] = useState('')
+  const [attachments, setAttachments] = useState([])
 
-  const fetchIP = async () => {
+  const MAX_TOTAL_SIZE_MB = 5
+
+  const handleAttachmentsChange = async (e) => {
+    const files = Array.from(e.target.files)
+    const totalSize = files.reduce((acc, file) => acc + file.size, 0)
+
+    if (totalSize > MAX_TOTAL_SIZE_MB * 1024 * 1024) {
+      alert(`Total file size must not exceed ${MAX_TOTAL_SIZE_MB} MB.`)
+      return
+    }
+
     try {
-      const res = await fetch('https://api.ipify.org?format=json')
-      const data = await res.json()
-      setIp(data.ip)
-    } catch (err) {
-      console.error('Failed to fetch IP:', err)
+      const uploadedFiles = []
+      for (const file of files) {
+        const fileUrl = await uploadFiles(file)
+
+        if (fileUrl) {
+          uploadedFiles.push({ name: file.name, url: fileUrl })
+          toast.success('file uploaded successfully')
+        }
+      }
+
+      setAttachments((prev) => [...prev, ...uploadedFiles])
+    } catch (error) {
+      console.error('File upload failed:', error)
+      alert('One or more files failed to upload.')
     }
   }
 
@@ -64,11 +83,43 @@ const Report = () => {
       summary: reportSummary,
       POC: reportPOC,
       severity: severityData.severity,
-      vulnerabilityImpact: reportSummary,
-      ip,
-      attachments: [],
+      vulnerabilityImpact,
+      attachments,
       testingEmail: '',
       status: 'submitted',
+      submitDate: new Date().toISOString(),
+    }
+
+    const payload = {
+      programId: '6652f7c0d7289f1b443cc10a',
+
+      reportData,
+    }
+
+    console.log('Submitting payload:', payload)
+
+    try {
+      await createReport(payload)
+      // Optionally reset form here
+    } catch (error) {
+      console.error('Report submission failed:', error.message)
+    }
+  }
+
+  const handleReportDraft = async () => {
+    const reportData = {
+      scope,
+      vulnerableEndpoint: endpoint,
+      vulnerabilityType,
+      title: reportTitle,
+      summary: reportSummary,
+      POC: reportPOC,
+      severity: severityData.severity,
+      vulnerabilityImpact: vulnerabilityImpact,
+
+      attachments: [],
+      testingEmail: '',
+      status: 'draft',
     }
 
     const payload = {
@@ -86,12 +137,11 @@ const Report = () => {
       console.error('Report submission failed:', error.message)
     }
   }
-
   const RequiredMark = () => <span className="text-red-500 ml-1">*</span>
 
   return (
     <section className="max-w-5xl w-full h-full mx-auto">
-      <div className="w-full md:max-w-3xl mx-auto md:p-6 space-y-10 bg-white dark:bg-gray-900 rounded-lg shadow-md">
+      <div className="w-full md:max-w-3xl mx-auto md:p-6 space-y-10  dark:bg-gray-900 rounded-lg shadow-md">
         <h1 className="text-2xl md:text-3xl font-bold">Submit Report</h1>
 
         {/* Scope */}
@@ -234,32 +284,89 @@ const Report = () => {
             placeholder="Report Summary"
             required
           />
-          <textarea
-            rows={5}
-            value={reportPOC}
-            onChange={(e) => setReportPOC(e.target.value)}
+          <div>
+            <h2 className="text-lg md:text-xl font-semibold mb-4">
+              Report Description
+            </h2>
+            <TiptapEditor setReportPOC={setReportPOC} />
+          </div>
+        </div>
+        <div className="space-y-4">
+          <h2 className="text-lg md:text-xl font-semibold">
+            Vulnerability Impact
+            <RequiredMark />
+          </h2>
+          <input
+            type="text"
+            value={vulnerabilityImpact}
+            onChange={(e) => setVulnerabilityImpact(e.target.value)}
             className="w-full border border-gray-500 p-2 rounded"
-            placeholder="Describe the impact of the vulnerability..."
+            placeholder="Explain the impact of the vulnerability"
             required
           />
+        </div>
+        {/* Add attachments */}
+        <div className="space-y-4">
+          <h2 className="text-lg md:text-xl font-semibold flex items-center gap-1">
+            Attachments
+            <RequiredMark />
+          </h2>
 
-          <div className="flex flex-col sm:flex-row sm:items-center gap-4">
+          <label
+            htmlFor="attachments"
+            className="flex flex-col items-center justify-center p-6 border-2 border-dashed border-gray-400 rounded-xl cursor-pointer hover:border-indigo-500 transition"
+          >
+            <UploadCloud className="w-10 h-10 text-gray-500 mb-2" />
+            <span className="text-gray-700 text-sm">
+              Click or drag files here to upload
+            </span>
             <input
-              type="text"
-              className="flex-1 border border-gray-500 p-2 rounded"
-              placeholder="Your IP Address"
-              value={ip}
-              readOnly
+              id="attachments"
+              type="file"
+              multiple
+              onChange={handleAttachmentsChange}
+              className="hidden"
             />
-            <CTAButton onClick={fetchIP} text="Fetch IP" />
-          </div>
+          </label>
+
+          {attachments.length > 0 && (
+            <div className="bg-gray-100 dark:bg-gray-800 p-4 rounded-md">
+              <h3 className="text-sm font-semibold mb-2">Selected Files:</h3>
+              <ul className="space-y-2 text-sm text-gray-700 dark:text-gray-300">
+                {attachments.map((file, idx) => (
+                  <li
+                    key={idx}
+                    className="flex justify-between items-center bg-white dark:bg-gray-900 px-3 py-2 rounded shadow"
+                  >
+                    <span className="truncate">{file.name}</span>
+                    <button
+                      onClick={() =>
+                        setAttachments((prev) =>
+                          prev.filter((_, i) => i !== idx)
+                        )
+                      }
+                      className="text-red-500 hover:text-red-700 ml-3 text-sm font-bold"
+                      title="Remove"
+                    >
+                      ✕
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
         </div>
 
         {/* Submit */}
-        <div className="space-y-2">
-          <h2 className="text-lg md:text-xl font-semibold">
-            Review and Submit
+        <div className="space-y-2 space-x-4">
+          <h2 className="text-lg md:text-xl font-semibold mb-4">
+            Review & Submit
           </h2>
+          <CTAButton
+            className="!bg-gray-300 !text-blue-500"
+            text="Save As Draft"
+            onClick={handleReportDraft}
+          />
           <CTAButton text="Submit Report" onClick={handleReportSubmission} />
         </div>
       </div>

@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { updateHackerProfile } from '../Services/hackerApi.js'
-
-import Button from '../Components/Button/Button'
+import Button from '../Common/Button/CTAButton'
 
 const HackerSettings = () => {
   const dispatch = useDispatch()

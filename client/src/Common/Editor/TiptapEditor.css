@@ -1,0 +1,132 @@
+/* Container styling for tiptap editor content */
+.ProseMirror {
+  background-color: black;
+  color: var(--color-textColor);
+  padding: 1rem;
+}
+
+/* Remove top margin on first block element */
+.ProseMirror > :first-child {
+  margin-top: 0;
+}
+
+/* Headings */
+.ProseMirror h1,
+.ProseMirror h2,
+.ProseMirror h3,
+.ProseMirror h4,
+.ProseMirror h5,
+.ProseMirror h6 {
+  line-height: 1.25;
+  font-weight: 600;
+  overflow-wrap: break-word;
+  margin-top: 2.5rem;
+  margin-bottom: 0.75rem;
+  color: var(--color-textColor);
+}
+
+.ProseMirror h1 {
+  font-size: 2rem;
+}
+.ProseMirror h2 {
+  font-size: 1.75rem;
+}
+.ProseMirror h3 {
+  font-size: 1.5rem;
+}
+.ProseMirror h4 {
+  font-size: 1.25rem;
+}
+.ProseMirror h5 {
+  font-size: 1.1rem;
+}
+.ProseMirror h6 {
+  font-size: 1rem;
+}
+
+/* Optional */
+.ProseMirror p {
+  margin-bottom: 0.75rem;
+}
+
+/* Paragraphs */
+.ProseMirror p {
+  margin: 1rem 0;
+  color: var(--color-textColor);
+}
+
+/* Lists */
+.ProseMirror ul {
+  list-style-type: disc;
+  margin-left: 1.5rem;
+  padding-left: 1rem;
+}
+
+.ProseMirror ol {
+  list-style-type: decimal;
+  margin-left: 1.5rem;
+  padding-left: 1rem;
+}
+
+.ProseMirror li {
+  margin: 0.25rem 0;
+  line-height: 1.6;
+}
+
+/* Inline Code */
+.ProseMirror code {
+  background-color: #1a1a3d;
+  border-radius: 0.3rem;
+  color: #e5e5ff;
+  font-size: 0.85rem;
+  padding: 0.2em 0.4em;
+  font-family: 'JetBrainsMono', monospace;
+}
+
+/* Code Block */
+.ProseMirror pre {
+  background: #1e1e2f;
+  color: #e5e5e5;
+  font-family: 'JetBrainsMono', monospace;
+  font-size: 0.85rem;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  overflow-x: auto;
+  margin: 1.5rem 0;
+}
+
+.ProseMirror pre code {
+  background: none;
+  color: inherit;
+  padding: 0;
+}
+
+/* Blockquote */
+.ProseMirror blockquote {
+  border-left: 4px solid #4b4b80;
+  padding-left: 1rem;
+  color: #c5c5ff;
+  margin: 1.5rem 0;
+  font-style: italic;
+  background-color: #0a0a2e;
+  border-radius: 0.3rem;
+}
+
+/* Horizontal Rule */
+.ProseMirror hr {
+  border: none;
+  border-top: 1px solid #2e2e5e;
+  margin: 2rem 0;
+}
+
+/* Links */
+.ProseMirror a {
+  color: var(--color-accent);
+  text-decoration: underline;
+  transition: color 0.2s ease;
+}
+
+.ProseMirror a:hover {
+  color: #b0a8ff;
+  text-decoration: none;
+}

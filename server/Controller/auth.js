@@ -213,8 +213,7 @@ export const login = async (req, res) => {
       console.log('hiii', await bcryptjs.compare(password, user.password))
 
       //compare
-      if(await bcryptjs.compare(password, user.password)) {
-
+      if (await bcryptjs.compare(password, user.password)) {
         const payLoad = {
           email: user.email,
           id: user._id,
@@ -238,15 +237,9 @@ export const login = async (req, res) => {
           success: true,
           token,
           user,
+          userType,
           message: 'logged in successfully',
         })
-
-        // return res.status(200).json({
-        //   success: true,
-        //   message: 'User Login Successfully',
-        //   user,
-        //   token,
-        // })
       } else {
         return res.status(401).json({
           success: false,
@@ -293,15 +286,9 @@ export const login = async (req, res) => {
           success: true,
           token,
           user,
+          userType,
           message: 'logged in successfully',
         })
-
-        // return res.status(200).json({
-        //   success: true,
-        //   message: 'User Login Successfully',
-        //  user,
-        //   token,
-        // })
       } else {
         return res.status(401).json({
           success: false,

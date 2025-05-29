@@ -39,7 +39,7 @@ const severityColors = {
   Informational: 'bg-blue-600',
 }
 
-const SeveritySelector = () => {
+const SeveritySelector = ({ setSeverityData }) => {
   const [mode, setMode] = useState('severity')
   const [cvssFields, setCvssFields] = useState({
     AV: 'Network',
@@ -99,6 +99,10 @@ const SeveritySelector = () => {
   const handleCVSSChange = (key, value) => {
     setCvssFields({ ...cvssFields, [key]: value })
   }
+
+  useEffect(() => {
+    setSeverityData({ severity })
+  }, [severity, setSeverityData])
 
   return (
     <div className="w-full  text-white md:max-w-[800px] h-fit p-4 rounded-lg space-y-4">

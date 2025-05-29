@@ -18,7 +18,13 @@ const initialState = {
     ? JSON.parse(localStorage.getItem('user'))
     : null,
 
-  signupData: null, // ✅ to avoid undefined errors
+  signupData: null,
+
+  userType: getCookie('userType')
+    ? JSON.parse(getCookie('userType'))
+    : localStorage.getItem('userType')
+    ? JSON.parse(localStorage.getItem('userType'))
+    : null,
 }
 
 export const authSlice = createSlice({
@@ -36,8 +42,13 @@ export const authSlice = createSlice({
       state.user = action.payload
       localStorage.setItem('user', JSON.stringify(action.payload))
     },
+    setUserType(state, action) {
+      state.userType = action.payload
+      localStorage.setItem('userType', JSON.stringify(action.payload))
+    },
   },
 })
 
-export const { setToken, setSignupData, setUser } = authSlice.actions
+export const { setToken, setSignupData, setUser, setUserType } =
+  authSlice.actions
 export default authSlice.reducer
