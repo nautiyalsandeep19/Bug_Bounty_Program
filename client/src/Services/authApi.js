@@ -118,8 +118,10 @@ export const login = (email, password, userType, navigate) => {
 
         throw new Error(response.message)
       }
+      console.log('token', response.token)
 
       toast.success('Login Successful')
+      dispatch(setToken(response.token))
       dispatch(setUser(response.user))
       dispatch(setUserType(response.userType))
       if (userType === 'company') {
@@ -135,6 +137,7 @@ export const login = (email, password, userType, navigate) => {
   }
 }
 
+//logout
 export const logout = (navigate) => {
   return async (dispatch) => {
     try {

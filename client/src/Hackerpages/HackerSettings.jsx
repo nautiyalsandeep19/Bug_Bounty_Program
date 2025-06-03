@@ -6,6 +6,7 @@ import Button from '../Common/Button/CTAButton'
 const HackerSettings = () => {
   const dispatch = useDispatch()
   const { user } = useSelector((state) => state.auth)
+  const token = useSelector((state) => state.auth.token)
 
   const [personalInfo, setPersonalInfo] = useState({
     phone: '',

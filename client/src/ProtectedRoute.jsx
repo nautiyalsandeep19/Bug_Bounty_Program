@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux'
 import { Navigate } from 'react-router-dom'
 
 const ProtectedRoute = ({ children }) => {
-  const token = useSelector((state) => state.auth.token) // <-- fix here
+  const token = useSelector((state) => state.auth.token)
   console.log('token', token)
 
   if (!token) {

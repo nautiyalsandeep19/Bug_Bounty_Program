@@ -26,6 +26,7 @@ function App() {
 
   useEffect(() => {
     const token = localStorage.getItem('authToken')
+    console.log(token)
     setIsLoggedIn(!!token)
   }, [])
 
@@ -44,16 +45,16 @@ function App() {
           <Route path="/checkemail" element={<CheckEmailPage />} />
 
           {/* Hacker Routes with HackerSidebar */}
-          <Route path="/hacker/*" element={<HackerLayout />}>
+          <Route
+            path="/hacker/*"
+            element={
+              <ProtectedRoute>
+                <HackerLayout />
+              </ProtectedRoute>
+            }
+          >
             <Route path="dashboard" element={<HackerDashboard />} />
-            <Route
-              path="setting"
-              element={
-                <ProtectedRoute>
-                  <HackerSettings />
-                </ProtectedRoute>
-              }
-            />
+            <Route path="setting" element={<HackerSettings />} />
             <Route path="leaderboard" element={<HackerLeaderboard />} />
             <Route path="bounties" element={<HackerBounties />} />
             <Route path="report" element={<HackerReports />} />
