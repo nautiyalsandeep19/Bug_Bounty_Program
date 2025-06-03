@@ -3,7 +3,6 @@ import Hacker from '../Models/hacker.js'
 export const getHackerDetails = async (req, res) => {
   try {
     // get user id from the req
-    console.log(req.user)
     const userId = req.user.id
 
     // validate user id

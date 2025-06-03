@@ -1,7 +1,9 @@
-import { setToken, setUser, setUserType } from '../Slices/authSlice'
+import { setToken, setUser, setUserType, setSocket } from '../Slices/authSlice'
 import { apiConnector, endPoints } from './ApiConnector/api'
 import toast from 'react-hot-toast'
+// import { io } from 'socket.io-client';
 
+ 
 export const sendOtp = (
   name,
   email,
@@ -120,8 +122,15 @@ export const login = (email, password, userType, navigate) => {
       }
 
       toast.success('Login Successful')
+
+      
+      
       dispatch(setUser(response.user))
       dispatch(setUserType(response.userType))
+
+      // dispatch(connectSocket()); // Connect socket
+
+
       if (userType === 'company') {
         navigate('/company/dashboard')
       } else if (userType === 'hacker') {
@@ -148,6 +157,9 @@ export const logout = (navigate) => {
       dispatch(setUser(null))
       dispatch(setUserType(null))
 
+      // dispatch(disconnectSocket());
+
+      //socket 
       // Clear localStorage
       localStorage.removeItem('token')
       localStorage.removeItem('user')
@@ -161,3 +173,45 @@ export const logout = (navigate) => {
     }
   }
 }
+
+// export const connectSocket = () => {
+//   return (dispatch, getState) => {
+
+
+//     const state = getState();
+//     const authUser = state.auth.user;
+//     const currentSocket = state.auth.socket;
+
+//     console.log("AuthUser: ",authUser)
+//     if (!authUser) return;
+
+//     // Prevent reconnection if socket already exists and is connected
+//     if (currentSocket && currentSocket.connected) {
+//       console.log('Socket already connected. Skipping reconnection.');
+//       return;
+//     }
+
+//     const BASE_URL = import.meta.env.VITE_BACKEND_HOST_URL
+//     const socket = io(BASE_URL, {
+//       query: {
+//         userId: authUser._id,
+//       },
+//     });
+
+//     // socket.connect();
+//     console.log(socket.connect())
+//     console.log('New socket connected:', socket.id);
+//     dispatch(setSocket(socket));
+//   };
+// };
+
+
+// export const disconnectSocket = () => {
+//   return (dispatch, getState) => {
+//     const socket = getState().auth.socket;
+//     if (socket?.connected) {
+//       socket.disconnect();
+//       dispatch(setSocket(null));
+//     }
+//   };
+// };

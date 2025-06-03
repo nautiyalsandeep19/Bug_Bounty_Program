@@ -57,7 +57,7 @@ export const sendOtp = async (req, res) => {
         message: 'User Already Registered',
       })
     }
-    console.log('email', email)
+  
 
     //genrate otp
     var genOtp = otpGenerator.generate(6, {
@@ -67,7 +67,7 @@ export const sendOtp = async (req, res) => {
       digits: true,
     })
 
-    console.log(genOtp)
+ 
 
     let result = await Otp.findOne({ otp: genOtp })
     while (result) {
@@ -84,7 +84,7 @@ export const sendOtp = async (req, res) => {
     const otpPayload = { email, otp: genOtp }
 
     const otpBody = await Otp.create(otpPayload)
-    console.log(otpBody)
+  
 
     res.status(200).json({
       success: true,
@@ -102,7 +102,7 @@ export const sendOtp = async (req, res) => {
 
 //signup
 export const signUp = async (req, res) => {
-  console.log('req', req.body)
+  
 
   try {
     const { name, email, password, country, domain, otp, userType } = req.body
@@ -129,7 +129,6 @@ export const signUp = async (req, res) => {
         message: 'Otp not matched!',
       })
     }
-    console.log(domain, 'hii')
 
     //password encryption
 
@@ -184,119 +183,7 @@ export const signUp = async (req, res) => {
   }
 }
 
-//Login
-// export const login = async (req, res) => {
-//   try {
-//     const { email, password, userType } = req.body
 
-//     if (!email || !password || !userType) {
-//       return res.status(401).json({
-//         success: false,
-//         message: 'All feilds are required',
-//       })
-//     }
-
-//     let user
-//     if (userType === 'hacker') {
-//       user = await Hacker.findOne({ email })
-//       if (!user) {
-//         return res.status(401).json({
-//           success: false,
-//           message: 'hacker not registerd ! please sign up',
-//         })
-//       }
-
-//       //compare
-//       if (await bcryptjs.compare(password, user.password)) {
-//         const payLoad = {
-//           email: user.email,
-//           id: user._id,
-//           userType: userType,
-//         }
-//         //genrate jwttoken
-//         const token = Jwt.sign(payLoad, process.env.JWT_SECRET, {
-//           expiresIn: '4h',
-//         })
-
-//         user.token = token
-//         user.password = undefined
-
-//         //create cookie
-//         const options = {
-//           expires: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000),
-//           httpOnly: true,
-//         }
-
-//         res.cookie('token', token, options).status(200).json({
-//           success: true,
-//           token,
-//           user,
-//           userType,
-//           message: 'logged in successfully',
-//         })
-//       } else {
-//         return res.status(401).json({
-//           success: false,
-//           message: 'password is incorrect',
-//         })
-//       }
-//     } else if (userType === 'company') {
-//       user = await Company.findOne({ email })
-//       if (!user) {
-//         return res.status(401).json({
-//           success: false,
-//           message: 'user not registerd ! please sign up',
-//         })
-//       }
-//       console.log(user)
-
-//       console.log('frontend', password)
-//       console.log('encrypted password from backend', user.password)
-
-//       //genrate jwttoken
-//       if (await bcryptjs.compare(password, user.password)) {
-//         const payLoad = {
-//           email: user.email,
-//           id: user._id,
-//           userType: userType,
-//         }
-//         const token = Jwt.sign(payLoad, process.env.JWT_SECRET, {
-//           expiresIn: '4h',
-//         })
-
-//         user.token = token
-//         user.password = undefined
-
-//         //create cookie
-
-//         const options = {
-//           expires: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000),
-//           httpOnly: true,
-//         }
-
-//         res.cookie('token', token, options).status(200).json({
-//           success: true,
-//           token,
-//           user,
-//           userType,
-//           message: 'logged in successfully',
-//         })
-//       } else {
-//         return res.status(401).json({
-//           success: false,
-//           message: 'password is incorrect',
-//         })
-//       }
-//     }
-//   } catch (error) {
-//     console.log(error)
-
-//     return res.status(500).json({
-//       success: false,
-//       message: 'Unable to login ',
-//     })
-//   }
-// }
 export const login = async (req, res) => {
   try {
     const { email, password, userType } = req.body
@@ -397,8 +284,7 @@ export const changePassword = async (req, res) => {
       })
     }
 
-    console.log('hacker', req.hacker)
-    console.log('company', req.company)
+  
     let user
     if (req.hacker) {
       user = await Hacker.findById(req.hacker.id)
