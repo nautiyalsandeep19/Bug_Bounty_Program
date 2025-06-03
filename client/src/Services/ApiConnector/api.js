@@ -3,11 +3,13 @@ import axios from 'axios'
 const BASE_URL = import.meta.env.VITE_BACKEND_HOST_URL
 
 export const endPoints = {
+  // Auth
   SEND_OTP_API: BASE_URL + '/api/auth/sendOtp',
   LOGIN_API: BASE_URL + '/api/auth/login',
   SIGNUP_API: BASE_URL + '/api/auth/signUp',
   RESET_PASSWORD_TOKEN: BASE_URL + '/api/auth/resetPasswordToken',
   RESET_PASSWORD: BASE_URL + '/api/auth/resetpassword',
+  LOGOUT_API: BASE_URL + '/api/auth/logout',
 
   // company
   GET_COMPANY_DETAILS: BASE_URL + '/api/company/companyDetails',
@@ -20,10 +22,8 @@ export const endPoints = {
   //hackers
   GET_HACKER_DETAILS: BASE_URL + '/api/hacker/hackerDetails',
   UPDATE_HACKER_DETAILS: BASE_URL + '/api/hacker/updateHackerDetails',
-
   //leaderBoard
   GET_LEADERBOARD: BASE_URL + '/api/hacker/leaderBoard',
-
   //reports
   CREATE_REPORT: BASE_URL + '/api/reports/createReport',
   UPDATE_REPORT_STATUS: BASE_URL + '/api/reports/updateStatus',

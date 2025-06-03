@@ -24,7 +24,7 @@ const logger = winston.createLogger({
     }),
 
     // Optional: also log to console in development
-    new winston.transports.Console(),
+    // new winston.transports.Console(),
   ],
 })
 

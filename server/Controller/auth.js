@@ -5,6 +5,7 @@ import Otp from '../Models/otp.js'
 import bcryptjs from 'bcryptjs'
 import Jwt from 'jsonwebtoken'
 import dotenv from 'dotenv'
+import redisClient from '../Config/redisClient.js'
 
 dotenv.config()
 //send otp
@@ -184,124 +185,187 @@ export const signUp = async (req, res) => {
 }
 
 //Login
+// export const login = async (req, res) => {
+//   try {
+//     const { email, password, userType } = req.body
+
+//     if (!email || !password || !userType) {
+//       return res.status(401).json({
+//         success: false,
+//         message: 'All feilds are required',
+//       })
+//     }
+
+//     let user
+//     if (userType === 'hacker') {
+//       user = await Hacker.findOne({ email })
+//       if (!user) {
+//         return res.status(401).json({
+//           success: false,
+//           message: 'hacker not registerd ! please sign up',
+//         })
+//       }
+
+//       //compare
+//       if (await bcryptjs.compare(password, user.password)) {
+//         const payLoad = {
+//           email: user.email,
+//           id: user._id,
+//           userType: userType,
+//         }
+//         //genrate jwttoken
+//         const token = Jwt.sign(payLoad, process.env.JWT_SECRET, {
+//           expiresIn: '4h',
+//         })
+
+//         user.token = token
+//         user.password = undefined
+
+//         //create cookie
+//         const options = {
+//           expires: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000),
+//           httpOnly: true,
+//         }
+
+//         res.cookie('token', token, options).status(200).json({
+//           success: true,
+//           token,
+//           user,
+//           userType,
+//           message: 'logged in successfully',
+//         })
+//       } else {
+//         return res.status(401).json({
+//           success: false,
+//           message: 'password is incorrect',
+//         })
+//       }
+//     } else if (userType === 'company') {
+//       user = await Company.findOne({ email })
+//       if (!user) {
+//         return res.status(401).json({
+//           success: false,
+//           message: 'user not registerd ! please sign up',
+//         })
+//       }
+//       console.log(user)
+
+//       console.log('frontend', password)
+//       console.log('encrypted password from backend', user.password)
+
+//       //genrate jwttoken
+//       if (await bcryptjs.compare(password, user.password)) {
+//         const payLoad = {
+//           email: user.email,
+//           id: user._id,
+//           userType: userType,
+//         }
+//         const token = Jwt.sign(payLoad, process.env.JWT_SECRET, {
+//           expiresIn: '4h',
+//         })
+
+//         user.token = token
+//         user.password = undefined
+
+//         //create cookie
+
+//         const options = {
+//           expires: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000),
+//           httpOnly: true,
+//         }
+
+//         res.cookie('token', token, options).status(200).json({
+//           success: true,
+//           token,
+//           user,
+//           userType,
+//           message: 'logged in successfully',
+//         })
+//       } else {
+//         return res.status(401).json({
+//           success: false,
+//           message: 'password is incorrect',
+//         })
+//       }
+//     }
+//   } catch (error) {
+//     console.log(error)
+
+//     return res.status(500).json({
+//       success: false,
+//       message: 'Unable to login ',
+//     })
+//   }
+// }
 export const login = async (req, res) => {
   try {
     const { email, password, userType } = req.body
 
     if (!email || !password || !userType) {
-      return res.status(401).json({
+      return res.status(400).json({
         success: false,
-        message: 'All feilds are required',
+        message: 'All fields are required',
       })
     }
-    console.log(email, password)
 
     let user
+
     if (userType === 'hacker') {
       user = await Hacker.findOne({ email })
-      if (!user) {
-        return res.status(401).json({
-          success: false,
-          message: 'hacker not registerd ! please sign up',
-        })
-      }
-      console.log(user)
-
-      console.log('frontend', password)
-      console.log('encrypted password from backend', user.password)
-
-      console.log('hiii', await bcryptjs.compare(password, user.password))
-
-      //compare
-      if (await bcryptjs.compare(password, user.password)) {
-        const payLoad = {
-          email: user.email,
-          id: user._id,
-          userType: userType,
-        }
-        //genrate jwttoken
-        const token = Jwt.sign(payLoad, process.env.JWT_SECRET, {
-          expiresIn: '4h',
-        })
-
-        user.token = token
-        user.password = undefined
-
-        //create cookie
-        const options = {
-          expires: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000),
-          httpOnly: true,
-        }
-
-        res.cookie('token', token, options).status(200).json({
-          success: true,
-          token,
-          user,
-          userType,
-          message: 'logged in successfully',
-        })
-      } else {
-        return res.status(401).json({
-          success: false,
-          message: 'password is incorrect',
-        })
-      }
     } else if (userType === 'company') {
       user = await Company.findOne({ email })
-      if (!user) {
-        return res.status(401).json({
-          success: false,
-          message: 'user not registerd ! please sign up',
-        })
-      }
-      console.log(user)
-
-      console.log('frontend', password)
-      console.log('encrypted password from backend', user.password)
-
-      //genrate jwttoken
-
-      console.log('hiii', await bcryptjs.compare(password, user.password))
-      if (await bcryptjs.compare(password, user.password)) {
-        const payLoad = {
-          email: user.email,
-          id: user._id,
-          userType: userType,
-        }
-        const token = Jwt.sign(payLoad, process.env.JWT_SECRET, {
-          expiresIn: '4h',
-        })
-
-        user.token = token
-        user.password = undefined
-
-        //create cookie
-
-        const options = {
-          expires: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000),
-          httpOnly: true,
-        }
-
-        res.cookie('token', token, options).status(200).json({
-          success: true,
-          token,
-          user,
-          userType,
-          message: 'logged in successfully',
-        })
-      } else {
-        return res.status(401).json({
-          success: false,
-          message: 'password is incorrect',
-        })
-      }
+    } else {
+      return res.status(400).json({
+        success: false,
+        message: 'Invalid user type',
+      })
     }
-  } catch (error) {
-    console.log(error)
 
+    if (!user) {
+      return res.status(401).json({
+        success: false,
+        message: 'User not registered! Please sign up.',
+      })
+    }
+
+    const isPasswordMatch = await bcryptjs.compare(password, user.password)
+    if (!isPasswordMatch) {
+      return res.status(401).json({
+        success: false,
+        message: 'Password is incorrect',
+      })
+    }
+
+    const payLoad = {
+      email: user.email,
+      id: user._id,
+      userType,
+    }
+
+    const token = Jwt.sign(payLoad, process.env.JWT_SECRET, {
+      expiresIn: '4h',
+    })
+
+    user.token = token
+    user.password = undefined // hide password in response
+
+    const cookieOptions = {
+      expires: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000), // 3 days
+      httpOnly: true,
+    }
+
+    return res.cookie('token', token, cookieOptions).status(200).json({
+      success: true,
+      token,
+      user,
+      userType,
+      message: 'Logged in successfully',
+    })
+  } catch (error) {
+    console.error('Login error:', error)
     return res.status(500).json({
       success: false,
-      message: 'Unable to login ',
+      message: 'Unable to login. Please try again later.',
     })
   }
 }
@@ -377,6 +441,38 @@ export const changePassword = async (req, res) => {
     return res.status(500).json({
       success: false,
       message: 'Unable to change password ',
+    })
+  }
+}
+
+//logout
+
+export const logout = async (req, res) => {
+  try {
+    const token = req.cookies.token
+
+    if (token) {
+      const decoded = Jwt.decode(token)
+      const expiry = decoded.exp
+      const ttl = expiry - Math.floor(Date.now() / 1000)
+
+      await redisClient.set(`bl_${token}`, 'true', { EX: ttl }) // Blacklist with TTL
+    }
+
+    res.clearCookie('token', {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'Strict',
+    })
+
+    res.status(200).json({
+      success: true,
+      message: 'Logout successful',
+    })
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: `Internal server error: ${error.message}`,
     })
   }
 }
