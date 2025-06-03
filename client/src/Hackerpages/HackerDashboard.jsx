@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { getHackerDetails } from '../Services/hackerApi'
 import Button from '../Common/Button/CTAButton'
 import { FaBug, FaBullhorn, FaSyncAlt, FaUserPlus } from 'react-icons/fa'
+import { token } from '../Slices/authSlice'
 
 const FeedDashboard = () => {
   const [hacker, setHacker] = useState(null)

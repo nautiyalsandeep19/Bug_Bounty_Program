@@ -135,29 +135,29 @@ export const login = (email, password, userType, navigate) => {
   }
 }
 
-// Helper function to delete a cookie
-
-function deleteCookie(name) {
-  document.cookie = `${name}=; Max-Age=0; Path=/; SameSite=Lax`
-}
-
 export const logout = (navigate) => {
-  return (dispatch) => {
-    dispatch(setToken(null))
-    dispatch(setUser(null))
-    dispatch(setUserType(null))
+  return async (dispatch) => {
+    try {
+      // Call the backend logout API to clear the cookie
+      await apiConnector('POST', endPoints.LOGOUT_API, null, {
+        withCredentials: true,
+      })
 
-    // Remove from localStorage
-    localStorage.removeItem('token')
-    localStorage.removeItem('user')
-    localStorage.removeItem('userType')
+      // Clear Redux state
+      dispatch(setToken(null))
+      dispatch(setUser(null))
+      dispatch(setUserType(null))
 
-    // Remove from cookies
-    deleteCookie('token')
-    deleteCookie('user')
-    deleteCookie('userType')
+      // Clear localStorage
+      localStorage.removeItem('token')
+      localStorage.removeItem('user')
+      localStorage.removeItem('userType')
 
-    toast.success('Logged Out')
-    navigate('/signup')
+      toast.success('Logged out successfully')
+      navigate('/signup')
+    } catch (error) {
+      console.error('Logout error:', error)
+      toast.error(error?.response?.data?.message || 'Logout failed. Try again.')
+    }
   }
 }

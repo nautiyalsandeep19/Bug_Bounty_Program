@@ -98,8 +98,6 @@ const Report = () => {
       reportData,
     }
 
-    console.log('Submitting payload:', payload)
-
     try {
       await createReport(payload)
       // Optionally reset form here
