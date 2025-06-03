@@ -48,6 +48,9 @@ io.on('connection', (socket) => {
   console.log('A user connected:', socket.id)
 
   const userId = socket.handshake.query.userId
+// console.log("query: ",socket.handshake.query.userId);
+
+  console.log("userId from backend: ",userId)
   
   if(userId) userSocketMap[userId] = socket.id
 
