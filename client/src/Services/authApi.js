@@ -120,11 +120,10 @@ export const login = (email, password, userType, navigate) => {
 
         throw new Error(response.message)
       }
+      console.log('token', response.token)
 
       toast.success('Login Successful')
-
-      
-      
+      dispatch(setToken(response.token))
       dispatch(setUser(response.user))
       dispatch(setUserType(response.userType))
 
@@ -144,6 +143,7 @@ export const login = (email, password, userType, navigate) => {
   }
 }
 
+//logout
 export const logout = (navigate) => {
   return async (dispatch) => {
     try {
@@ -173,45 +173,3 @@ export const logout = (navigate) => {
     }
   }
 }
-
-// export const connectSocket = () => {
-//   return (dispatch, getState) => {
-
-
-//     const state = getState();
-//     const authUser = state.auth.user;
-//     const currentSocket = state.auth.socket;
-
-//     console.log("AuthUser: ",authUser)
-//     if (!authUser) return;
-
-//     // Prevent reconnection if socket already exists and is connected
-//     if (currentSocket && currentSocket.connected) {
-//       console.log('Socket already connected. Skipping reconnection.');
-//       return;
-//     }
-
-//     const BASE_URL = import.meta.env.VITE_BACKEND_HOST_URL
-//     const socket = io(BASE_URL, {
-//       query: {
-//         userId: authUser._id,
-//       },
-//     });
-
-//     // socket.connect();
-//     console.log(socket.connect())
-//     console.log('New socket connected:', socket.id);
-//     dispatch(setSocket(socket));
-//   };
-// };
-
-
-// export const disconnectSocket = () => {
-//   return (dispatch, getState) => {
-//     const socket = getState().auth.socket;
-//     if (socket?.connected) {
-//       socket.disconnect();
-//       dispatch(setSocket(null));
-//     }
-//   };
-// };

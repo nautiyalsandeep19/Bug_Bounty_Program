@@ -8,9 +8,7 @@ function getCookie(name) {
 const initialState = {
   token: getCookie('token')
     ? getCookie('token')
-    : localStorage.getItem('token')
-    ? JSON.parse(localStorage.getItem('token'))
-    : null,
+    : localStorage.getItem('token') || null,
 
   user: getCookie('user')
     ? JSON.parse(getCookie('user'))
@@ -25,18 +23,19 @@ const initialState = {
     : localStorage.getItem('userType')
     ? JSON.parse(localStorage.getItem('userType'))
     : null,
-
-    socket:null,
 }
 
 export const authSlice = createSlice({
   name: 'auth',
-  initialState: initialState,
+  initialState,
   reducers: {
     setToken(state, action) {
       state.token = action.payload
-      localStorage.setItem('token', JSON.stringify(action.payload))
+      console.log('token', state.token)
+
+      localStorage.setItem('token', action.payload) // store token as raw string
     },
+
     setSignupData(state, action) {
       state.signupData = action.payload
     },
@@ -48,14 +47,10 @@ export const authSlice = createSlice({
       state.userType = action.payload
       localStorage.setItem('userType', JSON.stringify(action.payload))
     },
-    setSocket(state,action){
-      state.socket = action.payload
-    }
-
-    
   },
 })
 
-export const { setToken, setSignupData, setUser, setUserType, token, setSocket } =
+export const { setToken, setSignupData, setUser, setUserType } =
   authSlice.actions
+
 export default authSlice.reducer
