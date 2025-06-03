@@ -19,6 +19,7 @@ import CompanyLeaderBoard from './CompanyPages/CompanyLeaderboard'
 import CompanyAssets from './CompanyPages/CompanyAssets'
 import CompanyBounties from './CompanyPages/CompanyBounties'
 import ProgramList from './CompanyComponents/Programs/ProgramDetails/ProgramList'
+import ProtectedRoute from './ProtectedRoute'
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false)
@@ -45,7 +46,14 @@ function App() {
           {/* Hacker Routes with HackerSidebar */}
           <Route path="/hacker/*" element={<HackerLayout />}>
             <Route path="dashboard" element={<HackerDashboard />} />
-            <Route path="setting" element={<HackerSettings />} />
+            <Route
+              path="setting"
+              element={
+                <ProtectedRoute>
+                  <HackerSettings />
+                </ProtectedRoute>
+              }
+            />
             <Route path="leaderboard" element={<HackerLeaderboard />} />
             <Route path="bounties" element={<HackerBounties />} />
             <Route path="report" element={<HackerReports />} />
