@@ -4,7 +4,6 @@ import { Navigate } from 'react-router-dom'
 
 const ProtectedRoute = ({ children }) => {
   const token = useSelector((state) => state.auth.token)
-  console.log('token', token)
 
   if (!token) {
     // Redirect to login if no token
