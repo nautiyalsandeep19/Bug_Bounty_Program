@@ -33,7 +33,6 @@ export const authSlice = createSlice({
   reducers: {
     setToken(state, action) {
       state.token = action.payload
-      console.log('token', state.token)
 
       localStorage.setItem('token', action.payload) // store token as raw string
     },
@@ -55,7 +54,7 @@ export const authSlice = createSlice({
   },
 })
 
-export const { setToken, setSignupData, setUser, setUserType} =
+export const { setToken, setSignupData, setUser, setUserType } =
   authSlice.actions
 
 export default authSlice.reducer

@@ -32,8 +32,6 @@ export const sendOtp = (
 
       console.log('SENDOTP API RESPONSE............', response)
 
-      console.log(response)
-
       // if response.success is false then throw error
       if (!response.success) {
         toast.error(response.errors[0].msg)
@@ -84,9 +82,6 @@ export const signup = (
         userType,
         country
       )
-
-      // console.log('SIGNUP API RESPONSE............', response)
-
       if (!response.success) {
         toast.error(response.message, 'hii')
         throw new Error(response.message)
@@ -123,7 +118,6 @@ export const login = (email, password, userType, navigate) => {
 
         throw new Error(response.message)
       }
-      console.log('token', response.token)
 
       toast.success('Login Successful')
       dispatch(setToken(response.token))
@@ -154,7 +148,6 @@ export const login = (email, password, userType, navigate) => {
 export const logout = (navigate) => {
   return async (dispatch) => {
     try {
-      // Call the backend logout API to clear the cookie
       await apiConnector('POST', endPoints.LOGOUT_API, null, {
         withCredentials: true,
       })
@@ -164,7 +157,6 @@ export const logout = (navigate) => {
       dispatch(setUser(null))
       dispatch(setUserType(null))
 
-      // Disconnect socket if it's connected
       if (socket) {
         socket.disconnect()
         socket = null
