@@ -13,6 +13,7 @@ import uploaderRouter from './Routes/uploaderRoute.js'
 import { authMid } from './Middleware/authMid.js'
 import logRequest from './Middleware/logRequest.js'
 import reportRoute from './Routes/reportRoute.js'
+import messageRoute from './Routes/messageRoute.js'
 import { app, server } from './Config/socket.js' // ✅ correctly imported
 
 dotenv.config()
@@ -48,6 +49,7 @@ app.use('/api/assets', assetRouter)
 app.use('/api/programs', programRouter)
 app.use('/api/hacker', hackerRoute)
 app.use('/api/reports', reportRoute)
+app.use('/api/messages', messageRoute)
 
 app.get('/', (req, res) => {
   res.send('Hello from server!')

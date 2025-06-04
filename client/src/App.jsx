@@ -1,34 +1,34 @@
-import React, { useEffect, useState } from 'react'
-import { Routes, Route, useLocation } from 'react-router'
-import SignUp from './Common/LoginSignup/SignUp'
-import Login from './Common/LoginSignup/Login'
-import VerifyOtp from './Common/LoginSignup/VerifyOtp'
-import ResetPassword from './Common/LoginSignup/ResetPassword'
-import CheckEmailPage from './Common/LoginSignup/CheckEmailpage'
-import ProgramsPage from './Common/ProgramsPage'
-import HackerLayout from './Layouts/HackerLayout'
-import CompanyLayout from './Layouts/CompanyLayout'
-import HackerDashboard from './Hackerpages/HackerDashboard'
-import HackerSettings from './Hackerpages/HackerSettings'
-import HackerLeaderboard from './HackerPages/HackerLeaderboard'
-import HackerBounties from './HackerPages/HackerBounties'
-import HackerReports from './HackerPages/HackerReports'
-import CompanyDashboard from './CompanyPages/CompanyDashboard'
-import CompanySetting from './CompanyPages/CompanySetting'
-import CompanyLeaderBoard from './CompanyPages/CompanyLeaderboard'
-import CompanyAssets from './CompanyPages/CompanyAssets'
-import CompanyBounties from './CompanyPages/CompanyBounties'
-import ProgramList from './CompanyComponents/Programs/ProgramDetails/ProgramList'
-import ProtectedRoute from './ProtectedRoute'
+import React, { useEffect, useState } from "react";
+import { Routes, Route, useLocation } from "react-router";
+import SignUp from "./Common/LoginSignup/SignUp";
+import Login from "./Common/LoginSignup/Login";
+import VerifyOtp from "./Common/LoginSignup/VerifyOtp";
+import ResetPassword from "./Common/LoginSignup/ResetPassword";
+import CheckEmailPage from "./Common/LoginSignup/CheckEmailpage";
+import ProgramsPage from "./Common/ProgramsPage";
+import HackerLayout from "./Layouts/HackerLayout";
+import CompanyLayout from "./Layouts/CompanyLayout";
+import HackerDashboard from "./Hackerpages/HackerDashboard";
+import HackerSettings from "./Hackerpages/HackerSettings";
+import HackerLeaderboard from "./HackerPages/HackerLeaderboard";
+import HackerBounties from "./HackerPages/HackerBounties";
+import HackerReports from "./HackerPages/HackerReports";
+import CompanyDashboard from "./CompanyPages/CompanyDashboard";
+import CompanySetting from "./CompanyPages/CompanySetting";
+import CompanyLeaderBoard from "./CompanyPages/CompanyLeaderboard";
+import CompanyAssets from "./CompanyPages/CompanyAssets";
+import CompanyBounties from "./CompanyPages/CompanyBounties";
+import ProgramList from "./CompanyComponents/Programs/ProgramDetails/ProgramList";
+import ProtectedRoute from "./ProtectedRoute";
+import ChatRoom from "./Common/ChatRoom/ReportChat";
 
 function App() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false)
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
-    const token = localStorage.getItem('authToken')
-    console.log(token)
-    setIsLoggedIn(!!token)
-  }, [])
+    const token = localStorage.getItem("authToken");
+    setIsLoggedIn(!!token);
+  }, []);
 
   return (
     <div className="flex min-h-screen bg-[#0e0e0e] text-white">
@@ -59,6 +59,7 @@ function App() {
             <Route path="bounties" element={<HackerBounties />} />
             <Route path="report" element={<HackerReports />} />
             <Route path="programs" element={<ProgramsPage />} />
+            <Route path="chat/:reportId" element={<ChatRoom />} />
           </Route>
 
           {/* Company Routes with CompanySidebar */}
@@ -70,10 +71,12 @@ function App() {
             <Route path="bounties" element={<CompanyBounties />} />
             <Route path="programs" element={<ProgramList />} />
           </Route>
+
+          {/* 👇 Route for chat with dynamic reportId */}
         </Routes>
       </main>
     </div>
-  )
+  );
 }
 
-export default App
+export default App;
