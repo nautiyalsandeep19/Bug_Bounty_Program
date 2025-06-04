@@ -1,11 +1,9 @@
 import { setToken, setUser, setUserType } from '../Slices/authSlice'
-// import { socket } from '../socket.js'
+import { connectSocket, disconnectSocket } from '../socket'
+
 import { apiConnector, endPoints } from './ApiConnector/api'
 import toast from 'react-hot-toast'
 import { io } from 'socket.io-client'
-
-// Define socket at the module level
-let socket = null
 
 export const sendOtp = (
   name,
@@ -61,8 +59,6 @@ export const signup = (
 ) => {
   return async () => {
     try {
-      // call the signup API
-
       const response = await apiConnector('POST', endPoints.SIGNUP_API, {
         name,
         email,
@@ -123,13 +119,7 @@ export const login = (email, password, userType, navigate) => {
       dispatch(setToken(response.token))
       dispatch(setUser(response.user))
       dispatch(setUserType(response.userType))
-
-      socket = io('http://localhost:8000', {
-        query: {
-          userId: response.user._id,
-        },
-      })
-      socket.connect()
+      connectSocket(response.user._id)
 
       if (userType === 'company') {
         navigate('/company/dashboard')
@@ -157,10 +147,9 @@ export const logout = (navigate) => {
       dispatch(setUser(null))
       dispatch(setUserType(null))
 
-      if (socket) {
-        socket.disconnect()
-        socket = null
-      }
+      // Disconnect socket if it's connected
+
+      disconnectSocket()
 
       //socket
       // Clear localStorage

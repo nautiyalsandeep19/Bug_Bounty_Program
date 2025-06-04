@@ -20,6 +20,7 @@ import CompanyAssets from './CompanyPages/CompanyAssets'
 import CompanyBounties from './CompanyPages/CompanyBounties'
 import ProgramList from './CompanyComponents/Programs/ProgramDetails/ProgramList'
 import ProtectedRoute from './ProtectedRoute'
+import ChatRoom from './Common/ChatRoom/ReportChat'
 
 function App() {
   return (
@@ -51,6 +52,7 @@ function App() {
             <Route path="bounties" element={<HackerBounties />} />
             <Route path="report" element={<HackerReports />} />
             <Route path="programs" element={<ProgramsPage />} />
+            <Route path="chat/:reportId" element={<ChatRoom />} />
           </Route>
 
           {/* Company Routes with CompanySidebar */}
@@ -69,6 +71,8 @@ function App() {
             <Route path="bounties" element={<CompanyBounties />} />
             <Route path="programs" element={<ProgramList />} />
           </Route>
+
+          {/* 👇 Route for chat with dynamic reportId */}
         </Routes>
       </main>
     </div>
