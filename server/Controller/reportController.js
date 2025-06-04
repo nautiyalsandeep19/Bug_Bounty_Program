@@ -19,6 +19,8 @@ export const createReport = async (req, res) => {
       attachments,
       vulnerabilityImpact,
       testingEmail,
+      status,
+      submitDate,
     } = reportData
     if (
       !scope ||
@@ -46,8 +48,9 @@ export const createReport = async (req, res) => {
       summary,
       attachments: attachments || [],
       vulnerabilityImpact,
-
       testingEmail,
+      status,
+      submitDate,
     }
     const newReport = await Report.create(report)
     res.status(201).json({

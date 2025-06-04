@@ -1,12 +1,11 @@
+
 import { setToken, setUser, setUserType } from "../Slices/authSlice";
 import { connectSocket, disconnectSocket } from "../socket";
-// import { socket } from '../socket.js'
-import { apiConnector, endPoints } from "./ApiConnector/api";
-import toast from "react-hot-toast";
-import { io } from "socket.io-client";
 
-// Define socket at the module level
-// let socket = null;
+import { apiConnector, endPoints } from './ApiConnector/api'
+import toast from 'react-hot-toast'
+import { io } from 'socket.io-client'
+
 
 export const sendOtp = (
   name,
@@ -21,7 +20,7 @@ export const sendOtp = (
   return async () => {
     try {
       // call the send otp API
-      const response = await apiConnector("POST", endPoints.SEND_OTP_API, {
+      const response = await apiConnector('POST', endPoints.SEND_OTP_API, {
         name,
         email,
         password,
@@ -29,28 +28,28 @@ export const sendOtp = (
         country,
         userType,
         domain,
-      });
+      })
 
-      console.log("SENDOTP API RESPONSE............", response);
+      console.log('SENDOTP API RESPONSE............', response)
 
-      console.log(response);
+      console.log(response)
 
       // if response.success is false then throw error
       if (!response.success) {
-        toast.error(response.errors[0].msg);
-        throw new Error(response.message);
+        toast.error(response.errors[0].msg)
+        throw new Error(response.message)
       }
 
       // toast otp sent successfull
-      toast.success("OTP Sent Successfully");
+      toast.success('OTP Sent Successfully')
 
       // navigate to verify email
-      navigate("/verifyOtp");
+      navigate('/verifyOtp')
     } catch (error) {
-      console.log("SENDOTP API ERROR............", error);
+      console.log('SENDOTP API ERROR............', error)
     }
-  };
-};
+  }
+}
 
 export const signup = (
   name,
@@ -64,9 +63,9 @@ export const signup = (
 ) => {
   return async () => {
     try {
-      // call the signup API
+   
 
-      const response = await apiConnector("POST", endPoints.SIGNUP_API, {
+      const response = await apiConnector('POST', endPoints.SIGNUP_API, {
         name,
         email,
         password,
@@ -74,9 +73,9 @@ export const signup = (
         domain,
         otp,
         userType,
-      });
+      })
       console.log(
-        " data is :",
+        ' data is :',
         name,
         email,
         password,
@@ -84,28 +83,28 @@ export const signup = (
         domain,
         userType,
         country
-      );
+      )
 
       // console.log('SIGNUP API RESPONSE............', response)
 
       if (!response.success) {
-        toast.error(response.message, "hii");
-        throw new Error(response.message);
+        toast.error(response.message, 'hii')
+        throw new Error(response.message)
       }
 
-      toast.success("Signup Successful");
-      navigate("/login");
+      toast.success('Signup Successful')
+      navigate('/login')
     } catch (error) {
-      toast.error(error.message);
+      toast.error(error.message)
     }
-  };
-};
+  }
+}
 
 export const login = (email, password, userType, navigate) => {
   return async (dispatch) => {
     try {
       const response = await apiConnector(
-        "POST",
+        'POST',
         endPoints.LOGIN_API,
         {
           email,
@@ -115,66 +114,66 @@ export const login = (email, password, userType, navigate) => {
         {
           withCredentials: true,
         }
-      );
+      )
 
-      console.log(response);
+      console.log(response)
 
       if (!response.success) {
-        toast.error(response.message || response.errors[0].msg);
+        toast.error(response.message || response.errors[0].msg)
 
-        throw new Error(response.message);
+        throw new Error(response.message)
       }
 
-      toast.success("Login Successful");
-      dispatch(setToken(response.token));
-      dispatch(setUser(response.user));
-      dispatch(setUserType(response.userType));
-
+      toast.success('Login Successful')
+      dispatch(setToken(response.token))
+      dispatch(setUser(response.user))
+      dispatch(setUserType(response.userType))
       connectSocket(response.user._id);
 
-      if (userType === "company") {
-        navigate("/company/dashboard");
-      } else if (userType === "hacker") {
-        navigate("/hacker/dashboard");
+
+      if (userType === 'company') {
+        navigate('/company/dashboard')
+      } else if (userType === 'hacker') {
+        navigate('/hacker/dashboard')
       } else {
-        navigate("/login");
+        navigate('/login')
       }
     } catch (error) {
-      console.log("LOGIN API ERROR............", error);
+      console.log('LOGIN API ERROR............', error)
     }
-  };
-};
+  }
+}
 
 //logout
 export const logout = (navigate) => {
   return async (dispatch) => {
     try {
       // Call the backend logout API to clear the cookie
-      await apiConnector("POST", endPoints.LOGOUT_API, null, {
+      await apiConnector('POST', endPoints.LOGOUT_API, null, {
         withCredentials: true,
-      });
+      })
 
       // Clear Redux state
-      dispatch(setToken(null));
-      dispatch(setUser(null));
-      dispatch(setUserType(null));
+      dispatch(setToken(null))
+      dispatch(setUser(null))
+      dispatch(setUserType(null))
 
       // Disconnect socket if it's connected
-      // disconnectSocket();
+
+//       disconnectSocket();
+
 
       //socket
       // Clear localStorage
-      localStorage.removeItem("token");
-      localStorage.removeItem("user");
-      localStorage.removeItem("userType");
+      localStorage.removeItem('token')
+      localStorage.removeItem('user')
+      localStorage.removeItem('userType')
 
-      toast.success("Logged out successfully");
-      navigate("/signup");
+      toast.success('Logged out successfully')
+      navigate('/signup')
     } catch (error) {
-      console.error("Logout error:", error);
-      toast.error(
-        error?.response?.data?.message || "Logout failed. Try again."
-      );
+      console.error('Logout error:', error)
+      toast.error(error?.response?.data?.message || 'Logout failed. Try again.')
     }
-  };
-};
+  }
+}
