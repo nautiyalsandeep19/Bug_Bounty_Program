@@ -1,6 +1,11 @@
 import { setToken, setUser, setUserType } from '../Slices/authSlice'
+// import { socket } from '../socket.js'
 import { apiConnector, endPoints } from './ApiConnector/api'
 import toast from 'react-hot-toast'
+import { io } from 'socket.io-client'
+
+// Define socket at the module level
+let socket = null
 
 export const sendOtp = (
   name,
@@ -124,6 +129,14 @@ export const login = (email, password, userType, navigate) => {
       dispatch(setToken(response.token))
       dispatch(setUser(response.user))
       dispatch(setUserType(response.userType))
+
+      socket = io('http://localhost:8000', {
+        query: {
+          userId: response.user._id,
+        },
+      })
+      socket.connect()
+
       if (userType === 'company') {
         navigate('/company/dashboard')
       } else if (userType === 'hacker') {
@@ -151,6 +164,13 @@ export const logout = (navigate) => {
       dispatch(setUser(null))
       dispatch(setUserType(null))
 
+      // Disconnect socket if it's connected
+      if (socket) {
+        socket.disconnect()
+        socket = null
+      }
+
+      //socket
       // Clear localStorage
       localStorage.removeItem('token')
       localStorage.removeItem('user')
