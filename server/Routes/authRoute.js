@@ -1,5 +1,11 @@
 import express from 'express'
-import { changePassword, login, sendOtp, signUp } from '../Controller/auth.js'
+import {
+  changePassword,
+  login,
+  logout,
+  sendOtp,
+  signUp,
+} from '../Controller/auth.js'
 import { authMid } from '../Middleware/authMid.js'
 import {
   resetPasswordToken,
@@ -22,6 +28,7 @@ const router = express.Router()
 router.post('/sendOtp', otpLimiter, otpValidator, validate, sendOtp)
 router.post('/signUp', signUpValidator, validate, signUp)
 router.post('/login', loginLimiter, loginValidator, validate, login)
+router.post('/logout', logout)
 
 //protected route only uses when the user logged in
 router.post(

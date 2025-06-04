@@ -15,6 +15,7 @@ import { createReport } from '../../Services/reportApi'
 import TiptapEditor from '../../Common/Editor/TiptapEditor'
 import { uploadFiles } from '../../Services/uploaderApi'
 import toast from 'react-hot-toast'
+import ReportTemplate from './ReportTemplate'
 
 const Report = () => {
   const [scope, setScope] = useState('')
@@ -29,6 +30,7 @@ const Report = () => {
   const [filteredTypes, setFilteredTypes] = useState(vulnerabilityTypes)
   const [vulnerabilityImpact, setVulnerabilityImpact] = useState('')
   const [attachments, setAttachments] = useState([])
+  const [showPreview, setShowPreview] = useState(false)
 
   const MAX_TOTAL_SIZE_MB = 5
 
@@ -96,8 +98,6 @@ const Report = () => {
       reportData,
     }
 
-    console.log('Submitting payload:', payload)
-
     try {
       await createReport(payload)
       // Optionally reset form here
@@ -140,7 +140,7 @@ const Report = () => {
   const RequiredMark = () => <span className="text-red-500 ml-1">*</span>
 
   return (
-    <section className="max-w-5xl w-full h-full mx-auto">
+    <section className="max-w-5xl w-full h-full mx-auto ">
       <div className="w-full md:max-w-3xl mx-auto md:p-6 space-y-10  dark:bg-gray-900 rounded-lg shadow-md">
         <h1 className="text-2xl md:text-3xl font-bold">Submit Report</h1>
 
@@ -358,16 +358,35 @@ const Report = () => {
         </div>
 
         {/* Submit */}
-        <div className="space-y-2 space-x-4">
+
+        <div>
           <h2 className="text-lg md:text-xl font-semibold mb-4">
             Review & Submit
           </h2>
-          <CTAButton
-            className="!bg-gray-300 !text-blue-500"
-            text="Save As Draft"
-            onClick={handleReportDraft}
-          />
-          <CTAButton text="Submit Report" onClick={handleReportSubmission} />
+
+          <div className="flex flex-wrap items-center gap-4 mb-4">
+            <CTAButton
+              className="!bg-gray-300 !text-blue-500"
+              text="Save As Draft"
+              onClick={handleReportDraft}
+            />
+            <CTAButton text="Submit Report" onClick={handleReportSubmission} />
+            <CTAButton text="Preview" onClick={() => setShowPreview(true)} />
+          </div>
+
+          {showPreview && (
+            <ReportTemplate
+              scope={scope}
+              endpoint={endpoint}
+              vulnerabilityType={vulnerabilityType}
+              reportTitle={reportTitle}
+              reportSummary={reportSummary}
+              severityData={severityData}
+              vulnerabilityImpact={vulnerabilityImpact}
+              reportPOC={reportPOC}
+              attachments={attachments}
+            />
+          )}
         </div>
       </div>
     </section>

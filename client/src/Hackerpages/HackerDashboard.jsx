@@ -2,9 +2,18 @@ import React, { useEffect, useState } from 'react'
 import { getHackerDetails } from '../Services/hackerApi'
 import Button from '../Common/Button/CTAButton'
 import { FaBug, FaBullhorn, FaSyncAlt, FaUserPlus } from 'react-icons/fa'
+import { useSelector } from 'react-redux'
+import { useNavigate } from 'react-router'
 
 const FeedDashboard = () => {
   const [hacker, setHacker] = useState(null)
+  const navigate = useNavigate()
+
+  const token = useSelector((state) => state.auth.token)
+
+  // if (!token) {
+  //   navigate('/login')
+  // }
 
   useEffect(() => {
     const fetchHacker = async () => {
