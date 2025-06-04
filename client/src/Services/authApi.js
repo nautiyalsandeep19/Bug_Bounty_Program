@@ -1,11 +1,9 @@
 import { setToken, setUser, setUserType } from '../Slices/authSlice'
-// import { socket } from '../socket.js'
+import { connectSocket, disconnectSocket } from '../socket'
+
 import { apiConnector, endPoints } from './ApiConnector/api'
 import toast from 'react-hot-toast'
 import { io } from 'socket.io-client'
-
-// Define socket at the module level
-let socket = null
 
 export const sendOtp = (
   name,
@@ -31,8 +29,6 @@ export const sendOtp = (
       })
 
       console.log('SENDOTP API RESPONSE............', response)
-
-      console.log(response)
 
       // if response.success is false then throw error
       if (!response.success) {
@@ -63,8 +59,6 @@ export const signup = (
 ) => {
   return async () => {
     try {
-      // call the signup API
-
       const response = await apiConnector('POST', endPoints.SIGNUP_API, {
         name,
         email,
@@ -84,9 +78,6 @@ export const signup = (
         userType,
         country
       )
-
-      // console.log('SIGNUP API RESPONSE............', response)
-
       if (!response.success) {
         toast.error(response.message, 'hii')
         throw new Error(response.message)
@@ -123,19 +114,12 @@ export const login = (email, password, userType, navigate) => {
 
         throw new Error(response.message)
       }
-      console.log('token', response.token)
 
       toast.success('Login Successful')
       dispatch(setToken(response.token))
       dispatch(setUser(response.user))
       dispatch(setUserType(response.userType))
-
-      socket = io('http://localhost:8000', {
-        query: {
-          userId: response.user._id,
-        },
-      })
-      socket.connect()
+      connectSocket(response.user._id)
 
       if (userType === 'company') {
         navigate('/company/dashboard')
@@ -154,7 +138,6 @@ export const login = (email, password, userType, navigate) => {
 export const logout = (navigate) => {
   return async (dispatch) => {
     try {
-      // Call the backend logout API to clear the cookie
       await apiConnector('POST', endPoints.LOGOUT_API, null, {
         withCredentials: true,
       })
@@ -165,10 +148,8 @@ export const logout = (navigate) => {
       dispatch(setUserType(null))
 
       // Disconnect socket if it's connected
-      if (socket) {
-        socket.disconnect()
-        socket = null
-      }
+
+      disconnectSocket()
 
       //socket
       // Clear localStorage

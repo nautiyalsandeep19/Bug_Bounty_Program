@@ -38,6 +38,9 @@ const HackerSidebar = () => {
         <NavLink to="/hacker/setting" className={linkClass}>
           <FaCog /> Settings
         </NavLink>
+        <NavLink to="/hacker/chat/683edea9dc6aa4314fc5e527" className={linkClass}>
+          <FaList /> Chat
+        </NavLink>
         <Logout />
       </nav>
     </div>

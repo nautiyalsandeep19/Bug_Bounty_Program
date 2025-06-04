@@ -20,16 +20,9 @@ import CompanyAssets from './CompanyPages/CompanyAssets'
 import CompanyBounties from './CompanyPages/CompanyBounties'
 import ProgramList from './CompanyComponents/Programs/ProgramDetails/ProgramList'
 import ProtectedRoute from './ProtectedRoute'
+import ChatRoom from './Common/ChatRoom/ReportChat'
 
 function App() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false)
-
-  useEffect(() => {
-    const token = localStorage.getItem('authToken')
-    console.log(token)
-    setIsLoggedIn(!!token)
-  }, [])
-
   return (
     <div className="flex min-h-screen bg-[#0e0e0e] text-white">
       <main className="flex-1 overflow-y-auto">
@@ -59,10 +52,18 @@ function App() {
             <Route path="bounties" element={<HackerBounties />} />
             <Route path="report" element={<HackerReports />} />
             <Route path="programs" element={<ProgramsPage />} />
+            <Route path="chat/:reportId" element={<ChatRoom />} />
           </Route>
 
           {/* Company Routes with CompanySidebar */}
-          <Route path="/company/*" element={<CompanyLayout />}>
+          <Route
+            path="/company/*"
+            element={
+              <ProtectedRoute>
+                <CompanyLayout />
+              </ProtectedRoute>
+            }
+          >
             <Route path="dashboard" element={<CompanyDashboard />} />
             <Route path="setting" element={<CompanySetting />} />
             <Route path="leaderboard" element={<CompanyLeaderBoard />} />
@@ -70,6 +71,8 @@ function App() {
             <Route path="bounties" element={<CompanyBounties />} />
             <Route path="programs" element={<ProgramList />} />
           </Route>
+
+          {/* 👇 Route for chat with dynamic reportId */}
         </Routes>
       </main>
     </div>

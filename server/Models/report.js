@@ -63,6 +63,7 @@ const reportScheema = new mongoose.Schema(
     },
     status: {
       type: String,
+
       enum: [
         'completed',
         'rejected',
@@ -71,6 +72,7 @@ const reportScheema = new mongoose.Schema(
         'triage',
         'submitted',
       ],
+
       default: 'draft',
     },
     tags: {
