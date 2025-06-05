@@ -2,6 +2,11 @@
 
 @import 'tailwindcss';
 @plugin "daisyui";
+.ProseMirror .chat-bubble * {
+  padding: 0% !important;
+  margin: 0% !important;
+}
+
 @theme {
   /* background Color  */
   --color-primaryBlue: #000028;
