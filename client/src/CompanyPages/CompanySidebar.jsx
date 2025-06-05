@@ -83,7 +83,7 @@ const CompanySidebar = () => {
             <FaCog /> Settings
           </NavLink>
           <NavLink
-            to="/hacker/chat/683edea9dc6aa4314fc5e527"
+            to="/company/chat/683edea9dc6aa4314fc5e527"
             className={navLinkClass}
             onClick={closeMobileMenu}
           >

@@ -79,12 +79,12 @@ const ChatRoom = () => {
   console.log('name ', user.name)
 
   return (
-    <div className="flex flex-col h-[80vh] p-4">
-      <h2 className="text-amber-300 text-xl font-semibold mb-4">
+    <div className="  ">
+      {/* <h2 className="text-amber-300 text-xl font-semibold mb-4">
         Chat for Report: {reportId}
-      </h2>
+      </h2> */}
 
-      <div className="flex-1 space-y-4 px-4 py-2  rounded-lg border-2 border-[#042d5b] overflow-y-auto">
+      <div className=" space-y-4 px-4 py-2  rounded-lg border-2 border-[#042d5b] overflow-y-auto bg-neutral-800 h-[50vh]  top-0 ">
         {messages.map((msg, index) => {
           const isSender = msg.senderInfo._id === currentUserId
           const senderName =
@@ -112,12 +112,12 @@ const ChatRoom = () => {
               </div>
               <div className="chat-header">
                 {senderName}
-                <time className="text-xs opacity-50 ml-2">{time}</time>
+                <time className="text-xs opacity-50 ml-2 ">{time}</time>
               </div>
               <div
-                className={`chat-bubble ${
-                  isSender ? 'bg-blue-600' : 'bg-amber-500'
-                } text-white ProseMirror`}
+                className={`chat-bubble   shadow-2xl${
+                  isSender ? 'bg-blue-600 ' : 'bg-amber-500'
+                }  `}
                 dangerouslySetInnerHTML={{ __html: msg.message }}
               />
               <div className="chat-footer opacity-50">
@@ -128,14 +128,18 @@ const ChatRoom = () => {
         })}
       </div>
       {/* Message Input */}
-      <div className="sticky bottom-0 bg-white dark:bg-black p-2 z-10 border-t border-gray-300">
-        <div className="flex gap-2">
+      <div className="sticky bottom-0  dark:bg-black  z-10 ">
+        <div className="flex  mx-auto">
           <TiptapEditor
             onUpdate={(html) => setInput(html)} // Update input state with editor content
             ref={editorRef} // Pass ref to access editor instance
           />
-          <CTAButton onClick={sendMessage} text="Send" />
         </div>
+        <CTAButton
+          onClick={sendMessage}
+          text="Send"
+          className="flex mx-auto "
+        />
       </div>
     </div>
   )
