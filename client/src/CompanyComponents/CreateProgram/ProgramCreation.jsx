@@ -1,11 +1,10 @@
-// ProgramFlow.jsx
-import React, { useState } from "react";
-import ProgramTypeModal from "./ProgramTypeModal";
-import CreateProgram from "./AddProgram";
+// ProgramCreation.jsx
+import React, { useState } from 'react'
+import ProgramTypeModal from './ProgramTypeModal'
+import CreateProgram from './AddProgram'
 
-const ProgramFlow = () => {
-  const [programType, setProgramType] = useState(null);
-
+const ProgramCreation = () => {
+  const [programType, setProgramType] = useState(null)
 
   return (
     <>
@@ -13,14 +12,14 @@ const ProgramFlow = () => {
         <ProgramTypeModal
           onClose={() => {}}
           onSelect={(type) => {
-            setProgramType(type);
-            localStorage.setItem("selectedProgramType", type); 
+            setProgramType(type)
+            localStorage.setItem('selectedProgramType', type)
           }}
         />
       )}
       {programType && <CreateProgram selectedType={programType} />}
     </>
-  );
-};
+  )
+}
 
-export default ProgramFlow;
+export default ProgramCreation

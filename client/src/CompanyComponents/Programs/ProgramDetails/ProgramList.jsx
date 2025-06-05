@@ -1,12 +1,14 @@
 import { useState, useEffect } from 'react'
+import axios from 'axios'
 import ProgramCard from './ProgramCard'
 import { Link } from 'react-router-dom'
+
 const ProgramList = () => {
   const [search, setSearch] = useState('')
   const [filter, setFilter] = useState('All')
   const [programs, setPrograms] = useState([])
-  const [loading, setLoading] = useState(true) // Add loading state
-  const [error, setError] = useState(null) // Add error state
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState(null)
 
   const companyId = '6652f1a1f57c9c48e16b3400'
   const VITE_BACKEND_HOST_URL = import.meta.env.VITE_BACKEND_HOST_URL
@@ -14,34 +16,29 @@ const ProgramList = () => {
   useEffect(() => {
     const fetchProgramsByCompany = async () => {
       try {
-        setLoading(true) // Set loading to true when fetch starts
-        const res = await fetch(
+        setLoading(true)
+        const response = await axios.get(
           `${VITE_BACKEND_HOST_URL}/api/programs/companyProgramss/${companyId}`,
           {
-            method: 'GET', // or 'POST', etc.
-            credentials: 'include', // ✅ This is critical for cookie-based auth
+            withCredentials: true,
             headers: {
-              'Content-Type': 'application/json', // add if you're sending JSON
+              'Content-Type': 'application/json',
             },
-            // body: JSON.stringify(data), // only if it's a POST/PUT request
           }
         )
 
-        const data = await res.json()
-
-        console.log('API Response:', data)
-
-        if (!res.ok) {
-          throw new Error(data.message || 'Failed to fetch programs')
-        }
-
-        setPrograms(data.data)
-        setError(null) // Clear any previous errors
+        console.log('API Response:', response.data)
+        setPrograms(response.data.data || [])
+        setError(null)
       } catch (err) {
         console.error('Fetch error:', err)
-        setError(err.message) // Set error message
+        setError(
+          err.response?.data?.message ||
+            err.message ||
+            'Failed to fetch programs'
+        )
       } finally {
-        setLoading(false) // Set loading to false when done
+        setLoading(false)
       }
     }
 
@@ -56,16 +53,14 @@ const ProgramList = () => {
     return matchesSearch && matchesFilter
   })
 
-  // Loading state UI
   if (loading) {
     return (
       <div className="w-full p-4 flex justify-center items-center h-64">
-        <div className="animate-spin mt-150 rounded-full h-40 w-40 border-t-1 border-white"></div>
+        <div className="animate-spin rounded-full h-10 w-10 border-t-2 border-white"></div>
       </div>
     )
   }
 
-  // Error state UI
   if (error) {
     return (
       <div className="w-full p-4 text-center text-red-500">
@@ -98,9 +93,6 @@ const ProgramList = () => {
           >
             Create Program
           </Link>
-          {/* <Link className="border px-4 py-2 rounded-full hover:bg-gray-600 transition" to="/addassets">
-            Add Assets
-          </Link> */}
         </div>
 
         <select

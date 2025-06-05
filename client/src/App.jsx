@@ -1,4 +1,3 @@
-import React, { useEffect, useState } from 'react'
 import { Routes, Route, useLocation } from 'react-router'
 import SignUp from './Common/LoginSignup/SignUp'
 import Login from './Common/LoginSignup/Login'
@@ -20,9 +19,24 @@ import CompanyAssets from './CompanyPages/CompanyAssets'
 import CompanyBounties from './CompanyPages/CompanyBounties'
 import ProgramList from './CompanyComponents/Programs/ProgramDetails/ProgramList'
 import ProtectedRoute from './ProtectedRoute'
-import ChatRoom from './Common/ChatRoom/ReportChat'
+import ChatRoom from './chat/ReportChat'
+import ProgramCreation from './CompanyComponents/CreateProgram/ProgramCreation'
+import { connectSocket, disconnectSocket } from './socket'
+import { useEffect } from 'react'
 
 function App() {
+  useEffect(() => {
+    const user = JSON.parse(localStorage.getItem('user'))
+    const userId = user?._id
+    if (userId) {
+      const socket = connectSocket(userId)
+
+      // Optional: Clean up socket on unmount
+      return () => {
+        disconnectSocket()
+      }
+    }
+  }, [])
   return (
     <div className="flex min-h-screen bg-[#0e0e0e] text-white">
       <main className="flex-1 overflow-y-auto">
@@ -56,14 +70,7 @@ function App() {
           </Route>
 
           {/* Company Routes with CompanySidebar */}
-          <Route
-            path="/company/*"
-            element={
-              <ProtectedRoute>
-                <CompanyLayout />
-              </ProtectedRoute>
-            }
-          >
+          <Route path="/company/*" element={<CompanyLayout />}>
             <Route path="dashboard" element={<CompanyDashboard />} />
             <Route path="setting" element={<CompanySetting />} />
             <Route path="leaderboard" element={<CompanyLeaderBoard />} />
@@ -71,8 +78,7 @@ function App() {
             <Route path="bounties" element={<CompanyBounties />} />
             <Route path="programs" element={<ProgramList />} />
           </Route>
-
-          {/* 👇 Route for chat with dynamic reportId */}
+          <Route path="addprogram" element={<ProgramCreation />} />
         </Routes>
       </main>
     </div>

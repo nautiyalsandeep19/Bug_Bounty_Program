@@ -3,7 +3,6 @@ import { connectSocket, disconnectSocket } from '../socket'
 
 import { apiConnector, endPoints } from './ApiConnector/api'
 import toast from 'react-hot-toast'
-import { io } from 'socket.io-client'
 
 export const sendOtp = (
   name,
