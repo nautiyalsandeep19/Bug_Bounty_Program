@@ -1,11 +1,8 @@
-
-import { setToken, setUser, setUserType } from "../Slices/authSlice";
-import { connectSocket, disconnectSocket } from "../socket";
+import { setToken, setUser, setUserType } from '../Slices/authSlice'
+import { connectSocket, disconnectSocket } from '../socket'
 
 import { apiConnector, endPoints } from './ApiConnector/api'
 import toast from 'react-hot-toast'
-import { io } from 'socket.io-client'
-
 
 export const sendOtp = (
   name,
@@ -31,8 +28,6 @@ export const sendOtp = (
       })
 
       console.log('SENDOTP API RESPONSE............', response)
-
-      console.log(response)
 
       // if response.success is false then throw error
       if (!response.success) {
@@ -63,8 +58,6 @@ export const signup = (
 ) => {
   return async () => {
     try {
-   
-
       const response = await apiConnector('POST', endPoints.SIGNUP_API, {
         name,
         email,
@@ -84,9 +77,6 @@ export const signup = (
         userType,
         country
       )
-
-      // console.log('SIGNUP API RESPONSE............', response)
-
       if (!response.success) {
         toast.error(response.message, 'hii')
         throw new Error(response.message)
@@ -128,8 +118,7 @@ export const login = (email, password, userType, navigate) => {
       dispatch(setToken(response.token))
       dispatch(setUser(response.user))
       dispatch(setUserType(response.userType))
-      connectSocket(response.user._id);
-
+      connectSocket(response.user._id)
 
       if (userType === 'company') {
         navigate('/company/dashboard')
@@ -148,7 +137,6 @@ export const login = (email, password, userType, navigate) => {
 export const logout = (navigate) => {
   return async (dispatch) => {
     try {
-      // Call the backend logout API to clear the cookie
       await apiConnector('POST', endPoints.LOGOUT_API, null, {
         withCredentials: true,
       })
@@ -160,8 +148,7 @@ export const logout = (navigate) => {
 
       // Disconnect socket if it's connected
 
-//       disconnectSocket();
-
+      disconnectSocket()
 
       //socket
       // Clear localStorage

@@ -48,13 +48,10 @@ export const authSlice = createSlice({
       state.userType = action.payload
       localStorage.setItem('userType', JSON.stringify(action.payload))
     },
-    // setSocket(state, action){
-    //   state.socket = action.payload
-    // }
   },
 })
 
-export const { setToken, setSignupData, setUser, setUserType} =
+export const { setToken, setSignupData, setUser, setUserType } =
   authSlice.actions
 
 export default authSlice.reducer
