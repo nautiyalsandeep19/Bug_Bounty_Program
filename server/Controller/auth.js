@@ -201,7 +201,7 @@ export const login = async (req, res) => {
       user = await Hacker.findOne({ email })
     } else if (userType === 'company') {
       user = await Company.findOne({ email })
-    } else {
+    } else{
       return res.status(400).json({
         success: false,
         message: 'Invalid user type',

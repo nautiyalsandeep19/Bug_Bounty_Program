@@ -5,18 +5,20 @@ import { useParams } from "react-router-dom";
 import axios from "axios";
 
 const ChatRoom = () => {
-  const { reportId } = useParams(); // ✅ correctly extract reportId
+  const { reportId } = useParams();
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState("");
 
+  const BASE_URL = import.meta.env.VITE_BACKEND_HOST_URL || "http://localhost:8000";
 
-    // ✅ Fetch previous messages
+  // ✅ Fetch all previous messages (already populated with senderInfo)
   useEffect(() => {
     const fetchMessages = async () => {
       try {
-        const res = await axios.get(`http://localhost:8000/api/messages/${reportId}`, {
+        const res = await axios.get(`${BASE_URL}/api/messages/${reportId}`, {
           withCredentials: true,
         });
+
         if (res.data.success) {
           setMessages(res.data.messages);
         } else {
@@ -33,25 +35,23 @@ const ChatRoom = () => {
     }
   }, [reportId]);
 
-
+  // ✅ Listen for new socket messages
   useEffect(() => {
     const socket = getSocket();
     if (!socket || !reportId) return;
 
-    // ✅ Join the specific room
     socket.emit("joinRoom", reportId);
 
-    // ✅ Listen for incoming messages
     socket.on("receiveMessage", (message) => {
       setMessages((prev) => [...prev, message]);
     });
 
-    // ✅ Cleanup on unmount
     return () => {
       socket.off("receiveMessage");
     };
   }, [reportId]);
 
+  // ✅ Send message via socket
   const sendMessage = () => {
     const socket = getSocket();
     const user = JSON.parse(localStorage.getItem("user"));
@@ -64,33 +64,47 @@ const ChatRoom = () => {
         senderModel: userType.charAt(0).toUpperCase() + userType.slice(1),
         message: input,
       });
-      setInput("");
-      toast.success("Message sent successfully!");
+      setInput(""); // Clear input
     }
   };
 
   return (
     <div>
-      <h2 className="text-amber-300">Chat for Report: {reportId}</h2>
+      <h2 className="text-amber-300 mb-4">Chat for Report: {reportId}</h2>
 
-      <div style={{ padding: "1rem", background: "#f7f7f7" }}>
-        {messages.map((msg, index) => (
-          <p key={index} className="text-black">
-            <strong>{msg.senderModel}: </strong> {msg.message}
-          </p>
-        ))}
+      <div style={{ padding: "1rem", background: "#f7f7f7", height: "300px", overflowY: "auto" }}>
+        {messages.map((msg, index) => {
+          const senderName =
+            msg.senderModel === "Hacker"
+              ? msg.senderInfo?.username
+              : msg.senderInfo?.name;
+
+          return (
+            <p key={index} className="text-black mb-2">
+              <strong>{senderName || "Unknown"}:</strong> {msg.message}
+            </p>
+          );
+        })}
       </div>
 
-      <input
-        value={input}
-        onChange={(e) => setInput(e.target.value)}
-        placeholder="Write message..."
-        style={{ marginRight: "0.5rem" }}
-        className="p-2 border rounded"
-      />
-      <button onClick={sendMessage}>Send</button>
+      <div className="mt-4 flex gap-2">
+        <input
+          value={input}
+          onChange={(e) => setInput(e.target.value)}
+          placeholder="Write message..."
+          className="p-2 border rounded w-full"
+        />
+        <button
+          onClick={sendMessage}
+          className="px-4 py-2 bg-blue-500 text-white rounded"
+        >
+          Send
+        </button>
+      </div>
     </div>
   );
 };
 
 export default ChatRoom;
+
+

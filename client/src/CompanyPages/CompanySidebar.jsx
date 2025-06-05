@@ -1,5 +1,5 @@
-import React, { useState } from 'react'
-import { NavLink } from 'react-router-dom'
+import React, { useState } from "react";
+import { NavLink } from "react-router-dom";
 import {
   FaTachometerAlt,
   FaBug,
@@ -8,24 +8,24 @@ import {
   FaList,
   FaBars,
   FaTimes,
-} from 'react-icons/fa'
-import Logout from '../Common/LoginSignup/Logout'
+} from "react-icons/fa";
+import Logout from "../Common/LoginSignup/Logout";
 
 const CompanySidebar = () => {
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const toggleMobileMenu = () => {
-    setIsMobileMenuOpen(!isMobileMenuOpen)
-  }
+    setIsMobileMenuOpen(!isMobileMenuOpen);
+  };
 
   const closeMobileMenu = () => {
-    setIsMobileMenuOpen(false)
-  }
+    setIsMobileMenuOpen(false);
+  };
 
   const navLinkClass = ({ isActive }) =>
     `flex items-center gap-2 p-2 rounded ${
-      isActive ? 'bg-gray-600' : 'hover:bg-[#1f1f1f]'
-    }`
+      isActive ? "bg-gray-600" : "hover:bg-[#1f1f1f]"
+    }`;
 
   return (
     <>
@@ -40,7 +40,7 @@ const CompanySidebar = () => {
       {/* Sidebar */}
       <div
         className={`${
-          isMobileMenuOpen ? 'block' : 'hidden'
+          isMobileMenuOpen ? "block" : "hidden"
         } sm:block w-64 bg-[#121212] p-4 fixed sm:relative h-full sm:h-screen z-50`}
       >
         <nav className="flex flex-col gap-4 mt-6 sm:mt-0">
@@ -82,7 +82,15 @@ const CompanySidebar = () => {
           >
             <FaCog /> Settings
           </NavLink>
+          <NavLink
+            to="/hacker/chat/683edea9dc6aa4314fc5e527"
+            className={navLinkClass}
+            onClick={closeMobileMenu}
+          >
+            <FaList /> Chat
+          </NavLink>
         </nav>
+
         <div className="mt-4">
           <Logout />
         </div>
@@ -96,7 +104,7 @@ const CompanySidebar = () => {
         />
       )}
     </>
-  )
-}
+  );
+};
 
-export default CompanySidebar
+export default CompanySidebar;

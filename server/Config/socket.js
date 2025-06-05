@@ -2,6 +2,9 @@ import express from "express";
 import http from "http";
 import { Server } from "socket.io";
 import  Message  from "../Models/message.js";
+import Hacker from "../Models/hacker.js";
+import Company from "../Models/company.js";
+
 
 const app = express();
 const server = http.createServer(app);
@@ -44,7 +47,20 @@ io.on("connection", (socket) => {
         });
         await newMsg.save();
 
-        io.to(reportId).emit("receiveMessage", newMsg);
+        let senderDetails = null;
+        
+                if (newMsg.senderModel === 'Hacker') {
+                  senderDetails = await Hacker.findById(newMsg.senderId).select('username email');
+                } else if (newMsg.senderModel === 'Company') {
+                  senderDetails = await Company.findById(newMsg.senderId).select('name email');
+                }
+        
+        const completeMessage = {
+          ...newMsg.toObject(),
+          senderInfo: senderDetails,
+        };
+
+        io.to(reportId).emit("receiveMessage", completeMessage);
       } catch (err) {
         console.error("Error saving message:", err);
       }
