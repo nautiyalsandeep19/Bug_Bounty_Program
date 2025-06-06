@@ -1,28 +1,31 @@
-import { Routes, Route, useLocation } from "react-router";
-import SignUp from "./Common/LoginSignup/SignUp";
-import Login from "./Common/LoginSignup/Login";
-import VerifyOtp from "./Common/LoginSignup/VerifyOtp";
-import ResetPassword from "./Common/LoginSignup/ResetPassword";
-import CheckEmailPage from "./Common/LoginSignup/CheckEmailpage";
-import ProgramsPage from "./Common/ProgramsPage";
-import HackerLayout from "./Layouts/HackerLayout";
-import CompanyLayout from "./Layouts/CompanyLayout";
-import HackerDashboard from "./Hackerpages/HackerDashboard";
-import HackerSettings from "./Hackerpages/HackerSettings";
-import HackerLeaderboard from "./HackerPages/HackerLeaderboard";
-import HackerBounties from "./HackerPages/HackerBounties";
-import HackerReports from "./HackerPages/HackerReports";
-import CompanyDashboard from "./CompanyPages/CompanyDashboard";
-import CompanySetting from "./CompanyPages/CompanySetting";
-import CompanyLeaderBoard from "./CompanyPages/CompanyLeaderboard";
-import CompanyAssets from "./CompanyPages/CompanyAssets";
-import CompanyBounties from "./CompanyPages/CompanyBounties";
-import ProgramList from "./CompanyComponents/Programs/ProgramDetails/ProgramList";
-import ProtectedRoute from "./ProtectedRoute";
-import ChatRoom from "./chat/ReportChat";
-import ProgramCreation from "./CompanyComponents/CreateProgram/ProgramCreation";
-import { connectSocket, disconnectSocket } from "./socket";
-import { useEffect } from "react";
+import { Routes, Route, useLocation } from 'react-router'
+import SignUp from './Common/LoginSignup/SignUp'
+import Login from './Common/LoginSignup/Login'
+import VerifyOtp from './Common/LoginSignup/VerifyOtp'
+import ResetPassword from './Common/LoginSignup/ResetPassword'
+import CheckEmailPage from './Common/LoginSignup/CheckEmailpage'
+import ProgramsPage from './Common/ProgramsPage'
+import HackerLayout from './Layouts/HackerLayout'
+import CompanyLayout from './Layouts/CompanyLayout'
+import HackerDashboard from './Hackerpages/HackerDashboard'
+import HackerSettings from './Hackerpages/HackerSettings'
+import HackerLeaderboard from './HackerPages/HackerLeaderboard'
+import HackerBounties from './HackerPages/HackerBounties'
+import HackerReports from './HackerPages/HackerReports'
+import CompanyDashboard from './CompanyPages/CompanyDashboard'
+import CompanySetting from './CompanyPages/CompanySetting'
+import CompanyLeaderBoard from './CompanyPages/CompanyLeaderboard'
+import CompanyAssets from './CompanyPages/CompanyAssets'
+import CompanyBounties from './CompanyPages/CompanyBounties'
+import ProgramList from './CompanyComponents/Programs/ProgramDetails/ProgramList'
+import ProtectedRoute from './ProtectedRoute'
+import ChatRoom from './chat/ReportChat'
+import ProgramCreation from './CompanyComponents/CreateProgram/ProgramCreation'
+import { connectSocket, disconnectSocket } from './socket'
+import { useEffect } from 'react'
+import AdminLogin from './AdminLogin'
+import AdminHome from './AdminPages/AdminHome'
+import AdminLayout from './Layouts/AdminLayout'
 
 function App() {
   
@@ -30,6 +33,19 @@ function App() {
     <div className="flex min-h-screen bg-[#0e0e0e] text-white">
       <main className="flex-1 overflow-y-auto">
         <Routes>
+          {/* Admin Routes */}
+          <Route
+            path="/admin/*"
+            element={
+              <ProtectedRoute typeUser="admin">
+                <AdminLayout />
+              </ProtectedRoute>
+            }
+          >
+            <Route path="login" element={<AdminLogin />} />
+            <Route path="home" element={<AdminHome />} />
+          </Route>
+
           {/* for / route */}
           <Route path="/" element={<Login />} />
 
@@ -44,7 +60,7 @@ function App() {
           <Route
             path="/hacker/*"
             element={
-              <ProtectedRoute>
+              <ProtectedRoute typeUser="hacker">
                 <HackerLayout />
               </ProtectedRoute>
             }
@@ -59,7 +75,14 @@ function App() {
           </Route>
 
           {/* Company Routes with CompanySidebar */}
-          <Route path="/company/*" element={<CompanyLayout />}>
+          <Route
+            path="/company/*"
+            element={
+              <ProtectedRoute typeUser="company">
+                <CompanyLayout />
+              </ProtectedRoute>
+            }
+          >
             <Route path="dashboard" element={<CompanyDashboard />} />
             <Route path="setting" element={<CompanySetting />} />
             <Route path="leaderboard" element={<CompanyLeaderBoard />} />

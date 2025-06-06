@@ -1,12 +1,12 @@
-import Hacker from "../Models/hacker.js";
-import Company from "../Models/company.js";
-import otpGenerator from "otp-generator";
-import Otp from "../Models/otp.js";
-import bcryptjs from "bcryptjs";
-import Jwt from "jsonwebtoken";
-import dotenv from "dotenv";
-import redisClient from "../Config/redisClient.js";
-import Admin from "../Models/admin.js";
+import Hacker from '../Models/hacker.js'
+import Company from '../Models/company.js'
+import Admin from '../Models/admin.js'
+import otpGenerator from 'otp-generator'
+import Otp from '../Models/otp.js'
+import bcryptjs from 'bcryptjs'
+import Jwt from 'jsonwebtoken'
+import dotenv from 'dotenv'
+import redisClient from '../Config/redisClient.js'
 
 dotenv.config();
 //send otp
@@ -67,7 +67,7 @@ export const sendOtp = async (req, res) => {
       digits: true,
     });
 
-    let result = await Otp.findOne({ otp: genOtp });
+    let result = await Otp.findOne({ otp: genOtp })
     while (result) {
       var genOtp = otpGenerator.generate(6, {
         upperCaseAlphabets: false,
@@ -81,7 +81,7 @@ export const sendOtp = async (req, res) => {
     //entry in db
     const otpPayload = { email, otp: genOtp };
 
-    const otpBody = await Otp.create(otpPayload);
+    const otpBody = await Otp.create(otpPayload)
 
     res.status(200).json({
       success: true,
@@ -176,7 +176,80 @@ export const signUp = async (req, res) => {
       message: "Unable to register ",
     });
   }
-};
+}
+
+// export const login = async (req, res) => {
+//   try {
+//     const { email, password, userType } = req.body
+
+//     if (!email || !password || !userType) {
+//       return res.status(400).json({
+//         success: false,
+//         message: 'All fields are required',
+//       })
+//     }
+
+//     let user
+
+//     if (userType === 'hacker') {
+//       user = await Hacker.findOne({ email })
+//     } else if (userType === 'company') {
+//       user = await Company.findOne({ email })
+//     } else {
+//       return res.status(400).json({
+//         success: false,
+//         message: 'Invalid user type',
+//       })
+//     }
+
+//     if (!user) {
+//       return res.status(401).json({
+//         success: false,
+//         message: 'User not registered! Please sign up.',
+//       })
+//     }
+
+//     const isPasswordMatch = await bcryptjs.compare(password, user.password)
+//     if (!isPasswordMatch) {
+//       return res.status(401).json({
+//         success: false,
+//         message: 'Password is incorrect',
+//       })
+//     }
+
+//     const payLoad = {
+//       email: user.email,
+//       id: user._id,
+//       userType,
+//     }
+
+//     const token = Jwt.sign(payLoad, process.env.JWT_SECRET, {
+//       expiresIn: '4h',
+//     })
+
+//     user.token = token
+//     user.password = undefined // hide password in response
+
+//     const cookieOptions = {
+//       expires: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000), // 3 days
+//       httpOnly: true,
+//     }
+
+//     return res.cookie('token', token, cookieOptions).status(200).json({
+//       success: true,
+//       token,
+//       user,
+//       userType,
+//       message: 'Logged in successfully',
+//     })
+//   } catch (error) {
+//     console.error('Login error:', error)
+//     return res.status(500).json({
+//       success: false,
+//       message: 'Unable to login. Please try again later.',
+//     })
+//   }
+// }
 
 export const login = async (req, res) => {
   try {
@@ -191,19 +264,21 @@ export const login = async (req, res) => {
 
     let user;
 
-    if (userType === "admin") {
-      user = await Admin.findOne({ email });
+    if (userType === 'admin') {
+      user = await Admin.findOne({ email })
 
       if (!user) {
         return res.status(401).json({
           success: false,
-          message: "Not Found",
-        });
+          message: 'Admin Not Found ',
+        })
       }
-    } else if (userType === "hacker") {
-      user = await Hacker.findOne({ email });
-    } else if (userType === "company") {
-      user = await Company.findOne({ email });
+    } else if (userType === 'triager') {
+      user = await Admin.findOne({ email })
+    } else if (userType === 'hacker') {
+      user = await Hacker.findOne({ email })
+    } else if (userType === 'company') {
+      user = await Company.findOne({ email })
     } else {
       return res.status(400).json({
         success: false,
@@ -261,6 +336,7 @@ export const login = async (req, res) => {
 };
 
 //chnage passwrod
+
 export const changePassword = async (req, res) => {
   try {
     const { oldPassword, newPassword, newConfirmPassword } = req.body;
@@ -287,7 +363,7 @@ export const changePassword = async (req, res) => {
       });
     }
 
-    let user;
+    let user
     if (req.hacker) {
       user = await Hacker.findById(req.hacker.id);
     } else if (req.company) {
@@ -363,37 +439,37 @@ export const logout = async (req, res) => {
       message: `Internal server error: ${error.message}`,
     });
   }
-};
+}
 
-export const addTriager = async (req, res) => {
+export const createTriager = async (req, res) => {
   try {
-    const { name, email, password, userType } = req.body;
+    const { name, email, password, userType } = req.body
     if (!name || !email || !password || !userType) {
       return res.status(400).json({
         success: false,
-        message: "All feilds are required",
-      });
+        message: 'All feilds are required',
+      })
     }
 
-    const hashPassword = await bcryptjs.hash(password, 10);
+    const hashPassword = await bcryptjs.hash(password, 10)
     const triager = await Admin.create({
       name,
       email,
       password: hashPassword,
       userType,
-    });
+    })
 
     return res.status(200).json({
       success: true,
-      message: "Triager registered successfully  ",
+      message: 'Triager registered successfully  ',
       triager,
-    });
+    })
   } catch (error) {
-    console.log(error);
+    console.log(error)
 
     return res.status(500).json({
       success: false,
-      message: "Unable to register ",
-    });
+      message: 'Unable to register ',
+    })
   }
-};
+}

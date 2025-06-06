@@ -5,6 +5,7 @@ import {
   logout,
   sendOtp,
   signUp,
+  createTriager,
 } from '../Controller/auth.js'
 import { authMid } from '../Middleware/authMid.js'
 import {
@@ -30,6 +31,9 @@ router.post('/signUp', signUpValidator, validate, signUp)
 router.post('/login', loginLimiter, loginValidator, validate, login)
 router.post('/logout', logout)
 
+//route for admin
+
+router.post('/createtriager', createTriager)
 //protected route only uses when the user logged in
 router.post(
   '/changePassword',

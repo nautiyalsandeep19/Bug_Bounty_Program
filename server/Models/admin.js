@@ -17,11 +17,11 @@ const adminSchema = new mongoose.Schema(
     },
     token: String,
     resetPasswordExpires: Date,
-    userType:{
-        type: String,
-        required:true,
-        enum:['admin','triager']
-    }
+    userType: {
+      type: String,
+      required: true,
+      enum: ['admin', 'triager'],
+    },
   },
   { timestamps: true }
 )
