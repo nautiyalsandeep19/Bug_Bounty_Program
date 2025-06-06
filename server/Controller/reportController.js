@@ -1,5 +1,4 @@
-
-import Report from '../Models/report.js'
+import Report from '../Models/Report.js'
 export const createReport = async (req, res) => {
   try {
     const hackerId = req.user.id
@@ -101,15 +100,9 @@ export const updateStatus = async (req, res) => {
   }
 }
 
-
 export const getAllReports = async (req, res) => {
   try {
-    const allReports = await Report.find()
-      .populate({
-        path: 'programId',
-        populate: { path: 'company' }, // nested populate to get company from program
-      })
-      .populate('hackerId') // populate hacker info
+    const allReports = await Report.find() // populate hacker info
 
     res.status(200).json({
       success: true,
