@@ -8,10 +8,11 @@ import {
   FaList,
   FaBars,
   FaTimes,
+  FaUsers,
 } from 'react-icons/fa'
 import Logout from '../Common/LoginSignup/Logout'
 
-const CompanySidebar = () => {
+const TriagerSidebar = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
 
   const toggleMobileMenu = () => {
@@ -48,35 +49,37 @@ const CompanySidebar = () => {
             Versantix
           </h1>
           <NavLink
-            to="/company/dashboard"
+            to="/triager/dashboard"
             className={navLinkClass}
             onClick={closeMobileMenu}
           >
             <FaTachometerAlt /> Dashboard
           </NavLink>
           <NavLink
-            to="/company/programs"
+            to="/triager/programs"
             className={navLinkClass}
             onClick={closeMobileMenu}
           >
             <FaList /> Programs
           </NavLink>
           <NavLink
-            to="/company/assets"
+            to="/triager/users"
             className={navLinkClass}
             onClick={closeMobileMenu}
           >
-            <FaBug /> Assets
+            <FaUsers /> Users
           </NavLink>
+
           <NavLink
-            to="/company/leaderboard"
+            to="/triager/reports"
             className={navLinkClass}
             onClick={closeMobileMenu}
           >
-            <FaCrown /> Campaigns
+            <FaBug /> Reports
           </NavLink>
+
           <NavLink
-            to="/company/setting"
+            to="/triager/setting"
             className={navLinkClass}
             onClick={closeMobileMenu}
           >
@@ -106,4 +109,4 @@ const CompanySidebar = () => {
   )
 }
 
-export default CompanySidebar
+export default TriagerSidebar

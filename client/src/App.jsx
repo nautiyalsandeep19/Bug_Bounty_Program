@@ -26,6 +26,8 @@ import { useEffect } from 'react'
 import AdminLogin from './AdminLogin'
 import AdminHome from './AdminPages/AdminHome'
 import AdminLayout from './Layouts/AdminLayout'
+import TriagerLayout from './Layouts/TriagerLayout'
+import TriagerDashboard from './TriagerPages/TriagerDashboard'
 
 function App() {
   useEffect(() => {
@@ -45,6 +47,9 @@ function App() {
       <main className="flex-1 overflow-y-auto">
         <Routes>
           {/* Admin Routes */}
+
+          <Route path="/adminlogin" element={<AdminLogin />} />
+
           <Route
             path="/admin/*"
             element={
@@ -53,8 +58,22 @@ function App() {
               </ProtectedRoute>
             }
           >
-            <Route path="login" element={<AdminLogin />} />
             <Route path="home" element={<AdminHome />} />
+          </Route>
+
+          {/* Triager route */}
+
+          <Route
+            path="/triager/*"
+            element={
+              <ProtectedRoute typeUser="triager">
+                <TriagerLayout />
+              </ProtectedRoute>
+            }
+          >
+            <Route path="login" element={<AdminLogin />} />
+
+            <Route path="dashboard" element={<TriagerDashboard />} />
           </Route>
 
           {/* for / route */}
