@@ -121,6 +121,8 @@ export const login = (email, password, userType, navigate) => {
       connectSocket(response.user._id)
       if (userType === 'admin') {
         navigate('/admin/home')
+      } else if (userType === 'triager') {
+        navigate('/triager/dashboard')
       } else if (userType === 'company') {
         navigate('/company/dashboard')
       } else if (userType === 'hacker') {
