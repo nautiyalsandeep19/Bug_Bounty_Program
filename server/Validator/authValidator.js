@@ -26,7 +26,7 @@ export const otpValidator = [
 export const loginValidator = [
   body('email').isEmail().normalizeEmail(),
   body('password').notEmpty(),
-  body('userType').isIn(['hacker', 'company']),
+  body('userType').isIn(['hacker', 'company', 'admin', 'triager']),
 ]
 
 export const changePasswordValidator = [

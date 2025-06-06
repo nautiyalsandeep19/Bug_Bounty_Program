@@ -74,10 +74,10 @@
 }
 
 /* Inline Code */
-.ProseMirror code {
-  background-color: #1a1a3d;
+.ProseMirror code{
+  background-color: #d5d5d5;
   border-radius: 0.3rem;
-  color: #e5e5ff;
+  color: #000099;
   font-size: 0.85rem;
   padding: 0.2em 0.4em;
   font-family: 'JetBrainsMono', monospace;
@@ -85,14 +85,14 @@
 
 /* Code Block */
 .ProseMirror pre {
-  background: #1e1e2f;
-  color: #e5e5e5;
+  background: #a2a2a2;
+  color: #610000;
   font-family: 'JetBrainsMono', monospace;
   font-size: 0.85rem;
   padding: 1rem;
   border-radius: 0.5rem;
   overflow-x: auto;
-  margin: 1.5rem 0;
+  /* margin: 1.5rem 0; */
 }
 
 .ProseMirror pre code {
@@ -129,4 +129,10 @@
 .ProseMirror a:hover {
   color: #b0a8ff;
   text-decoration: none;
+}
+
+.ProseMirror img {
+  width: 300px;
+  height: 300px;
+  object-fit: cover;
 }

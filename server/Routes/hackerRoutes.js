@@ -1,6 +1,7 @@
 import express from 'express'
 
 import {
+  getAllHackersDetails,
   getHackerDetails,
   getLeaderboard,
   updateHackerPerson,
@@ -10,6 +11,7 @@ const router = express.Router()
 // get hacker details
 router.get('/hackerDetails', authMid, getHackerDetails)
 router.put('/updateHackerDetails', authMid, updateHackerPerson)
-router.get('/leaderBoard', getLeaderboard);
+router.get('/leaderBoard', getLeaderboard)
+router.get('/hackersdata', getAllHackersDetails)
 
 export default router

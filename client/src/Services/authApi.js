@@ -3,7 +3,6 @@ import { connectSocket, disconnectSocket } from '../socket'
 
 import { apiConnector, endPoints } from './ApiConnector/api'
 import toast from 'react-hot-toast'
-import { io } from 'socket.io-client'
 
 export const sendOtp = (
   name,
@@ -120,8 +119,11 @@ export const login = (email, password, userType, navigate) => {
       dispatch(setUser(response.user))
       dispatch(setUserType(response.userType))
       connectSocket(response.user._id)
-
-      if (userType === 'company') {
+      if (userType === 'admin') {
+        navigate('/admin/home')
+      } else if (userType === 'triager') {
+        navigate('/triager/dashboard')
+      } else if (userType === 'company') {
         navigate('/company/dashboard')
       } else if (userType === 'hacker') {
         navigate('/hacker/dashboard')

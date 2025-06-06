@@ -15,6 +15,8 @@ export const authMid = async (req, res, next) => {
         ? authHeader.split(' ')[1]
         : null)
 
+    // console.log('from authmid', token)
+
     if (!token) {
       return res.status(401).json({
         success: false,

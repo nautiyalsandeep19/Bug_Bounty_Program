@@ -82,4 +82,5 @@ const reportScheema = new mongoose.Schema(
   { timestamps: true }
 )
 
-export default mongoose.model('report', reportScheema)
+const Report = mongoose.model('Report', reportScheema)
+export default Report

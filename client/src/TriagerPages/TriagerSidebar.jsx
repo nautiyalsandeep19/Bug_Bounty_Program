@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { NavLink } from "react-router-dom";
+import React, { useState } from 'react'
+import { NavLink } from 'react-router-dom'
 import {
   FaTachometerAlt,
   FaBug,
@@ -8,24 +8,25 @@ import {
   FaList,
   FaBars,
   FaTimes,
-} from "react-icons/fa";
-import Logout from "../Common/LoginSignup/Logout";
+  FaUsers,
+} from 'react-icons/fa'
+import Logout from '../Common/LoginSignup/Logout'
 
-const CompanySidebar = () => {
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+const TriagerSidebar = () => {
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
 
   const toggleMobileMenu = () => {
-    setIsMobileMenuOpen(!isMobileMenuOpen);
-  };
+    setIsMobileMenuOpen(!isMobileMenuOpen)
+  }
 
   const closeMobileMenu = () => {
-    setIsMobileMenuOpen(false);
-  };
+    setIsMobileMenuOpen(false)
+  }
 
   const navLinkClass = ({ isActive }) =>
     `flex items-center gap-2 p-2 rounded ${
-      isActive ? "bg-gray-600" : "hover:bg-[#1f1f1f]"
-    }`;
+      isActive ? 'bg-gray-600' : 'hover:bg-[#1f1f1f]'
+    }`
 
   return (
     <>
@@ -40,7 +41,7 @@ const CompanySidebar = () => {
       {/* Sidebar */}
       <div
         className={`${
-          isMobileMenuOpen ? "block" : "hidden"
+          isMobileMenuOpen ? 'block' : 'hidden'
         } sm:block w-64 bg-[#121212] p-4 fixed sm:relative h-full sm:h-screen z-50`}
       >
         <nav className="flex flex-col gap-4 mt-6 sm:mt-0">
@@ -48,35 +49,37 @@ const CompanySidebar = () => {
             Versantix
           </h1>
           <NavLink
-            to="/company/dashboard"
+            to="/triager/dashboard"
             className={navLinkClass}
             onClick={closeMobileMenu}
           >
             <FaTachometerAlt /> Dashboard
           </NavLink>
           <NavLink
-            to="/company/programs"
+            to="/triager/programs"
             className={navLinkClass}
             onClick={closeMobileMenu}
           >
             <FaList /> Programs
           </NavLink>
           <NavLink
-            to="/company/assets"
+            to="/triager/users"
             className={navLinkClass}
             onClick={closeMobileMenu}
           >
-            <FaBug /> Assets
+            <FaUsers /> Users
           </NavLink>
+
           <NavLink
-            to="/company/leaderboard"
+            to="/triager/reports"
             className={navLinkClass}
             onClick={closeMobileMenu}
           >
-            <FaCrown /> Campaigns
+            <FaBug /> Reports
           </NavLink>
+
           <NavLink
-            to="/company/setting"
+            to="/triager/setting"
             className={navLinkClass}
             onClick={closeMobileMenu}
           >
@@ -90,7 +93,6 @@ const CompanySidebar = () => {
             <FaList /> Chat
           </NavLink>
         </nav>
-
         <div className="mt-4">
           <Logout />
         </div>
@@ -104,7 +106,7 @@ const CompanySidebar = () => {
         />
       )}
     </>
-  );
-};
+  )
+}
 
-export default CompanySidebar;
+export default TriagerSidebar

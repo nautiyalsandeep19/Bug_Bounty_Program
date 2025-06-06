@@ -16,6 +16,7 @@ import TiptapEditor from '../../Common/Editor/TiptapEditor'
 import { uploadFiles } from '../../Services/uploaderApi'
 import toast from 'react-hot-toast'
 import ReportTemplate from './ReportTemplate'
+import '../../Common/Editor/TiptapEditor.css'
 
 const Report = () => {
   const [scope, setScope] = useState('')

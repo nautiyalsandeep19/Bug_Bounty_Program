@@ -22,7 +22,10 @@ const SignUp = () => {
     confirmPassword: '',
     domain: '',
   })
-
+  const tabData = [
+    { id: 1, tabName: 'hacker' },
+    { id: 2, tabName: 'company' },
+  ]
   const { name, email, password, confirmPassword, country, domain } = formData
 
   const handleChange = (e) => {
@@ -70,7 +73,7 @@ const SignUp = () => {
         </h2>
 
         {/* Tabs */}
-        <Tab field={userType} setField={setUserType} />
+        <Tab tabData={tabData} field={userType} setField={setUserType} />
 
         <form onSubmit={handleSubmit} className="flex flex-col gap-5 mt-4">
           <div>
