@@ -1,4 +1,5 @@
-import React from 'react'
+import React, { useEffect } from 'react'
+import { useState } from 'react'
 import {
   FiActivity,
   FiAirplay,
@@ -64,13 +65,14 @@ const CompanyDashboard = () => {
     },
   ]
 
+
   return (
     <div className="max-w-7xl mx-auto px-4 h-[50vh] sm:px-6 lg:px-8 py-8">
       {/* Header */}
       <div className="mb-8">
         <h1 className="text-3xl font-bold text-white">Company Dashboard</h1>
         <p className="text-lg text-gray-300 mt-2">
-          Welcome back! Here's what's happening with {companyInfo.name} today.
+          Welcome back! Here's what's happening with today.
         </p>
       </div>
 

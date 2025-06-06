@@ -6,7 +6,7 @@ const ProgramCard = ({ program }) => {
   return (
     <div
       className="bg-[#0f172a] text-white max-w-md w-full mx-auto rounded-2xl border border-[#1e293b] p-8 shadow-lg hover:shadow-blue-600/50 hover:-translate-y-1 transition-all duration-300 cursor-pointer"
-      onClick={() => navigate(`/program/${program._id}`)}
+      onClick={() => navigate(`/company/programsmaindetails/${program._id}`)}
     >
 
      <p className="relative top-[-15px] left-[-20px] bg-white text-[10px] text-black font-bold border w-fit p-1 rounded-lg px-5">

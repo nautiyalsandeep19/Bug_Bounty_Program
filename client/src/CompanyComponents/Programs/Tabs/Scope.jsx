@@ -1,6 +1,11 @@
 import React from "react";
+import { useSelector } from "react-redux";
+
 
 const Scope = () => {
+    const policyDetails = useSelector((state)=>state.program.programData?.assets)
+    const policyDetais = useSelector((state)=>state.program.programData?.bountyRange)
+
   const scopeData = {
     inScope: [
       {
@@ -33,10 +38,10 @@ const Scope = () => {
   };
 
   const rewardLevels = [
-    { label: "Critical", color: "bg-red-500", amount: "$500" },
-    { label: "High", color: "bg-orange-400", amount: "$250" },
-    { label: "Medium", color: "bg-yellow-400", amount: "$100" },
-    { label: "Low", color: "bg-green-400", amount: "$0" },
+    // { label: "Critical", color: "bg-red-500", amount: "$500" },
+    { label: "High", color: "bg-orange-400", amount: policyDetais?.high },
+    { label: "Medium", color: "bg-yellow-400", amount: policyDetais?.medium },
+    { label: "Low", color: "bg-green-400", amount: policyDetais?.low },
   ];
 
   const RewardLabel = ({ text, color }) => (
@@ -70,10 +75,11 @@ const Scope = () => {
           <span className="text-lg font-semibold">In Scope Targets</span>
           <span className="bg-green-500 text-white font-bold px-2 py-1.5 text-xs rounded-full">✓ In Scope</span>
         </div>
+         <p className="text-red-400">{policyDetails}</p>
         <p className="text-sm mb-4">Rewards Information</p>
         <div className="flex flex-wrap gap-2 mb-4">
           <Tag text="💰 Eligible for Bounty" />
-          <Tag text="🎁 Eligible for Swag" />
+          {/* <Tag text="🎁 Eligible for Swag" /> */}
         </div>
         <div className="flex flex-wrap gap-2 mb-4">
           {rewardLevels.map(({ label, color, amount }) => (
@@ -83,6 +89,14 @@ const Scope = () => {
             </div>
           ))}
         </div>
+
+
+
+
+
+
+
+
         <div className="bg-gray-500 p-2 text-sm  font-semibold grid grid-cols-5 text-center rounded">
           <span className="text-left pl-2">Asset</span>
           <span>Type</span>
@@ -95,7 +109,7 @@ const Scope = () => {
         ))}
       </div>
 
-      {/* Out of Scope */}
+      {/* Out of Scope
       <div className="border bg-black rounded-lg p-5">
         <div className="flex items-center justify-between gap-2 mb-2">
           <span className="text-lg font-semibold">Out Of Scope Targets</span>
@@ -116,7 +130,7 @@ const Scope = () => {
         {scopeData.outScope.map((asset, idx) => (
           <AssetRow asset={asset} key={idx} />
         ))}
-      </div>
+      </div> */}
     </div>
   );
 };

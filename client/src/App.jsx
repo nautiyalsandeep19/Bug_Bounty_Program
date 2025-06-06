@@ -21,6 +21,8 @@ import CompanyBounties from './CompanyPages/CompanyBounties'
 import ProgramList from './CompanyComponents/Programs/ProgramDetails/ProgramList'
 import ProtectedRoute from './ProtectedRoute'
 import ChatRoom from './Common/ChatRoom/ReportChat'
+import ProgramFlow from './CompanyComponents/CreateProgram/ProgramCreation'
+import ProgramMainDetail from './CompanyComponents/Programs/ProgramData/ProgramMainDetail'
 
 function App() {
   return (
@@ -70,9 +72,11 @@ function App() {
             <Route path="assets" element={<CompanyAssets />} />
             <Route path="bounties" element={<CompanyBounties />} />
             <Route path="programs" element={<ProgramList />} />
+            <Route path="programsmaindetails/:programId" element={<ProgramMainDetail />} />
           </Route>
 
           {/* 👇 Route for chat with dynamic reportId */}
+          <Route path='addprogram' element={<ProgramFlow/>}/>
         </Routes>
       </main>
     </div>

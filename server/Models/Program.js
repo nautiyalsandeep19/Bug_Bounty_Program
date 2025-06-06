@@ -3,12 +3,20 @@ import mongoose from 'mongoose'
 const programSchema = new mongoose.Schema(
   {
     title: { type: String, required: true },
-    description: { type: String, required: true },
+    // description: { type: String, default: "" },
     company: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Company',
       required: true,
     },
+    brand: {
+      programName: { type: String, default: "" },
+      programTagline: { type: String, default: "" },
+      programWebsite: { type: String, default: "" },
+      programDescription: { type: String, default: "" }
+    },
+    policy: { type: String, default: "" },
+    additionalDetails: { type: String, default: "" },
     visibility: {
       type: String,
       enum: ['private', 'public'],
