@@ -21,8 +21,7 @@ import ProgramList from './CompanyComponents/Programs/ProgramDetails/ProgramList
 import ProtectedRoute from './ProtectedRoute'
 import ChatRoom from './chat/ReportChat'
 import ProgramCreation from './CompanyComponents/CreateProgram/ProgramCreation'
-import { connectSocket, disconnectSocket } from './socket'
-import { useEffect } from 'react'
+
 import AdminLogin from './AdminLogin'
 import AdminHome from './AdminPages/AdminHome'
 import AdminLayout from './Layouts/AdminLayout'
