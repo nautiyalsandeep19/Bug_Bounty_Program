@@ -30,18 +30,7 @@ import TriagerLayout from './Layouts/TriagerLayout'
 import TriagerDashboard from './TriagerPages/TriagerDashboard'
 
 function App() {
-  useEffect(() => {
-    const user = JSON.parse(localStorage.getItem('user'))
-    const userId = user?._id
-    if (userId) {
-      const socket = connectSocket(userId)
-
-      // Optional: Clean up socket on unmount
-      return () => {
-        disconnectSocket()
-      }
-    }
-  }, [])
+  
   return (
     <div className="flex min-h-screen bg-[#0e0e0e] text-white">
       <main className="flex-1 overflow-y-auto">
@@ -124,7 +113,7 @@ function App() {
         </Routes>
       </main>
     </div>
-  )
+  );
 }
 
-export default App
+export default App;

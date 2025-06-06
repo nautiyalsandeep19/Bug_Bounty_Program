@@ -89,7 +89,7 @@ export const resetPassword = async (req, res) => {
     decode.userType
     console.log('type', decode.userType)
 
-    if ((!newPassword || !confirmPassword || !token, !decode.userType)) {
+    if ((!newPassword || !confirmPassword || !token|| !decode.userType)) {
       return res.status(409).json({
         success: false,
         message: 'All feilds are required',

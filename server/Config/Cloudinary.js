@@ -33,10 +33,10 @@ const storage = new CloudinaryStorage({
       folder: 'LaunchProgram',
       resource_type: resourceType,
       public_id: file.originalname.split('.')[0],
-    }
+    };
   },
-})
+});
 
 const upload = multer({ storage })
 
-export { cloudinary, upload }
+export { cloudinary, upload };
