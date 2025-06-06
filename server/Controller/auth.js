@@ -1,5 +1,6 @@
 import Hacker from '../Models/hacker.js'
 import Company from '../Models/company.js'
+import Admin from '../Models/admin.js'
 import otpGenerator from 'otp-generator'
 import Otp from '../Models/otp.js'
 import bcryptjs from 'bcryptjs'
@@ -57,7 +58,6 @@ export const sendOtp = async (req, res) => {
         message: 'User Already Registered',
       })
     }
-  
 
     //genrate otp
     var genOtp = otpGenerator.generate(6, {
@@ -66,8 +66,6 @@ export const sendOtp = async (req, res) => {
       specialChars: false,
       digits: true,
     })
-
- 
 
     let result = await Otp.findOne({ otp: genOtp })
     while (result) {
@@ -84,7 +82,6 @@ export const sendOtp = async (req, res) => {
     const otpPayload = { email, otp: genOtp }
 
     const otpBody = await Otp.create(otpPayload)
-  
 
     res.status(200).json({
       success: true,
@@ -102,8 +99,6 @@ export const sendOtp = async (req, res) => {
 
 //signup
 export const signUp = async (req, res) => {
-  
-
   try {
     const { name, email, password, country, domain, otp, userType } = req.body
 
@@ -183,6 +178,78 @@ export const signUp = async (req, res) => {
   }
 }
 
+// export const login = async (req, res) => {
+//   try {
+//     const { email, password, userType } = req.body
+
+//     if (!email || !password || !userType) {
+//       return res.status(400).json({
+//         success: false,
+//         message: 'All fields are required',
+//       })
+//     }
+
+//     let user
+
+//     if (userType === 'hacker') {
+//       user = await Hacker.findOne({ email })
+//     } else if (userType === 'company') {
+//       user = await Company.findOne({ email })
+//     } else {
+//       return res.status(400).json({
+//         success: false,
+//         message: 'Invalid user type',
+//       })
+//     }
+
+//     if (!user) {
+//       return res.status(401).json({
+//         success: false,
+//         message: 'User not registered! Please sign up.',
+//       })
+//     }
+
+//     const isPasswordMatch = await bcryptjs.compare(password, user.password)
+//     if (!isPasswordMatch) {
+//       return res.status(401).json({
+//         success: false,
+//         message: 'Password is incorrect',
+//       })
+//     }
+
+//     const payLoad = {
+//       email: user.email,
+//       id: user._id,
+//       userType,
+//     }
+
+//     const token = Jwt.sign(payLoad, process.env.JWT_SECRET, {
+//       expiresIn: '4h',
+//     })
+
+//     user.token = token
+//     user.password = undefined // hide password in response
+
+//     const cookieOptions = {
+//       expires: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000), // 3 days
+//       httpOnly: true,
+//     }
+
+//     return res.cookie('token', token, cookieOptions).status(200).json({
+//       success: true,
+//       token,
+//       user,
+//       userType,
+//       message: 'Logged in successfully',
+//     })
+//   } catch (error) {
+//     console.error('Login error:', error)
+//     return res.status(500).json({
+//       success: false,
+//       message: 'Unable to login. Please try again later.',
+//     })
+//   }
+// }
 
 export const login = async (req, res) => {
   try {
@@ -197,7 +264,18 @@ export const login = async (req, res) => {
 
     let user
 
-    if (userType === 'hacker') {
+    if (userType === 'admin') {
+      user = await Admin.findOne({ email })
+
+      if (!user) {
+        return res.status(401).json({
+          success: false,
+          message: 'Admin Not Found ',
+        })
+      }
+    } else if (userType === 'triager') {
+      user = await Admin.findOne({ email })
+    } else if (userType === 'hacker') {
       user = await Hacker.findOne({ email })
     } else if (userType === 'company') {
       user = await Company.findOne({ email })
@@ -258,6 +336,7 @@ export const login = async (req, res) => {
 }
 
 //chnage passwrod
+
 export const changePassword = async (req, res) => {
   try {
     const { oldPassword, newPassword, newConfirmPassword } = req.body
@@ -284,7 +363,6 @@ export const changePassword = async (req, res) => {
       })
     }
 
-  
     let user
     if (req.hacker) {
       user = await Hacker.findById(req.hacker.id)
@@ -359,6 +437,39 @@ export const logout = async (req, res) => {
     res.status(500).json({
       success: false,
       message: `Internal server error: ${error.message}`,
+    })
+  }
+}
+
+export const createTriager = async (req, res) => {
+  try {
+    const { name, email, password, userType } = req.body
+    if (!name || !email || !password || !userType) {
+      return res.status(400).json({
+        success: false,
+        message: 'All feilds are required',
+      })
+    }
+
+    const hashPassword = await bcryptjs.hash(password, 10)
+    const triager = await Admin.create({
+      name,
+      email,
+      password: hashPassword,
+      userType,
+    })
+
+    return res.status(200).json({
+      success: true,
+      message: 'Triager registered successfully  ',
+      triager,
+    })
+  } catch (error) {
+    console.log(error)
+
+    return res.status(500).json({
+      success: false,
+      message: 'Unable to register ',
     })
   }
 }

@@ -23,6 +23,9 @@ import ChatRoom from './chat/ReportChat'
 import ProgramCreation from './CompanyComponents/CreateProgram/ProgramCreation'
 import { connectSocket, disconnectSocket } from './socket'
 import { useEffect } from 'react'
+import AdminLogin from './AdminLogin'
+import AdminHome from './AdminPages/AdminHome'
+import AdminLayout from './Layouts/AdminLayout'
 
 function App() {
   useEffect(() => {
@@ -41,6 +44,19 @@ function App() {
     <div className="flex min-h-screen bg-[#0e0e0e] text-white">
       <main className="flex-1 overflow-y-auto">
         <Routes>
+          {/* Admin Routes */}
+          <Route
+            path="/admin/*"
+            element={
+              <ProtectedRoute typeUser="admin">
+                <AdminLayout />
+              </ProtectedRoute>
+            }
+          >
+            <Route path="login" element={<AdminLogin />} />
+            <Route path="home" element={<AdminHome />} />
+          </Route>
+
           {/* for / route */}
           <Route path="/" element={<Login />} />
 
@@ -55,7 +71,7 @@ function App() {
           <Route
             path="/hacker/*"
             element={
-              <ProtectedRoute>
+              <ProtectedRoute typeUser="hacker">
                 <HackerLayout />
               </ProtectedRoute>
             }
@@ -70,7 +86,14 @@ function App() {
           </Route>
 
           {/* Company Routes with CompanySidebar */}
-          <Route path="/company/*" element={<CompanyLayout />}>
+          <Route
+            path="/company/*"
+            element={
+              <ProtectedRoute typeUser="company">
+                <CompanyLayout />
+              </ProtectedRoute>
+            }
+          >
             <Route path="dashboard" element={<CompanyDashboard />} />
             <Route path="setting" element={<CompanySetting />} />
             <Route path="leaderboard" element={<CompanyLeaderBoard />} />

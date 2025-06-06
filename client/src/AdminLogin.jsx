@@ -1,25 +1,21 @@
 import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router'
-import { assets } from '../../assets/assets'
-import Tab from './Tab'
+import { assets } from './assets/assets'
+import Tab from './Common/LoginSignup/Tab'
 import { useDispatch } from 'react-redux'
-import { login } from '../../Services/authApi'
-import Button from '../Button/Button'
-import { resetPasswordToken } from '../../Services/resetPassword'
+import { login } from './Services/authApi'
+import Button from './Common/Button/Button'
+import { resetPasswordToken } from './Services/resetPassword'
 import { toast } from 'react-hot-toast'
 
-const Login = () => {
-  const [userType, setUserType] = useState('hacker')
+const AdminLogin = () => {
+  const [userType, setUserType] = useState('admin')
   const [formData, setFormData] = useState({ email: '', password: '' })
   const [showPassword, setShowPassword] = useState(false)
   const { email, password } = formData
   const dispatch = useDispatch()
   const navigate = useNavigate()
 
-  const tabData = [
-    { id: 1, tabName: 'hacker' },
-    { id: 2, tabName: 'company' },
-  ]
   const handleChange = (e) => {
     setFormData((prev) => ({
       ...prev,
@@ -42,7 +38,10 @@ const Login = () => {
       toast.error('Enter Email')
     }
   }
-
+  const tabData = [
+    { id: 1, tabName: 'admin' },
+    { id: 2, tabName: 'triager' },
+  ]
   return (
     <div
       className="min-h-screen flex items-center justify-center px-4 py-10 text-white"
@@ -135,4 +134,4 @@ const Login = () => {
   )
 }
 
-export default Login
+export default AdminLogin
