@@ -1,4 +1,3 @@
-import React, { useEffect, useState } from 'react'
 import { Routes, Route, useLocation } from 'react-router'
 import SignUp from './Common/LoginSignup/SignUp'
 import Login from './Common/LoginSignup/Login'
@@ -20,15 +19,56 @@ import CompanyAssets from './CompanyPages/CompanyAssets'
 import CompanyBounties from './CompanyPages/CompanyBounties'
 import ProgramList from './CompanyComponents/Programs/ProgramDetails/ProgramList'
 import ProtectedRoute from './ProtectedRoute'
-import ChatRoom from './Common/ChatRoom/ReportChat'
 import ProgramFlow from './CompanyComponents/CreateProgram/ProgramCreation'
 import ProgramMainDetail from './CompanyComponents/Programs/ProgramData/ProgramMainDetail'
+import ChatRoom from './chat/ReportChat'
+import ProgramCreation from './CompanyComponents/CreateProgram/ProgramCreation'
+
+import AdminLogin from './AdminLogin'
+import AdminHome from './AdminPages/AdminHome'
+import AdminLayout from './Layouts/AdminLayout'
+import TriagerLayout from './Layouts/TriagerLayout'
+import TriagerDashboard from './TriagerPages/TriagerDashboard'
+import UsersData from './TriagerPages/UsersData'
+import TrigerReports from './TriagerPages/TrigerReports'
 
 function App() {
   return (
     <div className="flex min-h-screen bg-[#0e0e0e] text-white">
       <main className="flex-1 overflow-y-auto">
         <Routes>
+          {/* Admin Routes */}
+
+          <Route path="/adminlogin" element={<AdminLogin />} />
+
+          <Route
+            path="/admin/*"
+            element={
+              <ProtectedRoute typeUser="admin">
+                <AdminLayout />
+              </ProtectedRoute>
+            }
+          >
+            <Route path="home" element={<AdminHome />} />
+          </Route>
+
+          {/* Triager route */}
+
+          <Route
+            path="/triager/*"
+            element={
+              <ProtectedRoute typeUser="triager">
+                <TriagerLayout />
+              </ProtectedRoute>
+            }
+          >
+            <Route path="login" element={<AdminLogin />} />
+
+            <Route path="dashboard" element={<TriagerDashboard />} />
+            <Route path="users" element={<UsersData />} />
+            <Route path="reports" element={<TrigerReports />} />
+          </Route>
+
           {/* for / route */}
           <Route path="/" element={<Login />} />
 
@@ -43,7 +83,7 @@ function App() {
           <Route
             path="/hacker/*"
             element={
-              <ProtectedRoute>
+              <ProtectedRoute typeUser="hacker">
                 <HackerLayout />
               </ProtectedRoute>
             }
@@ -61,7 +101,7 @@ function App() {
           <Route
             path="/company/*"
             element={
-              <ProtectedRoute>
+              <ProtectedRoute typeUser="company">
                 <CompanyLayout />
               </ProtectedRoute>
             }

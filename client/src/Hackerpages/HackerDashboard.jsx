@@ -11,10 +11,6 @@ const FeedDashboard = () => {
 
   const token = useSelector((state) => state.auth.token)
 
-  // if (!token) {
-  //   navigate('/login')
-  // }
-
   useEffect(() => {
     const fetchHacker = async () => {
       const data = await getHackerDetails()

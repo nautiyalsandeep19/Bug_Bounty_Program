@@ -1,4 +1,5 @@
 import React from 'react'
+import '../../Common/Editor/TiptapEditor.css'
 
 const ReportTemplate = ({
   scope,
@@ -53,7 +54,7 @@ const ReportTemplate = ({
         <h3 className="text-xl font-semibold text-blue-700 mb-2 flex items-center gap-2">
           Proof of Concept (POC)
         </h3>
-        <div className=" rounded-md p-4 border border-gray-300 prose max-w-none">
+        <div className=" ProseMirror rounded-md p-4 border  border-gray-300 prose max-w-none">
           <div dangerouslySetInnerHTML={{ __html: reportPOC }} />
         </div>
       </div>

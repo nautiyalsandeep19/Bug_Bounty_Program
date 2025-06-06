@@ -125,3 +125,22 @@ export const getLeaderboard = async (req, res) => {
     res.status(500).json({ success:false,message: 'Server error' });
   }
 };
+
+
+export const getAllHackersDetails = async (req, res) => {
+  try {
+    const allHackers = await Hacker.find().populate('KYC') // populate KYC details if needed
+
+    res.status(200).json({
+      success: true,
+      count: allHackers.length,
+      hackers: allHackers,
+    })
+  } catch (error) {
+    console.error('Error fetching all hackers:', error)
+    res.status(500).json({
+      success: false,
+      message: 'Server error while fetching hackers',
+    })
+  }
+}

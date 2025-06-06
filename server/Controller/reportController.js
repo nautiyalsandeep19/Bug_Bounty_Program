@@ -1,4 +1,4 @@
-import Report from '../Models/report.js'
+import Report from '../Models/Report.js'
 export const createReport = async (req, res) => {
   try {
     const hackerId = req.user.id
@@ -97,5 +97,23 @@ export const updateStatus = async (req, res) => {
     res
       .status(500)
       .json({ success: false, message: 'Server error', error: error.message })
+  }
+}
+
+export const getAllReports = async (req, res) => {
+  try {
+    const allReports = await Report.find() // populate hacker info
+
+    res.status(200).json({
+      success: true,
+      count: allReports.length,
+      reports: allReports,
+    })
+  } catch (error) {
+    console.error('Error fetching all reports:', error)
+    res.status(500).json({
+      success: false,
+      message: 'Server error while fetching reports',
+    })
   }
 }

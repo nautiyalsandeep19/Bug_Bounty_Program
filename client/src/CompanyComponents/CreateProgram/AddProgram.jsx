@@ -23,13 +23,16 @@ const stepsList = [
 // Step components
 const Step1_ProgramUsername = ({ data, updateData }) => (
   <div className="mb-8">
-    <label htmlFor="programName" className="text-lg font-medium text-gray-900 block mb-2">
+    <label
+      htmlFor="programName"
+      className="text-lg font-medium text-gray-900 block mb-2"
+    >
       📝 Program Name
     </label>
     <input
       id="programName"
       type="text"
-      value={data.programName || ""}
+      value={data.programName || ''}
       onChange={(e) => updateData({ programName: e.target.value })}
       placeholder="e.g. SecureBug Program"
       className="w-full border border-gray-300 rounded-xl px-5 py-3 shadow-sm focus:ring-2 focus:ring-indigo-500 focus:outline-none transition"
@@ -42,7 +45,7 @@ const Step2_DefineScope = ({ data, updateData }) => (
     programData={data}
     updateScope={(assets) => updateData({ scope: assets })}
   />
-);
+)
 
 const Step3_ParticipationGuidelines = ({ data, updateData }) => (
   <div className="mb-6">
@@ -54,7 +57,7 @@ const Step3_ParticipationGuidelines = ({ data, updateData }) => (
     </label>
     <textarea
       id="guidelines"
-      value={data.guidelines || ""}
+      value={data.guidelines || ''}
       onChange={(e) => updateData({ guidelines: e.target.value })}
       placeholder="Participation Guidelines"
       rows={5}
@@ -63,7 +66,7 @@ const Step3_ParticipationGuidelines = ({ data, updateData }) => (
                  transition"
     />
   </div>
-);
+)
 
 const Step4_SpecificConcerns = ({ data, updateData }) => (
   <div className="mb-6">
@@ -75,7 +78,7 @@ const Step4_SpecificConcerns = ({ data, updateData }) => (
     </label>
     <textarea
       id="concerns"
-      value={data.concerns || ""}
+      value={data.concerns || ''}
       onChange={(e) => updateData({ concerns: e.target.value })}
       placeholder="Enter Specific Concerns"
       rows={5}
@@ -84,7 +87,7 @@ const Step4_SpecificConcerns = ({ data, updateData }) => (
                  transition"
     />
   </div>
-);
+)
 
 const Step5_ProgramPolicy = ({ data, updateData }) => (
   <div className="mb-6">
@@ -96,7 +99,7 @@ const Step5_ProgramPolicy = ({ data, updateData }) => (
     </label>
     <textarea
       id="programPolicy"
-      value={data.programPolicy || ""}
+      value={data.programPolicy || ''}
       onChange={(e) => updateData({ programPolicy: e.target.value })}
       placeholder="Write your program policy here..."
       rows={6}
@@ -201,7 +204,7 @@ const Step7_AdditionalDetails = ({ data, updateData }) => (
     </label>
     <textarea
       id="additionalDetails"
-      value={data.additionalDetails || ""}
+      value={data.additionalDetails || ''}
       onChange={(e) => updateData({ additionalDetails: e.target.value })}
       placeholder="Enter Additional Details"
       rows={5}
@@ -210,21 +213,21 @@ const Step7_AdditionalDetails = ({ data, updateData }) => (
                  transition"
     />
   </div>
-);
+)
 
 const Step8_BrandProgram = ({ data, updateData }) => {
   // Extract brand object or initialize
   const brand = data.brand || {
-    programName: "",
-    programTagline: "",
-    programWebsite: "",
-    programDescription: ""
-  };
+    programName: '',
+    programTagline: '',
+    programWebsite: '',
+    programDescription: '',
+  }
 
   // Handler for brand input updates
   const updateBrandData = (field, value) => {
-    updateData({ brand: { ...brand, [field]: value } });
-  };
+    updateData({ brand: { ...brand, [field]: value } })
+  }
 
   return (
     <div>
@@ -239,7 +242,7 @@ const Step8_BrandProgram = ({ data, updateData }) => {
           id="brandProgramName"
           type="text"
           value={brand.programName}
-          onChange={(e) => updateBrandData("programName", e.target.value)}
+          onChange={(e) => updateBrandData('programName', e.target.value)}
           placeholder="Enter Program Name"
           className="w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
         />
@@ -256,7 +259,7 @@ const Step8_BrandProgram = ({ data, updateData }) => {
           id="programTagline"
           type="text"
           value={brand.programTagline}
-          onChange={(e) => updateBrandData("programTagline", e.target.value)}
+          onChange={(e) => updateBrandData('programTagline', e.target.value)}
           placeholder="Enter Program Tagline"
           className="w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
         />
@@ -273,7 +276,7 @@ const Step8_BrandProgram = ({ data, updateData }) => {
           id="programWebsite"
           type="url"
           value={brand.programWebsite}
-          onChange={(e) => updateBrandData("programWebsite", e.target.value)}
+          onChange={(e) => updateBrandData('programWebsite', e.target.value)}
           placeholder="Enter Program Website URL"
           className="w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
         />
@@ -289,7 +292,9 @@ const Step8_BrandProgram = ({ data, updateData }) => {
         <textarea
           id="programDescription"
           value={brand.programDescription}
-          onChange={(e) => updateBrandData("programDescription", e.target.value)}
+          onChange={(e) =>
+            updateBrandData('programDescription', e.target.value)
+          }
           placeholder="Enter Program Description"
           rows={5}
           className="w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm resize-y
@@ -298,27 +303,31 @@ const Step8_BrandProgram = ({ data, updateData }) => {
         />
       </div>
     </div>
-  );
-};
+  )
+}
 
 const Step9_ScheduleLaunch = ({ data, updateData }) => (
   <div className="mb-6">
-    <label className="block text-gray-800 font-semibold mb-2 text-lg">Start Date:</label>
+    <label className="block text-gray-800 font-semibold mb-2 text-lg">
+      Start Date:
+    </label>
     <input
       type="date"
-      value={data.startDate || ""}
+      value={data.startDate || ''}
       onChange={(e) => updateData({ startDate: e.target.value })}
       className="w-full p-2 border border-gray-300 rounded-lg shadow-sm mb-4 focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
     />
-    <label className="block text-gray-800 font-semibold mb-2 text-lg">End Date:</label>
+    <label className="block text-gray-800 font-semibold mb-2 text-lg">
+      End Date:
+    </label>
     <input
       type="date"
-      value={data.endDate || ""}
+      value={data.endDate || ''}
       onChange={(e) => updateData({ endDate: e.target.value })}
       className="w-full p-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
     />
   </div>
-);
+)
 
 const Step10_ReviewAndSubmit = ({ data, onSubmit }) => {
   // Format bounty for display
@@ -344,15 +353,15 @@ const Step10_ReviewAndSubmit = ({ data, onSubmit }) => {
         Submit Program
       </button>
     </div>
-  );
-};
+  )
+}
 
 // Main component
 const CreateProgram = () => {
-  const [step, setStep] = useState(0);
-  const [programData, setProgramData] = useState({});
-  const navigate = useNavigate();
-  const VITE_BACKEND_HOST_URL = import.meta.env.VITE_BACKEND_HOST_URL;
+  const [step, setStep] = useState(0)
+  const [programData, setProgramData] = useState({})
+  const navigate = useNavigate()
+  const VITE_BACKEND_HOST_URL = import.meta.env.VITE_BACKEND_HOST_URL
 
   const location = useLocation();
   useEffect(() => {
@@ -363,36 +372,36 @@ const CreateProgram = () => {
 
   // Load from localStorage on mount
   useEffect(() => {
-    let previousAssets = localStorage.getItem("assets");
+    let previousAssets = localStorage.getItem('assets')
 
     const interval = setInterval(() => {
-      const currentAssets = localStorage.getItem("assets");
+      const currentAssets = localStorage.getItem('assets')
 
       if (currentAssets && currentAssets !== previousAssets) {
-        const storedData = localStorage.getItem("programData");
-        const selectedProgramType = localStorage.getItem("selectedProgramType");
+        const storedData = localStorage.getItem('programData')
+        const selectedProgramType = localStorage.getItem('selectedProgramType')
 
-        let updatedData = {};
+        let updatedData = {}
         if (storedData) {
-          updatedData = JSON.parse(storedData);
+          updatedData = JSON.parse(storedData)
         }
 
-        updatedData.scope = JSON.parse(currentAssets);
+        updatedData.scope = JSON.parse(currentAssets)
         if (selectedProgramType) {
-          updatedData.type = selectedProgramType;
+          updatedData.type = selectedProgramType
         }
 
-        setProgramData(updatedData);
-        previousAssets = currentAssets;
+        setProgramData(updatedData)
+        previousAssets = currentAssets
       }
-    }, 500);
+    }, 500)
 
-    return () => clearInterval(interval);
-  }, []);
+    return () => clearInterval(interval)
+  }, [])
 
   useEffect(() => {
-    localStorage.setItem("programData", JSON.stringify(programData));
-  }, [programData]);
+    localStorage.setItem('programData', JSON.stringify(programData))
+  }, [programData])
 
   const updateData = (newData) =>
     setProgramData((prev) => ({ ...prev, ...newData }));
@@ -542,7 +551,7 @@ const CreateProgram = () => {
     Step10_ReviewAndSubmit,
   ];
 
-  const CurrentStep = steps[step];
+  const CurrentStep = steps[step]
 
   return (
     <div className="max-w-full h-[100vh] text-black mx-auto p-8 bg-white rounded-lg shadow-lg flex">

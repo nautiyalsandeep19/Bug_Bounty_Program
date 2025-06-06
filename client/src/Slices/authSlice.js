@@ -48,9 +48,6 @@ export const authSlice = createSlice({
       state.userType = action.payload
       localStorage.setItem('userType', JSON.stringify(action.payload))
     },
-    // setSocket(state, action){
-    //   state.socket = action.payload
-    // }
   },
 })
 

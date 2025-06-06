@@ -1,12 +1,14 @@
 import { useState, useEffect } from 'react'
+import axios from 'axios'
 import ProgramCard from './ProgramCard'
 import { Link } from 'react-router-dom'
+
 const ProgramList = () => {
   const [search, setSearch] = useState('')
   const [filter, setFilter] = useState('All')
   const [programs, setPrograms] = useState([])
-  const [loading, setLoading] = useState(true) // Add loading state
-  const [error, setError] = useState(null) // Add error state
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState(null)
 
   const storedUser = localStorage.getItem('user');
   // const companyId = '6652f1a1f57c9c48e16b3400'
@@ -65,16 +67,14 @@ const ProgramList = () => {
     return matchesSearch && matchesFilter
   })
 
-  // Loading state UI
   if (loading) {
     return (
       <div className="w-full p-4 flex justify-center items-center h-64">
-        <div className="animate-spin mt-150 rounded-full h-40 w-40 border-t-1 border-white"></div>
+        <div className="animate-spin rounded-full h-10 w-10 border-t-2 border-white"></div>
       </div>
     )
   }
 
-  // Error state UI
   if (error) {
     return (
       <div className="w-full p-4 text-center text-red-500">
@@ -107,9 +107,6 @@ const ProgramList = () => {
           >
             Create Program
           </Link>
-          {/* <Link className="border px-4 py-2 rounded-full hover:bg-gray-600 transition" to="/addassets">
-            Add Assets
-          </Link> */}
         </div>
 
         <select
