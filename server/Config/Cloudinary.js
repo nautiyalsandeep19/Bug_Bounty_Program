@@ -16,8 +16,8 @@ cloudinary.config({
 const storage = new CloudinaryStorage({
   cloudinary,
   params: async (req, file) => {
-    let resourceType = 'auto';
-    const mimetype = file.mimetype;
+    let resourceType = 'auto'
+    const mimetype = file.mimetype
 
     // Force 'raw' for non-images (PDF, ZIP, DOCX, etc.)
     if (
@@ -26,7 +26,7 @@ const storage = new CloudinaryStorage({
       mimetype === 'application/msword' ||
       mimetype.startsWith('application/')
     ) {
-      resourceType = 'raw';
+      resourceType = 'raw'
     }
 
     return {
@@ -37,6 +37,6 @@ const storage = new CloudinaryStorage({
   },
 });
 
-const upload = multer({ storage });
+const upload = multer({ storage })
 
 export { cloudinary, upload };

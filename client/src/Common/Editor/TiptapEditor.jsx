@@ -319,6 +319,7 @@ import {
   Undo2,
   Code2,
   Upload,
+  ImageDown,
 } from 'lucide-react'
 import { uploadFiles } from '../../Services/uploaderApi'
 
@@ -407,6 +408,46 @@ const MenuBar = ({ editor }) => {
     } catch (error) {
       console.error('Image upload failed:', error)
       alert('Failed to upload image')
+    }
+  }
+
+  const uploadDoc = async (file) => {
+    if (!file) return
+    try {
+      const docUrl = await uploadFiles(file)
+      if (docUrl) {
+        editor.chain().focus().setImage({ src: docUrl }).run()
+      }
+    } catch (error) {
+      console.error('Doc upload failed:', error)
+      toast.error('upload doc failed')
+    }
+  }
+
+  const handleAttachmentsChange = async (e) => {
+    const files = Array.from(e.target.files)
+    const totalSize = files.reduce((acc, file) => acc + file.size, 0)
+
+    if (totalSize > MAX_TOTAL_SIZE_MB * 1024 * 1024) {
+      alert(`Total file size must not exceed ${MAX_TOTAL_SIZE_MB} MB.`)
+      return
+    }
+
+    try {
+      const uploadedFiles = []
+      for (const file of files) {
+        const fileUrl = await uploadFiles(file)
+
+        if (fileUrl) {
+          uploadedFiles.push({ name: file.name, url: fileUrl })
+          toast.success('file uploaded successfully')
+        }
+      }
+
+      setAttachments((prev) => [...prev, ...uploadedFiles])
+    } catch (error) {
+      console.error('File upload failed:', error)
+      alert('One or more files failed to upload.')
     }
   }
 
@@ -520,7 +561,7 @@ const MenuBar = ({ editor }) => {
         onClick={() => fileInputRef.current?.click()}
         className="p-2 rounded border border-gray-300 flex items-center justify-center text-white"
       >
-        <Upload size={18} />
+        <ImageDown size={18} />
       </button>
       <input
         type="file"
@@ -530,6 +571,24 @@ const MenuBar = ({ editor }) => {
         onChange={(e) => {
           const file = e.target.files?.[0]
           uploadImage(file)
+          e.target.value = null
+        }}
+      />
+      <button
+        type="button"
+        onClick={() => fileInputRef.current?.click()}
+        className="p-2 rounded border border-gray-300 flex items-center justify-center text-white"
+      >
+        <Upload size={18} />
+      </button>
+      <input
+        type="file"
+        accept="file/*"
+        ref={fileInputRef}
+        style={{ display: 'none' }}
+        onChange={(e) => {
+          const file = e.target.files?.[0]
+          uploadDoc(file)
           e.target.value = null
         }}
       />
