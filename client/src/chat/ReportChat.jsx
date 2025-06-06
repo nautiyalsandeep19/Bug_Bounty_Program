@@ -84,7 +84,7 @@ const ChatRoom = () => {
         Chat for Report: {reportId}
       </h2> */}
 
-      <div className=" space-y-4 px-4 py-2  rounded-lg border-2 border-[#042d5b] overflow-y-auto bg-neutral-800 h-[50vh]  top-0 ">
+      <div className="ProseMirror space-y-4 px-4   rounded-lg border-2 border-[#042d5b] overflow-y-auto bg-neutral-800 h-[50vh]  top-0 ">
         {messages.map((msg, index) => {
           const isSender = msg.senderInfo._id === currentUserId
           const senderName =
@@ -115,7 +115,7 @@ const ChatRoom = () => {
                 <time className="text-xs opacity-50 ml-2 ">{time}</time>
               </div>
               <div
-                className={`chat-bubble   shadow-2xl${
+                className={`chat-bubble   shadow-xl${
                   isSender ? 'bg-blue-600 ' : 'bg-amber-500'
                 }  `}
                 dangerouslySetInnerHTML={{ __html: msg.message }}
