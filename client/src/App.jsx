@@ -95,6 +95,8 @@ function App() {
             <Route path="report" element={<HackerReports />} />
             <Route path="programs" element={<ProgramsPage />} />
             <Route path="chat/:reportId" element={<ChatRoom />} />
+            <Route path="programsmaindetails/:programId" element={<ProgramMainDetail />} />
+
           </Route>
 
           {/* Company Routes with CompanySidebar */}

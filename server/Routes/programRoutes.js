@@ -6,7 +6,9 @@ import {
   createProgram,
   updateProgramById,
   getProgramsByCompany,
-  getProgramByIds
+  getProgramByIds,
+  fetchAllPrograms,
+  fetchPrivateProgramsForHacker
 } from '../Controller/programController.js'
 
 const router = express.Router()
@@ -15,5 +17,9 @@ router.post("/",createProgram);
 router.put("/update/:id", upload.none(), updateProgramById);
 router.get("/companyPrograms/:companyId", getProgramsByCompany);
 router.get("/Programs/:programId", getProgramByIds); // For testing purposes
+
+// for hackers
+router.get('/allPrograms', fetchAllPrograms)
+router.get('/privatePrograms', fetchPrivateProgramsForHacker)
 
 export default router

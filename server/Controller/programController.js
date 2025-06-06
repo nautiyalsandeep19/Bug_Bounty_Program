@@ -137,3 +137,53 @@ export const getProgramByIds = async (req, res) => {
   }
 };
 
+export const fetchPrivateProgramsForHacker = async (req, res) => {
+  try {
+    if (!req.user && req.user.userType !== 'hacker') {
+      // made changes &&
+      return res.status(403).json({
+        success: false,
+        message: 'Access denied. Only hackers can access private programs.',
+      })
+    }
+
+    const hackerId = req.user.id
+
+    const programs = await Program.find({
+      visibility: 'private',
+      invitedHackers: hackerId,
+    })
+
+    return res.status(200).json({
+      success: true,
+      count: programs.length,
+      programs,
+    })
+  } catch (error) {
+    console.error('Error fetching private programs for hacker:', error)
+    return res.status(500).json({
+      success: false,
+      message: 'Server error while fetching private programs',
+    })
+  }
+}
+
+export const fetchAllPrograms = async (req, res) => {
+  try {
+    const publicPrograms = await Program.find({
+      visibility: 'public',
+    }).populate('company')
+
+    res.status(200).json({
+      success: true,
+      count: publicPrograms.length,
+      programs: publicPrograms,
+    })
+  } catch (error) {
+    console.error('Error fetching public programs:', error)
+    res.status(500).json({
+      success: false,
+      message: 'Server error while fetching programs',
+    })
+  }
+}
