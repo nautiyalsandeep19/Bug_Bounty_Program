@@ -24,11 +24,9 @@ const programSchema = new mongoose.Schema(
       default: 'public',
     },
     bountyRange: {
-      informational: { type: Number, default: 0 },
       low: { type: Number, default: 50 },
       medium: { type: Number, default: 400 },
       high: { type: Number, default: 800 },
-      critical: { type: Number, default: 1000 },
     },
     invitedHackers: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Hacker' }],
     assets: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Asset' }],
