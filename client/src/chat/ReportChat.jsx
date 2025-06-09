@@ -84,9 +84,9 @@ const ChatRoom = () => {
       editorRef.current?.editor?.commands.clearContent(true)
     }
   }
-
   const user = JSON.parse(localStorage.getItem('user'))
   const currentUserId = user?._id
+  console.log('currect user: ', currentUserId)
 
   return (
     <div className="">

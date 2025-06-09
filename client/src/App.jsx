@@ -38,11 +38,11 @@ function App() {
           {/* Admin Routes */}
 
           <Route path="/adminlogin" element={<AdminLogin />} />
-
+          <Route path="report/chat/:reportId" element={<ChatRoom />} />
           <Route
             path="/admin/*"
             element={
-              <ProtectedRoute typeUser="admin">
+              <ProtectedRoute typeUser={['admin']}>
                 <AdminLayout />
               </ProtectedRoute>
             }
@@ -55,7 +55,7 @@ function App() {
           <Route
             path="/triager/*"
             element={
-              <ProtectedRoute typeUser="triager">
+              <ProtectedRoute typeUser={['triager']}>
                 <TriagerLayout />
               </ProtectedRoute>
             }
@@ -81,7 +81,7 @@ function App() {
           <Route
             path="/hacker/*"
             element={
-              <ProtectedRoute typeUser="hacker">
+              <ProtectedRoute typeUser={['hacker', 'triager']}>
                 <HackerLayout />
               </ProtectedRoute>
             }

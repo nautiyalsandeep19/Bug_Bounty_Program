@@ -4,7 +4,7 @@ import { Server } from 'socket.io'
 import Message from '../Models/message.js'
 import Hacker from '../Models/hacker.js'
 import Company from '../Models/company.js'
-
+import Admin from '../Models/admin.js'
 const app = express()
 const server = http.createServer(app)
 
@@ -16,7 +16,7 @@ const io = new Server(server, {
   },
 })
 
-app.set("io", io);
+app.set('io', io)
 const userSocketMap = {}
 io.on('connection', (socket) => {
   console.log('A user connected:', socket.id)
@@ -37,14 +37,14 @@ io.on('connection', (socket) => {
   // Send Message function
   socket.on(
     'sendMessage',
-    async ({ reportId, senderId, senderModel, message , messageType}) => {
+    async ({ reportId, senderId, senderModel, message, messageType }) => {
       try {
         const newMsg = new Message({
           reportId,
           senderId,
           senderModel,
           message,
-          messageType
+          messageType,
         })
         await newMsg.save()
 
@@ -56,6 +56,10 @@ io.on('connection', (socket) => {
           )
         } else if (newMsg.senderModel === 'Company') {
           senderDetails = await Company.findById(newMsg.senderId).select(
+            'name email image _id'
+          )
+        } else if (newMsg.senderModel === 'Triager') {
+          senderDetails = await Admin.findById(newMsg.senderId).select(
             'name email image _id'
           )
         }
