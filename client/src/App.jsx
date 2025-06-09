@@ -21,16 +21,16 @@ import ProgramList from './CompanyComponents/Programs/ProgramDetails/ProgramList
 import ProtectedRoute from './ProtectedRoute'
 import ChatRoom from './chat/ReportChat'
 import ProgramCreation from './CompanyComponents/CreateProgram/ProgramCreation'
-import { connectSocket, disconnectSocket } from './socket'
-import { useEffect } from 'react'
+
 import AdminLogin from './AdminLogin'
 import AdminHome from './AdminPages/AdminHome'
 import AdminLayout from './Layouts/AdminLayout'
 import TriagerLayout from './Layouts/TriagerLayout'
 import TriagerDashboard from './TriagerPages/TriagerDashboard'
+import UsersData from './TriagerPages/UsersData'
+import TrigerReports from './TriagerPages/TrigerReports'
 
 function App() {
-  
   return (
     <div className="flex min-h-screen bg-[#0e0e0e] text-white">
       <main className="flex-1 overflow-y-auto">
@@ -63,6 +63,8 @@ function App() {
             <Route path="login" element={<AdminLogin />} />
 
             <Route path="dashboard" element={<TriagerDashboard />} />
+            <Route path="users" element={<UsersData />} />
+            <Route path="reports" element={<TrigerReports />} />
           </Route>
 
           {/* for / route */}
@@ -113,7 +115,7 @@ function App() {
         </Routes>
       </main>
     </div>
-  );
+  )
 }
 
-export default App;
+export default App
