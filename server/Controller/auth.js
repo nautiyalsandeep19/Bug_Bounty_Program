@@ -265,7 +265,8 @@ export const login = async (req, res) => {
     let user;
 
     if (userType === 'admin') {
-      user = await Admin.findOne({ email })
+      user = await Admin.findOne({ email, userType: "admin" });
+
 
       if (!user) {
         return res.status(401).json({

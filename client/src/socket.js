@@ -4,6 +4,8 @@ import { io } from 'socket.io-client'
 let socket = null
 const BASE_URL = import.meta.env.VITE_BACKEND_HOST_URL
 export const connectSocket = (userId) => {
+
+   if (socket) return socket;
   socket = io(BASE_URL, {
     query: { userId },
   })
