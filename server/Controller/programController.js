@@ -122,8 +122,8 @@ export const getProgramByIds = async (req, res) => {
       return res.status(400).json({ message: 'Invalid program ID format' });
     }
 
-    const program = await Program.findById(id);
-    console.log("Fetched program:", program);
+    const program = await Program.findById(id).populate('assets');
+    // console.log("Fetched program:", program);
 
     if (!program) {
       return res.status(404).json({ message: 'Program not found' });

@@ -10,6 +10,7 @@ const programSchema = new mongoose.Schema(
       required: true,
     },
     brand: {
+      
       programName: { type: String, default: "" },
       programTagline: { type: String, default: "" },
       programWebsite: { type: String, default: "" },

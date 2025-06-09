@@ -93,4 +93,3 @@ export const getAssetsByCompany = async (req, res) => {
     });
   }
 };
-    
