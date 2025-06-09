@@ -15,10 +15,11 @@ const messageSchema = new mongoose.Schema(
     },
     senderModel: {
       type: String,
-      enum: ["Hacker", "Company"],
+      enum: ["Hacker", "Company", "Triager"],
       required: true,
     },
     message: { type: String, required: true },
+    messageType:{ type:String , enum: ['text','log']},
   },
   {
     timestamps: true,
