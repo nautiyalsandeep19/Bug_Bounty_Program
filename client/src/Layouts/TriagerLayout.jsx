@@ -5,7 +5,7 @@ const TriagerLayout = () => {
   return (
     <div className="flex">
       <TriagerSidebar />
-      <div className="sm:ml-64 flex-1 p-4">
+      <div className=" flex-1 p-4">
         <Outlet />
       </div>
     </div>

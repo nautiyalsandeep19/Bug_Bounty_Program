@@ -19,22 +19,32 @@ export const createReport = async (reportData) => {
     return null;
   }
 }
-
-export const updateReportStatus = async (statusData) => {
+export const updateReportStatus = async ({ reportId, status }) => {
   try {
-    const response = await apiConnector('POST', endPoints.UPDATE_REPORT_STATUS, statusData);
+    const response = await apiConnector(
+      'PUT',
+      `${endPoints.UPDATE_REPORT_STATUS}/${reportId}`,
+      { status }
+    );
+
     console.log('Update Report Status Response:', response);
 
-    if (!response.success) {
-      toast.error(response.message);
+    // Backend returns success: false with a 200 status if status is unchanged
+    if (response?.success === false && response?.message?.includes('already')) {
+      toast(response.message); // Show toast like: "Status is already 'In Progress'"
+      return null;
+    }
+
+    if (!response?.success) {
+      toast.error(response.message || 'Unknown error occurred');
       throw new Error(response.message);
     }
 
     toast.success('Report status updated successfully');
-    return response.updatedReport;
+    return response.report;
   } catch (error) {
     console.error('Error updating report status:', error);
     toast.error('Failed to update report status');
     return null;
   }
-}
+};

@@ -23,8 +23,7 @@ const ProgramCard = ({ program }) => {
             className="w-12 h-12 object-cover"
           />
         </div>
-      </div>
-
+      </div> 
 
       {/* Program Info */}
       <div className="text-center">

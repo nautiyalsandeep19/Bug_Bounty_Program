@@ -16,6 +16,7 @@ const io = new Server(server, {
   },
 })
 
+app.set("io", io);
 const userSocketMap = {}
 io.on('connection', (socket) => {
   console.log('A user connected:', socket.id)
@@ -36,13 +37,14 @@ io.on('connection', (socket) => {
   // Send Message function
   socket.on(
     'sendMessage',
-    async ({ reportId, senderId, senderModel, message }) => {
+    async ({ reportId, senderId, senderModel, message , messageType}) => {
       try {
         const newMsg = new Message({
           reportId,
           senderId,
           senderModel,
           message,
+          messageType
         })
         await newMsg.save()
 

@@ -1,6 +1,7 @@
 import Message from '../Models/message.js'
 import Hacker from '../Models/hacker.js'
 import Company from '../Models/company.js'
+import Admin from '../Models/admin.js'
 
 export const getMessagesForReport = async (req, res) => {
   const { reportId } = req.params
@@ -20,6 +21,8 @@ export const getMessagesForReport = async (req, res) => {
           senderDetails = await Company.findById(msg.senderId).select(
             'name email image _id'
           )
+        } else if( msg.senderModel === 'Triager'){
+          senderDetails = await Admin.findById(msg.senderId).select('name email _id')
         }
 
         return {

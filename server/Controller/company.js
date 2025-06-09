@@ -129,3 +129,22 @@ export const updateContactPerson = async (req, res) => {
     })
   }
 }
+
+
+export const getAllCompany = async( req , res ) =>{
+ try {
+    const allCompany = await Company.find() // populate KYC details if needed
+
+    res.status(200).json({
+      success: true,
+      count: allCompany.length,
+      companies: allCompany,
+    })
+  } catch (error) {
+    console.error('Error fetching all companies:', error)
+    res.status(500).json({
+      success: false,
+      message: 'Server error while fetching companies',
+    })
+  }
+}

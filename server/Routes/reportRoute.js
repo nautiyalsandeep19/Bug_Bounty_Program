@@ -4,7 +4,7 @@ import { authMid, isCompany } from '../Middleware/authMid.js';
 const router = express.Router();
 
 router.post('/createReport', authMid, createReport);
-router.post('/updateStatus',authMid, isCompany, updateStatus);
+router.put('/updateStatus/:reportId',authMid, updateStatus);
 router.get('/allReports', authMid, getAllReports)
 
 export default router;
