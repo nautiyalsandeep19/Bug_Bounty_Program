@@ -91,7 +91,6 @@ export const createProgram = async (req, res) => {
 
 export const updateProgramById = async (req, res) => {
   try {
-    // Helper function to safely parse JSON
     const safeParse = (value) => {
       if (!value || value === 'null') return null;
       try {
@@ -113,10 +112,12 @@ export const updateProgramById = async (req, res) => {
       endDate: req.body.endDate,
       assets: safeParse(req.body.scope),
       brand: req.body.brand,
-      bountyRange: req.body.bounty,
-      // Add visibility to the update data
-      visibility: req.body.visibility || 'public' // Default to public if not provided
-      // description: req.body.description || ""
+      bountyRange: req.body.bountyRange || {
+        low: 0,
+        medium: 0,
+        high: 0
+      },
+      visibility: req.body.visibility || 'public' 
     };
 
     const programId = req.params.id;
@@ -240,7 +241,6 @@ export const fetchAllPrograms = async (req, res) => {
   }
 }
 
-// Add this new controller to your controllers file
 export const updateProgramVisibility = async (req, res) => {
   try {
     const { visibility } = req.body;

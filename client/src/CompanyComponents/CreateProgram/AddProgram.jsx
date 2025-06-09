@@ -583,61 +583,39 @@ const CreateProgram = () => {
 
   try {
     const programData = JSON.parse(localStorage.getItem("programData") || "{}");
-    
-    const formData = new FormData();
-
-    // Add simple fields
-    const fieldMappings = [
-      ["programName", "title"],
-      ["guidelines", "guidelines"],
-      ["concerns", "areasOfConcern"], // Changed to match backend expectation
-      ["programPolicy", "policy"],
-      ["additionalDetails", "additionalDetails"],
-      ["type", "type"],
-      ["startDate", "startDate"],
-      ["endDate", "endDate"],
-      ["visibility", "visibility"]
-    ];
-
-    fieldMappings.forEach(([key, formKey]) => {
-      if (programData[key] !== undefined) {
-        formData.append(formKey, programData[key]);
-      }
-    });
-
-    // Handle bounty separately - convert to proper format
-    if (programData.bounty) {
-      const bountyData = {
-        low: programData.bounty.low || 0,
-        medium: programData.bounty.medium || 0,
-        high: programData.bounty.high || 0
-      };
-      formData.append("bountyRange", JSON.stringify(bountyData));
-    }
-
-    // Handle scope
-    if (programData.scope) {
-      formData.append("scope", JSON.stringify(programData.scope));
-    }
-
-    // Handle brand
-    if (programData.brand) {
-      formData.append("brand", JSON.stringify(programData.brand));
-    }
-
     const token = localStorage.getItem("token");
-    if (!token) {
-      throw new Error("No authentication token found");
-    }
+
+    // Create a plain object instead of FormData
+    const payload = {
+      title: programData.programName,
+      guidelines: programData.guidelines,
+      areasOfConcern: programData.concerns,
+      policy: programData.programPolicy,
+      additionalDetails: programData.additionalDetails,
+      type: programData.type,
+      startDate: programData.startDate,
+      endDate: programData.endDate,
+      visibility: programData.visibility,
+      scope: programData.scope,
+      brand: programData.brand,
+      // Change this to bountyRange to match backend expectation
+      bountyRange: programData.bounty || {
+        low: 0,
+        medium: 0,
+        high: 0
+      }
+    };
+
+    console.log("Sending payload:", payload); // Debug log
 
     const response = await axios.put(
       `${VITE_BACKEND_HOST_URL}/api/programs/update/${programId}`,
-      formData,
-      { 
-        headers: { 
-          "Content-Type": "multipart/form-data",
+      payload, // Send as JSON
+      {
+        headers: {
+          "Content-Type": "application/json", // Change content type
           "Authorization": `Bearer ${token}`
-        } 
+        }
       }
     );
 
@@ -792,6 +770,8 @@ const CreateProgram = () => {
 };
 
 export default CreateProgram;
+
+
 
 // // Main component
 // const CreateProgram = () => {

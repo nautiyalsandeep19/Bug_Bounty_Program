@@ -38,7 +38,7 @@ const CompanyDashboard = () => {
       icon: <FiDollarSign className="text-2xl" />,
     },
     {
-      title: 'Critical Fixes',
+      title: 'Fixes',
       value: '50',
       icon: <FiAward className="text-2xl" />,
     },
