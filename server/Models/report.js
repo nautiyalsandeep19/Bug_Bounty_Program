@@ -4,11 +4,11 @@ const reportScheema = new mongoose.Schema(
   {
     programId: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'program',
+      ref: 'Program',
     },
     hackerId: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'hacker',
+      ref: 'Hacker',
     },
 
     submitDate: {
