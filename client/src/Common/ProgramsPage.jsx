@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { toast } from 'react-toastify'
 import { getAllPrograms, getPrivatePrograms } from '../Services/programsApi'
 import ProgramCards from './ProgramCards'
+import ProgramCard from '../CompanyComponents/Programs/ProgramDetails/ProgramCard'
 
 const ProgramsPage = () => {
   const [activeTab, setActiveTab] = useState('allPrograms')
@@ -100,13 +101,14 @@ const ProgramsPage = () => {
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
           {programs.map((program) => (
-            <ProgramCards
+            <ProgramCard
               key={program._id}
-              title={program.title}
-              companyName={program.company?.name}
-              companyImage={program.company?.image}
-              bountyRange={program.bountyRange}
-              type={program.type}
+              program={program}
+              // title={program.title}
+              // companyName={program.company?.name}
+              // companyImage={program.company?.image}
+              // bountyRange={program.bountyRange}
+              // type={program.type}
             />
           ))}
         </div>

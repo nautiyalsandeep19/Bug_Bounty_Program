@@ -1,4 +1,4 @@
-import express from 'express' // still needed for types/middleware
+import express from 'express'
 import cors from 'cors'
 import Company from './Models/company.js'
 import dotenv from 'dotenv'
@@ -14,7 +14,7 @@ import { authMid } from './Middleware/authMid.js'
 import logRequest from './Middleware/logRequest.js'
 import reportRoute from './Routes/reportRoute.js'
 import messageRoute from './Routes/messageRoute.js'
-import { app, server } from './Config/socket.js' // ✅ correctly imported
+import { app, server } from './Config/socket.js'
 
 dotenv.config()
 connectDB()

@@ -1,7 +1,7 @@
 import ProgramHeader from "../ProgramData/ProgramHeader"
 import ProgramRibbonData from "./ProgramRibbon"
 
-const ProgramDetail = () => {
+const ProgramMainDetail = () => {
  
   return (
     <>
@@ -22,4 +22,4 @@ const ProgramDetail = () => {
   )
 }
 
-export default ProgramDetail
+export default ProgramMainDetail

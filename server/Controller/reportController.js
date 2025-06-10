@@ -1,3 +1,5 @@
+import Admin from '../Models/admin.js'
+import Message from '../Models/message.js'
 import Report from '../Models/Report.js'
 export const createReport = async (req, res) => {
   try {
@@ -71,38 +73,82 @@ export const updateStatus = async (req, res) => {
     const { status } = req.body
 
     if (!reportId || !status) {
-      return res
-        .status(400)
-        .json({ success: false, message: 'Report ID and status are required' })
+      return res.status(400).json({
+        success: false,
+        message: 'Report ID and status are required',
+      })
     }
 
-    const report = await Report.findByIdAndUpdate(
+    const existingReport = await Report.findById(reportId)
+
+    if (!existingReport) {
+      return res.status(404).json({
+        success: false,
+        message: 'Report not found',
+      })
+    }
+
+    // ✅ If status is already same, do nothing
+    if (existingReport.status === status) {
+      return res.status(200).json({
+        success: false,
+        message: `Status is already "${status}"`,
+      })
+    }
+
+    // Update status
+    existingReport.status = status
+    await existingReport.save()
+
+    const logText = `Report status was updated to "${status}" by ${
+      req.user?.name || 'a triager'
+    }`
+
+    const logMessage = new Message({
       reportId,
-      { status },
-      { new: true }
+      senderId: req.user.id,
+      senderModel: 'Triager',
+      message: `<i>${logText}</i>`,
+      messageType: 'log',
+    })
+
+    await logMessage.save()
+
+    // Fetch sender info to emit with message
+    const senderDetails = await Admin.findById(req.user.id).select(
+      'name email image _id'
     )
 
-    if (!report) {
-      return res
-        .status(404)
-        .json({ success: false, message: 'Report not found' })
-    }
+    const io = req.app.get('io')
+    io.to(reportId).emit('receiveMessage', {
+      ...logMessage.toObject(),
+      senderInfo: senderDetails || {
+        _id: 'system',
+        name: 'System',
+        image: 'https://img.icons8.com/ios-filled/50/activity-history.png',
+      },
+    })
 
-    res.status(200).json({
+    return res.status(200).json({
       success: true,
       message: 'Report status updated successfully',
-      report,
+      report: existingReport,
     })
   } catch (error) {
-    res
-      .status(500)
-      .json({ success: false, message: 'Server error', error: error.message })
+    return res.status(500).json({
+      success: false,
+      message: 'Server error',
+      error: error.message,
+    })
   }
 }
 
 export const getAllReports = async (req, res) => {
   try {
-    const allReports = await Report.find() // populate hacker info
+    const allReports = await Report.find()
+      .populate('hackerId')
+      .populate('programId')
+    console.log(allReports)
 
     res.status(200).json({
       success: true,

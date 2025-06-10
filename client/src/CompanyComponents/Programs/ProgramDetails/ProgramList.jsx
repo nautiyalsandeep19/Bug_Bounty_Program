@@ -10,40 +10,54 @@ const ProgramList = () => {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
 
-  const companyId = '6652f1a1f57c9c48e16b3400'
+  const storedUser = localStorage.getItem('user');
+  // const companyId = '6652f1a1f57c9c48e16b3400'
   const VITE_BACKEND_HOST_URL = import.meta.env.VITE_BACKEND_HOST_URL
+  const userObj = JSON.parse(storedUser);
+  const companyId = userObj._id ; 
 
   useEffect(() => {
-    const fetchProgramsByCompany = async () => {
-      try {
-        setLoading(true)
-        const response = await axios.get(
-          `${VITE_BACKEND_HOST_URL}/api/programs/companyProgramss/${companyId}`,
-          {
-            withCredentials: true,
-            headers: {
-              'Content-Type': 'application/json',
-            },
+  const fetchProgramsByCompany = async () => {
+    try {
+      setLoading(true);
+      const res = await fetch(
+        `${VITE_BACKEND_HOST_URL}/api/programs/companyPrograms/${companyId}`,
+        {
+          method: 'GET',
+          credentials: 'include',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${localStorage.getItem('token')}`
           }
-        )
+        }
+      );
 
-        console.log('API Response:', response.data)
-        setPrograms(response.data.data || [])
-        setError(null)
-      } catch (err) {
-        console.error('Fetch error:', err)
-        setError(
-          err.response?.data?.message ||
-            err.message ||
-            'Failed to fetch programs'
-        )
-      } finally {
-        setLoading(false)
+      // First check if response is OK before parsing JSON
+      if (!res.ok) {
+        const errorData = await res.text(); // Get response as text first
+        try {
+          // Try to parse as JSON if possible
+          const jsonError = JSON.parse(errorData);
+          throw new Error(jsonError.message || 'Failed to fetch programs');
+        } catch {
+          // If not JSON, use the raw text
+          throw new Error(errorData || 'Failed to fetch programs');
+        }
       }
-    }
 
-    fetchProgramsByCompany()
-  }, [])
+      const data = await res.json();
+      setPrograms(data.data);
+      setError(null);
+    } catch (err) {
+      console.error('Fetch error:', err);
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  fetchProgramsByCompany();
+}, [companyId]); 
 
   const filtered = programs.filter((program) => {
     const matchesSearch = program.title
