@@ -23,9 +23,8 @@ const token = localStorage.getItem('token');
 
 const programId = useParams().programId;
 const dispatch = useDispatch();
-console.log("Program ID from URL:", programId);
   useEffect(() => {
-    console.log("Inside UseEffect")
+
     const fetchProgram = async () => {
       try {
         const programData = await axios.get(`http://localhost:8000/api/programs/Programs/${programId}`,
@@ -36,7 +35,7 @@ console.log("Program ID from URL:", programId);
       }
           }
         );
-        console.log("Fetched program data:", programData.data.data);
+        // console.log("Fetched program data:", programData.data.data);
         dispatch(setProgramData(programData.data.data));
       } catch (error) {
         console.error("Failed to fetch program:", error);

@@ -1,9 +1,7 @@
-import React from "react";
 import { useSelector } from "react-redux";
 
 const Scope = () => {
   const policyDetails = useSelector((state) => state.program.programData?.assets || []);
-  console.log("hey this is the policydetails",policyDetails)
   const bountyRange = useSelector((state) => state.program.programData?.bountyRange);
   
 

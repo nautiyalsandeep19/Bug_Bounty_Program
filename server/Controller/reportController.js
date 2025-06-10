@@ -163,3 +163,21 @@ export const getAllReports = async (req, res) => {
     })
   }
 }
+
+export const getReportById = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const report = await Report.findById(id)
+      .populate('hackerId')
+      .populate('programId');
+
+    if (!report) {
+      return res.status(404).json({ success: false, message: 'Report not found' });
+    }
+
+    res.status(200).json({ success: true, report });
+  } catch (error) {
+    console.error('Error fetching report:', error);
+    res.status(500).json({ success: false, message: 'Server error while fetching report' });
+  }
+};
