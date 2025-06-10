@@ -19,6 +19,8 @@ import CompanyAssets from './CompanyPages/CompanyAssets'
 import CompanyBounties from './CompanyPages/CompanyBounties'
 import ProgramList from './CompanyComponents/Programs/ProgramDetails/ProgramList'
 import ProtectedRoute from './ProtectedRoute'
+import ProgramFlow from './CompanyComponents/CreateProgram/ProgramCreation'
+import ProgramMainDetail from './CompanyComponents/Programs/ProgramData/ProgramMainDetail'
 import ChatRoom from './chat/ReportChat'
 import ProgramCreation from './CompanyComponents/CreateProgram/ProgramCreation'
 
@@ -93,6 +95,8 @@ function App() {
             <Route path="report" element={<HackerReports />} />
             <Route path="programs" element={<ProgramsPage />} />
             <Route path="chat/:reportId" element={<ChatRoom />} />
+            <Route path="programsmaindetails/:programId" element={<ProgramMainDetail />} />
+
           </Route>
 
           {/* Company Routes with CompanySidebar */}
@@ -110,8 +114,11 @@ function App() {
             <Route path="assets" element={<CompanyAssets />} />
             <Route path="bounties" element={<CompanyBounties />} />
             <Route path="programs" element={<ProgramList />} />
+            <Route path="programsmaindetails/:programId" element={<ProgramMainDetail />} />
           </Route>
-          <Route path="addprogram" element={<ProgramCreation />} />
+
+          {/* 👇 Route for chat with dynamic reportId */}
+          <Route path='addprogram' element={<ProgramFlow/>}/>
         </Routes>
       </main>
     </div>

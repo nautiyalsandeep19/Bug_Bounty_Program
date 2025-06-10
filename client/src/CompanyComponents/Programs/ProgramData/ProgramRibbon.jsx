@@ -3,8 +3,14 @@ import Policy from '../Tabs/Policy';
 import Scope from '../Tabs/Scope';
 import Announcements from '../Tabs/Announcements';
 import HallOfFame from '../Tabs/HallOfFame';
+import { useEffect } from 'react';
+import axios from 'axios';
+import { useParams } from 'react-router';
+import { useDispatch, useSelector } from 'react-redux';
+import { setProgramData } from '../../../Slices/programSlice';
+import { use } from 'react';
 
-const tabs = [
+const tabs = [  
   { label: "POLICY", key: "policy" },
   { label: "SCOPE", key: "scope" },
   { label: "ANNOUNCEMENTS", key: "announcements" },
@@ -12,11 +18,42 @@ const tabs = [
 ];
 
 export default function ProgramTabs() {
+
+const token = localStorage.getItem('token');
+
+const programId = useParams().programId;
+const dispatch = useDispatch();
+console.log("Program ID from URL:", programId);
+  useEffect(() => {
+    console.log("Inside UseEffect")
+    const fetchProgram = async () => {
+      try {
+        const programData = await axios.get(`http://localhost:8000/api/programs/Programs/${programId}`,
+          {
+            headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      }
+          }
+        );
+        console.log("Fetched program data:", programData.data.data);
+        dispatch(setProgramData(programData.data.data));
+      } catch (error) {
+        console.error("Failed to fetch program:", error);
+      }
+    };
+
+    if (programId) {
+      fetchProgram();
+    }
+  }, [programId]);
+
   const [activeTab, setActiveTab] = useState("policy");
+
 
   const renderTabContent = () => {
     switch (activeTab) {
-      case "policy": return <Policy />;
+      case "policy": return <Policy />
       case "scope": return <Scope />;
       case "announcements": return <Announcements />;
       case "hallOfFame": return <HallOfFame />;

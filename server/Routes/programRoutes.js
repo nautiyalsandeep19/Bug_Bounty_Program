@@ -1,33 +1,27 @@
-import express from 'express'
-import {
-  createInitialProgram,
-  fetchAllPrograms,
-  fetchPrivateProgramsForHacker,
-  //   updateProgram,
-} from '../Controller/programController.js'
-import { authMid } from '../Middleware/authMid.js'
 
+import express from 'express'
 import multer from 'multer'
 const upload = multer()
 import {
   createProgram,
   updateProgramById,
-  getProgramssByCompany,
+  getProgramsByCompany,
+  getProgramByIds,
+  fetchAllPrograms,
+  fetchPrivateProgramsForHacker,
+  updateProgramVisibility
 } from '../Controller/programController.js'
 
 const router = express.Router()
 
-router.post('/create-initial', createInitialProgram)
+router.post("/",createProgram);
+router.put("/update/:id", upload.none(), updateProgramById);
+router.get("/companyPrograms/:companyId", getProgramsByCompany);
+router.get("/Programs/:programId", getProgramByIds); // For testing purposes
+router.patch("/:id/visibility", updateProgramVisibility);
 
-// router.put('/update/:id', updateProgram)
-
+// for hackers
 router.get('/allPrograms', fetchAllPrograms)
-router.get('/privatePrograms', authMid, fetchPrivateProgramsForHacker)
-
-//company routes
-
-router.post('/', createProgram)
-router.put('/update/:id', upload.none(), updateProgramById)
-router.get('/companyProgramss/:companyId', getProgramssByCompany)
+router.get('/privatePrograms', fetchPrivateProgramsForHacker)
 
 export default router
