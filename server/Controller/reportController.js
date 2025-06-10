@@ -69,40 +69,56 @@ export const createReport = async (req, res) => {
 
 export const updateStatus = async (req, res) => {
   try {
-    const { reportId } = req.params
-    const { status } = req.body
+    const { reportId } = req.params;
+    const { status } = req.body;
 
     if (!reportId || !status) {
       return res.status(400).json({
         success: false,
         message: 'Report ID and status are required',
-      })
+      });
     }
 
-    const existingReport = await Report.findById(reportId)
+    const existingReport = await Report.findById(reportId);
 
     if (!existingReport) {
       return res.status(404).json({
         success: false,
         message: 'Report not found',
-      })
+      });
     }
 
-    // ✅ If status is already same, do nothing
     if (existingReport.status === status) {
       return res.status(200).json({
         success: false,
         message: `Status is already "${status}"`,
-      })
+      });
     }
 
     // Update status
-    existingReport.status = status
-    await existingReport.save()
+    existingReport.status = status;
+    await existingReport.save();
 
-    const logText = `Report status was updated to "${status}" by ${
-      req.user?.name || 'a triager'
-    }`
+    // Generate custom log text
+    let logText = '';
+    const userName = req.user?.name || 'a triager';
+
+    switch (status.toLowerCase()) {
+      case 'spam':
+        logText = `Report was marked as <b>Spam</b> by ${userName}`;
+        break;
+      case 'completed':
+        logText = `Report was <b>marked as Completed</b> by ${userName}`;
+        break;
+      case 'in progress':
+        logText = `Report status was set to <b>In Progress</b> by ${userName}`;
+        break;
+      case 'duplicate':
+        logText = `Report was marked as <b>Duplicate</b> by ${userName}`;
+        break;
+      default:
+        logText = `Report status was updated to <b>${status}</b> by ${userName}`;
+    }
 
     const logMessage = new Message({
       reportId,
@@ -110,16 +126,13 @@ export const updateStatus = async (req, res) => {
       senderModel: 'Triager',
       message: `<i>${logText}</i>`,
       messageType: 'log',
-    })
+    });
 
-    await logMessage.save()
+    await logMessage.save();
 
-    // Fetch sender info to emit with message
-    const senderDetails = await Admin.findById(req.user.id).select(
-      'name email image _id'
-    )
+    const senderDetails = await Admin.findById(req.user.id).select('name email image _id');
 
-    const io = req.app.get('io')
+    const io = req.app.get('io');
     io.to(reportId).emit('receiveMessage', {
       ...logMessage.toObject(),
       senderInfo: senderDetails || {
@@ -127,21 +140,21 @@ export const updateStatus = async (req, res) => {
         name: 'System',
         image: 'https://img.icons8.com/ios-filled/50/activity-history.png',
       },
-    })
+    });
 
     return res.status(200).json({
       success: true,
       message: 'Report status updated successfully',
       report: existingReport,
-    })
+    });
   } catch (error) {
     return res.status(500).json({
       success: false,
       message: 'Server error',
       error: error.message,
-    })
+    });
   }
-}
+};
 
 export const getAllReports = async (req, res) => {
   try {
@@ -163,3 +176,32 @@ export const getAllReports = async (req, res) => {
     })
   }
 }
+
+
+export const getReportsById = async (req, res) => {
+  try {
+    const hackerId = req.user.id;
+
+    if (!hackerId) {
+      return res.status(400).json({
+        success: false,
+        message: 'Hacker ID is required',
+      });
+    }
+
+    const reports = await Report.find({ hackerId })
+
+    return res.status(200).json({
+      success: true,
+      count: reports.length,
+      reports,
+    });
+  } catch (error) {
+    console.error('Error fetching hacker reports:', error);
+    return res.status(500).json({
+      success: false,
+      message: 'Server error while fetching hacker reports',
+      error: error.message,
+    });
+  }
+};
