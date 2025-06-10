@@ -31,6 +31,7 @@ import TriagerLayout from './Layouts/TriagerLayout'
 import TriagerDashboard from './TriagerPages/TriagerDashboard'
 import UsersData from './TriagerPages/UsersData'
 import TrigerReports from './TriagerPages/TrigerReports'
+import HackerAllReports from './Hackerpages/HackerAllReports'
 
 function App() {
   return (
@@ -92,11 +93,10 @@ function App() {
             <Route path="setting" element={<HackerSettings />} />
             <Route path="leaderboard" element={<HackerLeaderboard />} />
             <Route path="bounties" element={<HackerBounties />} />
-            <Route path="report" element={<HackerReports />} />
+            <Route path="report/:id" element={<HackerReports />} />
             <Route path="programs" element={<ProgramsPage />} />
             <Route path="chat/:reportId" element={<ChatRoom />} />
-            <Route path="programsmaindetails/:programId" element={<ProgramMainDetail />} />
-
+            <Route path="reports" element={<HackerAllReports />} />
           </Route>
 
           {/* Company Routes with CompanySidebar */}
@@ -114,11 +114,21 @@ function App() {
             <Route path="assets" element={<CompanyAssets />} />
             <Route path="bounties" element={<CompanyBounties />} />
             <Route path="programs" element={<ProgramList />} />
-            <Route path="programsmaindetails/:programId" element={<ProgramMainDetail />} />
+            <Route
+              path="programsmaindetails/:programId"
+              element={<ProgramMainDetail />}
+            />
           </Route>
 
           {/* 👇 Route for chat with dynamic reportId */}
-          <Route path='addprogram' element={<ProgramFlow/>}/>
+          <Route path="addprogram" element={<ProgramFlow />} />
+
+          {/* Report Program to show to all users */}
+          <Route path="/program" element={<ProgramsPage />} />
+          <Route
+            path="/programsmaindetails/:programId"
+            element={<ProgramMainDetail />}
+          />
         </Routes>
       </main>
     </div>

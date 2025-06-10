@@ -1,44 +1,42 @@
-import React, { useState, useEffect } from "react";
-import CreateAssets from "./CreateAssets";
-import { useNavigate } from "react-router-dom";
-import { useLocation } from 'react-router-dom';
-import { Editor } from '@toast-ui/react-editor'
-import '@toast-ui/editor/dist/toastui-editor.css'
-import axios from "axios";
+import React, { useState, useEffect } from 'react'
+import CreateAssets from './CreateAssets'
+import { useNavigate } from 'react-router-dom'
+import { useLocation } from 'react-router-dom'
+
+import axios from 'axios'
 
 // Steps labels
 const stepsList = [
-  "Program Username",
-  "Define Scope",
-  "Participation Guidelines",
-  "Specific Areas of Concern",
-  "Program Policy",
-  "Bounty Range",
-  "Additional Details",
-  "Brand Program",
-  "Schedule Launch",
-  "Review & Submit",
-];
+  'Program Username',
+  'Define Scope',
+  'Participation Guidelines',
+  'Specific Areas of Concern',
+  'Program Policy',
+  'Bounty Range',
+  'Additional Details',
+  'Brand Program',
+  'Schedule Launch',
+  'Review & Submit',
+]
 
 // Visibility Modal Component
 const ProgramVisibilityModal = ({ onSelect, onClose }) => (
   <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
     <div className="bg-white p-6 rounded-lg shadow-xl max-w-md w-full">
       <div className="flex justify-between items-center ">
-      <h2 className="text-2xl font-bold mb-4">Program Visibility</h2>
-<button
-        onClick={onClose}
-        className=" cursor-pointer border px-1 py-1   text-black rounded-full hover:text-gray-700"
-      >
-        X
-      </button>
+        <h2 className="text-2xl font-bold mb-4">Program Visibility</h2>
+        <button
+          onClick={onClose}
+          className=" cursor-pointer border px-1 py-1   text-black rounded-full hover:text-gray-700"
+        >
+          X
+        </button>
       </div>
-      
+
       <p className="mb-6 text-gray-700">
         Please select the visibility of your program:
       </p>
-      
-      
+
       <div className="space-y-5 space-x-5">
         <button
           onClick={() => onSelect('public')}
@@ -46,7 +44,7 @@ const ProgramVisibilityModal = ({ onSelect, onClose }) => (
         >
           Public Program
         </button>
-        
+
         <button
           onClick={() => onSelect('private')}
           className="w-fit bg-black hover:bg-black text-white py-3 px-4 rounded-lg transition"
@@ -54,11 +52,9 @@ const ProgramVisibilityModal = ({ onSelect, onClose }) => (
           Private Program
         </button>
       </div>
-      
-      
     </div>
   </div>
-);
+)
 // Step components
 const Step1_ProgramUsername = ({ data, updateData }) => (
   <div className="mb-8">
@@ -77,7 +73,7 @@ const Step1_ProgramUsername = ({ data, updateData }) => (
       className="w-full border border-gray-300 rounded-xl px-5 py-3 shadow-sm focus:ring-2 focus:ring-indigo-500 focus:outline-none transition"
     />
   </div>
-);
+)
 
 const Step2_DefineScope = ({ data, updateData }) => (
   <CreateAssets
@@ -147,34 +143,37 @@ const Step5_ProgramPolicy = ({ data, updateData }) => (
                  transition"
     />
   </div>
-);
+)
 
 const Step6_BountyRange = ({ data, updateData }) => {
   // Initialize bounty data if it doesn't exist
   const bounty = data.bounty || {
-    high: "",
-    medium: "",
-    low: ""
-  };
+    high: '',
+    medium: '',
+    low: '',
+  }
 
   // Handler for bounty input updates
   const updateBountyData = (field, value) => {
     // Ensure value is a number or empty string
-    const numValue = value === "" ? "" : Number(value);
-    updateData({ 
-      bounty: { 
-        ...bounty, 
-        [field]: numValue 
-      } 
-    });
-  };
+    const numValue = value === '' ? '' : Number(value)
+    updateData({
+      bounty: {
+        ...bounty,
+        [field]: numValue,
+      },
+    })
+  }
 
   return (
     <div className="space-y-6">
       <h2 className="text-xl font-bold mb-4">Set Bounty Ranges</h2>
-      
+
       <div className="mb-6">
-        <label htmlFor="highBounty" className="block text-gray-800 font-semibold mb-2">
+        <label
+          htmlFor="highBounty"
+          className="block text-gray-800 font-semibold mb-2"
+        >
           High Severity Bounty ($)
         </label>
         <input
@@ -182,15 +181,18 @@ const Step6_BountyRange = ({ data, updateData }) => {
           type="number"
           min="0"
           step="100"
-          value={bounty.high || ""}
-          onChange={(e) => updateBountyData("high", e.target.value)}
+          value={bounty.high || ''}
+          onChange={(e) => updateBountyData('high', e.target.value)}
           placeholder="e.g. 5000"
           className="w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
         />
       </div>
 
       <div className="mb-6">
-        <label htmlFor="mediumBounty" className="block text-gray-800 font-semibold mb-2">
+        <label
+          htmlFor="mediumBounty"
+          className="block text-gray-800 font-semibold mb-2"
+        >
           Medium Severity Bounty ($)
         </label>
         <input
@@ -198,15 +200,18 @@ const Step6_BountyRange = ({ data, updateData }) => {
           type="number"
           min="0"
           step="100"
-          value={bounty.medium || ""}
-          onChange={(e) => updateBountyData("medium", e.target.value)}
+          value={bounty.medium || ''}
+          onChange={(e) => updateBountyData('medium', e.target.value)}
           placeholder="e.g. 1000"
           className="w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
         />
       </div>
 
       <div className="mb-6">
-        <label htmlFor="lowBounty" className="block text-gray-800 font-semibold mb-2">
+        <label
+          htmlFor="lowBounty"
+          className="block text-gray-800 font-semibold mb-2"
+        >
           Low Severity Bounty ($)
         </label>
         <input
@@ -214,8 +219,8 @@ const Step6_BountyRange = ({ data, updateData }) => {
           type="number"
           min="0"
           step="50"
-          value={bounty.low || ""}
-          onChange={(e) => updateBountyData("low", e.target.value)}
+          value={bounty.low || ''}
+          onChange={(e) => updateBountyData('low', e.target.value)}
           placeholder="e.g. 250"
           className="w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
         />
@@ -230,8 +235,8 @@ const Step6_BountyRange = ({ data, updateData }) => {
         </ul>
       </div>
     </div>
-  );
-};
+  )
+}
 
 const Step7_AdditionalDetails = ({ data, updateData }) => (
   <div className="mb-6">
@@ -370,13 +375,15 @@ const Step9_ScheduleLaunch = ({ data, updateData }) => (
 
 const Step10_ReviewAndSubmit = ({ data, onSubmit }) => {
   // Format bounty for display
-  const displayData = { ...data };
+  const displayData = { ...data }
   if (displayData.bounty) {
     displayData.bounty = {
-      high: displayData.bounty.high ? `$${displayData.bounty.high}` : "Not set",
-      medium: displayData.bounty.medium ? `$${displayData.bounty.medium}` : "Not set",
-      low: displayData.bounty.low ? `$${displayData.bounty.low}` : "Not set",
-    };
+      high: displayData.bounty.high ? `$${displayData.bounty.high}` : 'Not set',
+      medium: displayData.bounty.medium
+        ? `$${displayData.bounty.medium}`
+        : 'Not set',
+      low: displayData.bounty.low ? `$${displayData.bounty.low}` : 'Not set',
+    }
   }
 
   return (
@@ -396,104 +403,104 @@ const Step10_ReviewAndSubmit = ({ data, onSubmit }) => {
 }
 // Main component
 const CreateProgram = () => {
-  const [step, setStep] = useState(0);
-  const [programData, setProgramData] = useState({});
-  const [showVisibilityModal, setShowVisibilityModal] = useState(false);
-  const navigate = useNavigate();
-  const VITE_BACKEND_HOST_URL = import.meta.env.VITE_BACKEND_HOST_URL;
-  const location = useLocation();
+  const [step, setStep] = useState(0)
+  const [programData, setProgramData] = useState({})
+  const [showVisibilityModal, setShowVisibilityModal] = useState(false)
+  const navigate = useNavigate()
+  const VITE_BACKEND_HOST_URL = import.meta.env.VITE_BACKEND_HOST_URL
+  const location = useLocation()
 
   useEffect(() => {
     if (location.pathname !== '/addprogram') {
-      localStorage.clear();
+      localStorage.clear()
     }
-  }, [location.pathname]);
+  }, [location.pathname])
 
   // Load from localStorage on mount
   useEffect(() => {
-    let previousAssets = localStorage.getItem('assets');
+    let previousAssets = localStorage.getItem('assets')
 
     const interval = setInterval(() => {
-      const currentAssets = localStorage.getItem('assets');
+      const currentAssets = localStorage.getItem('assets')
 
       if (currentAssets && currentAssets !== previousAssets) {
-        const storedData = localStorage.getItem('programData');
-        const selectedProgramType = localStorage.getItem('selectedProgramType');
+        const storedData = localStorage.getItem('programData')
+        const selectedProgramType = localStorage.getItem('selectedProgramType')
 
-        let updatedData = {};
+        let updatedData = {}
         if (storedData) {
-          updatedData = JSON.parse(storedData);
+          updatedData = JSON.parse(storedData)
         }
 
-        updatedData.scope = JSON.parse(currentAssets);
+        updatedData.scope = JSON.parse(currentAssets)
         if (selectedProgramType) {
-          updatedData.type = selectedProgramType;
+          updatedData.type = selectedProgramType
         }
 
-        setProgramData(updatedData);
-        previousAssets = currentAssets;
+        setProgramData(updatedData)
+        previousAssets = currentAssets
       }
-    }, 500);
+    }, 500)
 
-    return () => clearInterval(interval);
-  }, []);
+    return () => clearInterval(interval)
+  }, [])
 
   useEffect(() => {
-    localStorage.setItem('programData', JSON.stringify(programData));
-  }, [programData]);
+    localStorage.setItem('programData', JSON.stringify(programData))
+  }, [programData])
 
   const updateData = (newData) =>
-    setProgramData((prev) => ({ ...prev, ...newData }));
+    setProgramData((prev) => ({ ...prev, ...newData }))
 
   // Initial program creation
   const initialCreation = async () => {
     try {
-      const selectedProgramType = localStorage.getItem('selectedProgramType');
-      const storedData = localStorage.getItem("programData");
-      const programData = storedData ? JSON.parse(storedData) : {};
-      const storedUser = localStorage.getItem('user');
-      const userObj = JSON.parse(storedUser);
-      const token = localStorage.getItem('token');
-      
+      const selectedProgramType = localStorage.getItem('selectedProgramType')
+      const storedData = localStorage.getItem('programData')
+      const programData = storedData ? JSON.parse(storedData) : {}
+      const storedUser = localStorage.getItem('user')
+      const userObj = JSON.parse(storedUser)
+      const token = localStorage.getItem('token')
+
       if (!userObj?._id) {
-        throw new Error("User ID not found in localStorage");
+        throw new Error('User ID not found in localStorage')
       }
-  
+
       if (!/^[0-9a-fA-F]{24}$/.test(userObj._id)) {
-        throw new Error("Invalid user ID format");
+        throw new Error('Invalid user ID format')
       }
-  
+
       const payload = {
         type: selectedProgramType,
-        title: programData.programName || "New Program",
+        title: programData.programName || 'New Program',
         company: userObj._id,
-        visibility: programData.visibility || "public" // Include visibility in initial creation
-      };
-  
+        visibility: programData.visibility || 'public', // Include visibility in initial creation
+      }
+
       const response = await axios.post(
-        `${VITE_BACKEND_HOST_URL}/api/programs`, 
+        `${VITE_BACKEND_HOST_URL}/api/programs`,
         payload,
         {
           headers: {
-            'Authorization': `Bearer ${token}`,
-            'Content-Type': 'application/json'
-          }
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          },
         }
-      );
-      
+      )
+
       if (response.data.data && response.data.data._id) {
-        localStorage.setItem("programId", response.data.data._id);
-        return true;
+        localStorage.setItem('programId', response.data.data._id)
+        return true
       }
-      throw new Error("Program ID not found in response");
+      throw new Error('Program ID not found in response')
     } catch (error) {
-      console.error("Program creation failed:", {
+      console.error('Program creation failed:', {
         message: error.message,
         response: error.response?.data,
-      });
-      throw error;
+      })
+      throw error
     }
-  };
+  }
 
   // const updateProgramData = async () => {
   //   const programId = localStorage.getItem("programId");
@@ -501,7 +508,7 @@ const CreateProgram = () => {
 
   //   try {
   //     const programData = JSON.parse(localStorage.getItem("programData") || "{}");
-      
+
   //     const formData = new FormData();
 
   //     // Add simple fields
@@ -548,16 +555,16 @@ const CreateProgram = () => {
   //     const response = await axios.put(
   //       `${VITE_BACKEND_HOST_URL}/api/programs/update/${programId}`,
   //       formData,
-  //       { 
-  //         headers: { 
+  //       {
+  //         headers: {
   //           "Content-Type": "multipart/form-data",
   //           "Authorization": `Bearer ${token}`
-  //         } 
+  //         }
   //       }
   //     );
 
   //     console.log("✅ Program updated:", response.data);
-      
+
   //     // Show visibility selection modal if visibility wasn't set
   //     if (!programData.visibility) {
   //       setShowVisibilityModal(true);
@@ -576,102 +583,107 @@ const CreateProgram = () => {
   //   }
   // };
 
-
   const updateProgramData = async () => {
-  const programId = localStorage.getItem("programId");
-  if (!programId) return console.error("Program ID not found.");
+    const programId = localStorage.getItem('programId')
+    if (!programId) return console.error('Program ID not found.')
 
-  try {
-    const programData = JSON.parse(localStorage.getItem("programData") || "{}");
-    const token = localStorage.getItem("token");
+    try {
+      const programData = JSON.parse(
+        localStorage.getItem('programData') || '{}'
+      )
+      const token = localStorage.getItem('token')
 
-    // Create a plain object instead of FormData
-    const payload = {
-      title: programData.programName,
-      guidelines: programData.guidelines,
-      areasOfConcern: programData.concerns,
-      policy: programData.programPolicy,
-      additionalDetails: programData.additionalDetails,
-      type: programData.type,
-      startDate: programData.startDate,
-      endDate: programData.endDate,
-      visibility: programData.visibility,
-      scope: programData.scope,
-      brand: programData.brand,
-      // Change this to bountyRange to match backend expectation
-      bountyRange: programData.bounty || {
-        low: 0,
-        medium: 0,
-        high: 0
+      // Create a plain object instead of FormData
+      const payload = {
+        title: programData.programName,
+        guidelines: programData.guidelines,
+        areasOfConcern: programData.concerns,
+        policy: programData.programPolicy,
+        additionalDetails: programData.additionalDetails,
+        type: programData.type,
+        startDate: programData.startDate,
+        endDate: programData.endDate,
+        visibility: programData.visibility,
+        scope: programData.scope,
+        brand: programData.brand,
+        // Change this to bountyRange to match backend expectation
+        bountyRange: programData.bounty || {
+          low: 0,
+          medium: 0,
+          high: 0,
+        },
       }
-    };
 
-    console.log("Sending payload:", payload); // Debug log
+      console.log('Sending payload:', payload) // Debug log
 
-    const response = await axios.put(
-      `${VITE_BACKEND_HOST_URL}/api/programs/update/${programId}`,
-      payload, // Send as JSON
-      {
-        headers: {
-          "Content-Type": "application/json", // Change content type
-          "Authorization": `Bearer ${token}`
+      const response = await axios.put(
+        `${VITE_BACKEND_HOST_URL}/api/programs/update/${programId}`,
+        payload, // Send as JSON
+        {
+          headers: {
+            'Content-Type': 'application/json', // Change content type
+            Authorization: `Bearer ${token}`,
+          },
         }
-      }
-    );
+      )
 
-    console.log("✅ Program updated:", response.data);
-    
-    if (!programData.visibility) {
-      setShowVisibilityModal(true);
-    } else {
-      localStorage.removeItem('programId');
-      localStorage.removeItem('programData');
-      localStorage.removeItem('assets');
-      localStorage.removeItem('selectedProgramType');
-      navigate("/company/programs");
+      console.log('✅ Program updated:', response.data)
+
+      if (!programData.visibility) {
+        setShowVisibilityModal(true)
+      } else {
+        localStorage.removeItem('programId')
+        localStorage.removeItem('programData')
+        localStorage.removeItem('assets')
+        localStorage.removeItem('selectedProgramType')
+        navigate('/company/programs')
+      }
+    } catch (error) {
+      console.error('❌ Update error:', error)
+      const errorMessage = error.response?.data?.message || error.message
+      alert(`Error updating program: ${errorMessage}`)
     }
-  } catch (error) {
-    console.error("❌ Update error:", error);
-    const errorMessage = error.response?.data?.message || error.message;
-    alert(`Error updating program: ${errorMessage}`);
   }
-};
 
   const handleVisibilitySelect = async (visibility) => {
     try {
-      const programId = localStorage.getItem("programId");
-      const token = localStorage.getItem("token");
-      
+      const programId = localStorage.getItem('programId')
+      const token = localStorage.getItem('token')
+
       // Update program with visibility
       await axios.patch(
         `${VITE_BACKEND_HOST_URL}/api/programs/${programId}/visibility`,
         { visibility },
         {
           headers: {
-            "Authorization": `Bearer ${token}`,
-            "Content-Type": "application/json"
-          }
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          },
         }
-      );
+      )
 
       // Also update local data
-      updateData({ visibility });
-      
-      alert(`Program set as ${visibility} successfully!`);
-      
+      updateData({ visibility })
+
+      alert(`Program set as ${visibility} successfully!`)
+
       // Clear storage
-      localStorage.removeItem('programId');
-      localStorage.removeItem('programData');
-      localStorage.removeItem('assets');
-      localStorage.removeItem('selectedProgramType');
-      
-      setShowVisibilityModal(false);
-      navigate("/company/programs");
+      localStorage.removeItem('programId')
+      localStorage.removeItem('programData')
+      localStorage.removeItem('assets')
+      localStorage.removeItem('selectedProgramType')
+
+      setShowVisibilityModal(false)
+      navigate('/company/programs')
     } catch (error) {
-      console.error("Error setting program visibility:", error);
-      alert(`Failed to set program visibility: ${error.response?.data?.message || error.message}`);
+      console.error('Error setting program visibility:', error)
+      alert(
+        `Failed to set program visibility: ${
+          error.response?.data?.message || error.message
+        }`
+      )
     }
-  };
+  }
 
   const steps = [
     Step1_ProgramUsername,
@@ -684,9 +696,9 @@ const CreateProgram = () => {
     Step8_BrandProgram,
     Step9_ScheduleLaunch,
     Step10_ReviewAndSubmit,
-  ];
+  ]
 
-  const CurrentStep = steps[step];
+  const CurrentStep = steps[step]
 
   return (
     <div className="max-w-full h-[100vh] text-black mx-auto p-8 bg-white rounded-lg shadow-lg flex">
@@ -698,8 +710,8 @@ const CreateProgram = () => {
               key={label}
               className={`pb-1 border-l-4 pl-3 ${
                 index === step
-                  ? "text-blue-600 border-blue-600 font-semibold"
-                  : "border-gray-300"
+                  ? 'text-blue-600 border-blue-600 font-semibold'
+                  : 'border-gray-300'
               }`}
             >
               {label}
@@ -730,8 +742,8 @@ const CreateProgram = () => {
             onClick={() => setStep((prev) => prev - 1)}
             className={`px-6 py-3 rounded-lg shadow-md font-semibold transition ${
               step === 0
-                ? "bg-gray-300 cursor-not-allowed"
-                : "bg-gray-600 text-white hover:bg-gray-700"
+                ? 'bg-gray-300 cursor-not-allowed'
+                : 'bg-gray-600 text-white hover:bg-gray-700'
             }`}
           >
             Back
@@ -741,13 +753,16 @@ const CreateProgram = () => {
               onClick={async () => {
                 if (step === 0) {
                   try {
-                    await initialCreation();
-                    setStep((prev) => prev + 1);
+                    await initialCreation()
+                    setStep((prev) => prev + 1)
                   } catch (error) {
-                    alert("Failed to create program: " + (error.response?.data?.message || error.message));
+                    alert(
+                      'Failed to create program: ' +
+                        (error.response?.data?.message || error.message)
+                    )
                   }
                 } else {
-                  setStep((prev) => prev + 1);
+                  setStep((prev) => prev + 1)
                 }
               }}
               className="px-6 py-3 rounded-lg shadow-md bg-blue-600 text-white font-semibold hover:bg-blue-700 transition"
@@ -760,18 +775,16 @@ const CreateProgram = () => {
 
       {/* Visibility Modal */}
       {showVisibilityModal && (
-        <ProgramVisibilityModal 
+        <ProgramVisibilityModal
           onSelect={handleVisibilitySelect}
           onClose={() => setShowVisibilityModal(false)}
         />
       )}
     </div>
-  );
-};
+  )
+}
 
-export default CreateProgram;
-
-
+export default CreateProgram
 
 // // Main component
 // const CreateProgram = () => {
@@ -832,24 +845,24 @@ export default CreateProgram;
 //       const storedUser = localStorage.getItem('user');
 //       const userObj = JSON.parse(storedUser);
 //       const token = localStorage.getItem('token');
-      
+
 //       if (!userObj?._id) {
 //         throw new Error("User ID not found in localStorage");
 //       }
-  
+
 //       // Validate user ID format
 //       if (!/^[0-9a-fA-F]{24}$/.test(userObj._id)) {
 //         throw new Error("Invalid user ID format");
 //       }
-  
+
 //       const payload = {
 //         type: selectedProgramType,
 //         title: programData.programName || "New Program", // fallback name
 //         company: userObj._id
 //       };
-  
+
 //       const response = await axios.post(
-//         `${VITE_BACKEND_HOST_URL}/api/programs`, 
+//         `${VITE_BACKEND_HOST_URL}/api/programs`,
 //         payload,
 //         {
 //           headers: {
@@ -858,7 +871,7 @@ export default CreateProgram;
 //           }
 //         }
 //       );
-      
+
 //       if (response.data.data && response.data.data._id) {
 //         localStorage.setItem("programId", response.data.data._id);
 //         return true; // Indicate success
@@ -880,7 +893,7 @@ export default CreateProgram;
 //     try {
 //       const programData = JSON.parse(localStorage.getItem("programData") || "{}");
 //       console.log("Program data at update:", programData);
-      
+
 //       const formData = new FormData();
 
 //       // Add simple fields
@@ -930,23 +943,23 @@ export default CreateProgram;
 //       const response = await axios.put(
 //         `${VITE_BACKEND_HOST_URL}/api/programs/update/${programId}`,
 //         formData,
-//         { 
-//           headers: { 
+//         {
+//           headers: {
 //             "Content-Type": "multipart/form-data",
 //             "Authorization": `Bearer ${token}`
-//           } 
+//           }
 //         }
 //       );
 
 //       console.log("✅ Program updated:", response.data);
 //       alert("Program updated successfully!");
-      
+
 //       // Clear storage
 //       localStorage.removeItem('programId');
 //       localStorage.removeItem('programData');
 //       localStorage.removeItem('assets');
 //       localStorage.removeItem('selectedProgramType');
-      
+
 //       navigate("/company/programs");
 //     } catch (error) {
 //       console.error("❌ Update error:", error);
@@ -1044,4 +1057,3 @@ export default CreateProgram;
 // };
 
 // export default CreateProgram;
-

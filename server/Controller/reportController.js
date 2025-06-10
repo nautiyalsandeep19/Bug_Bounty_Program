@@ -163,3 +163,30 @@ export const getAllReports = async (req, res) => {
     })
   }
 }
+export const getReportsById = async (req, res) => {
+  try {
+    const hackerId = req.user.id
+
+    if (!hackerId) {
+      return res.status(400).json({
+        success: false,
+        message: 'Hacker ID is required',
+      })
+    }
+
+    const reports = await Report.find({ hackerId })
+
+    return res.status(200).json({
+      success: true,
+      count: reports.length,
+      reports,
+    })
+  } catch (error) {
+    console.error('Error fetching hacker reports:', error)
+    return res.status(500).json({
+      success: false,
+      message: 'Server error while fetching hacker reports',
+      error: error.message,
+    })
+  }
+}
