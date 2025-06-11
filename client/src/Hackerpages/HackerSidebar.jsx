@@ -25,7 +25,7 @@ const HackerSidebar = () => {
         <NavLink to="/hacker/programs" className={linkClass}>
           <FaList /> Programs
         </NavLink>
-        <NavLink to="/hacker/report" className={linkClass}>
+        <NavLink to="/hacker/reports" className={linkClass}>
           <FaBug /> Reports
         </NavLink>
         <NavLink to="/hacker/leaderboard" className={linkClass}>
@@ -37,7 +37,10 @@ const HackerSidebar = () => {
         <NavLink to="/hacker/setting" className={linkClass}>
           <FaCog /> Settings
         </NavLink>
-        <NavLink to="/hacker/chat/683edea9dc6aa4314fc5e527" className={linkClass}>
+        <NavLink
+          to="/hacker/chat/683edea9dc6aa4314fc5e527"
+          className={linkClass}
+        >
           <FaList /> Chat
         </NavLink>
         <Logout />

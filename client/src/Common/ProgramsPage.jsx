@@ -2,11 +2,14 @@ import React, { useState, useEffect } from 'react'
 import { toast } from 'react-toastify'
 import { getAllPrograms, getPrivatePrograms } from '../Services/programsApi'
 import ProgramCards from './ProgramCards'
+import ProgramCard from '../CompanyComponents/Programs/ProgramDetails/ProgramCard'
+import { useSelector } from 'react-redux'
 
 const ProgramsPage = () => {
   const [activeTab, setActiveTab] = useState('allPrograms')
   const [programs, setPrograms] = useState([])
   const [loading, setLoading] = useState(true)
+  const token = useSelector((state) => state.auth.token)
 
   const fetchPrograms = async (type) => {
     setLoading(true)
@@ -15,7 +18,7 @@ const ProgramsPage = () => {
       if (type === 'allPrograms') {
         data = await getAllPrograms()
         console.log('Data from all programs: ', data)
-      } else if (type === 'privatePrograms') {
+      } else if (type === 'privatePrograms' && token) {
         data = await getPrivatePrograms()
         console.log('Data from private programs: ', data)
       }
@@ -61,7 +64,6 @@ const ProgramsPage = () => {
     }
   }
 
-  console.log('ProgramDetails', programs)
   return (
     <div className="p-6 bg-black min-h-screen text-white">
       <h2 className="text-3xl font-semibold mb-2">Programs</h2>
@@ -82,16 +84,20 @@ const ProgramsPage = () => {
         >
           Programs
         </button>
-        <button
-          onClick={() => setActiveTab('privatePrograms')}
-          className={`pb-2 border-b-2 cursor-pointer ${
-            activeTab === 'privatePrograms'
-              ? 'border-blue-500 text-blue-500'
-              : 'border-transparent'
-          }`}
-        >
-          Private Programs
-        </button>
+        {token ? (
+          <button
+            onClick={() => setActiveTab('privatePrograms')}
+            className={`pb-2 border-b-2 cursor-pointer ${
+              activeTab === 'privatePrograms'
+                ? 'border-blue-500 text-blue-500'
+                : 'border-transparent'
+            }`}
+          >
+            Private Programs
+          </button>
+        ) : (
+          ''
+        )}
       </div>
 
       {/* Cards Grid */}
@@ -100,13 +106,14 @@ const ProgramsPage = () => {
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
           {programs.map((program) => (
-            <ProgramCards
+            <ProgramCard
               key={program._id}
-              title={program.title}
-              companyName={program.company?.name}
-              companyImage={program.company?.image}
-              bountyRange={program.bountyRange}
-              type={program.type}
+              program={program}
+              // title={program.title}
+              // companyName={program.company?.name}
+              // companyImage={program.company?.image}
+              // bountyRange={program.bountyRange}
+              // type={program.type}
             />
           ))}
         </div>

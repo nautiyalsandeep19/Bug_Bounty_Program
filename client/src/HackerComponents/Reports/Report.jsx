@@ -17,6 +17,7 @@ import { uploadFiles } from '../../Services/uploaderApi'
 import toast from 'react-hot-toast'
 import ReportTemplate from './ReportTemplate'
 import '../../Common/Editor/TiptapEditor.css'
+import { useSelector } from 'react-redux'
 
 const Report = () => {
   const [scope, setScope] = useState('')
@@ -32,6 +33,7 @@ const Report = () => {
   const [vulnerabilityImpact, setVulnerabilityImpact] = useState('')
   const [attachments, setAttachments] = useState([])
   const [showPreview, setShowPreview] = useState(false)
+  const program = useSelector((state) => state.program.programData)
 
   const MAX_TOTAL_SIZE_MB = 5
 
@@ -94,7 +96,7 @@ const Report = () => {
     }
 
     const payload = {
-      programId: '6652f7c0d7289f1b443cc10a',
+      programId: `${program._id}`,
 
       reportData,
     }
