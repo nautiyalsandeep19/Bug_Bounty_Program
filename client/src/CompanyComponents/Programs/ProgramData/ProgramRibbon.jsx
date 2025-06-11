@@ -68,9 +68,9 @@ export default function ProgramTabs() {
   }
 
   return (
-    <div className="max-w-7xl mt-2 mx-auto p-4">
+    <div className=" mt-2 mx-auto p-4">
       {/* Tabs Navigation */}
-      <div className="flex h-[70px] space-x-6 border-b bg-black border-gray-300 mb-6 sticky top-[-30px] z-10">
+      <div className="flex-1 h-[70px] space-x-6 border-b bg-black border-gray-300 mb-6 sticky top-[-30px] z-10">
         {tabs.map((tab) => (
           <button
             key={tab.key}
