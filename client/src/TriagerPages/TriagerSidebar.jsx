@@ -71,7 +71,7 @@ const TriagerSidebar = () => {
           </NavLink>
 
           <NavLink
-            to="/triager/reports"
+            to="/triager/reports/all"
             className={navLinkClass}
             onClick={closeMobileMenu}
           >
@@ -84,13 +84,6 @@ const TriagerSidebar = () => {
             onClick={closeMobileMenu}
           >
             <FaCog /> Settings
-          </NavLink>
-          <NavLink
-            to="/hacker/chat/683edea9dc6aa4314fc5e527"
-            className={navLinkClass}
-            onClick={closeMobileMenu}
-          >
-            <FaList /> Chat
           </NavLink>
         </nav>
         <div className="mt-4">

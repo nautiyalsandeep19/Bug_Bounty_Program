@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
-import { Link } from 'react-router'
+import { useParams, Link } from 'react-router'
 import CTAButton from '../Common/Button/CTAButton'
 
 const TrigerReports = () => {
@@ -8,6 +8,9 @@ const TrigerReports = () => {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
 
+  const { programId } = useParams()
+
+  console.log(programId)
   const BASE_URL = import.meta.env.VITE_BACKEND_HOST_URL
 
   useEffect(() => {
@@ -16,7 +19,17 @@ const TrigerReports = () => {
         const response = await axios.get(`${BASE_URL}/api/reports/allReports`, {
           withCredentials: true,
         })
-        setReports(response.data?.reports || [])
+        console.log(response)
+
+        const allReports = response.data?.reports || []
+
+        // ✅ Filter by programId from URL param
+        const filteredReports =
+          programId === 'all'
+            ? allReports
+            : allReports.filter((report) => report.programId?._id === programId)
+
+        setReports(filteredReports)
       } catch (err) {
         setError('Failed to fetch reports')
         console.error(err)
@@ -26,7 +39,7 @@ const TrigerReports = () => {
     }
 
     fetchReports()
-  }, [BASE_URL])
+  }, [BASE_URL, programId])
 
   if (loading) return <div>Loading Reports...</div>
   if (error) return <div>{error}</div>

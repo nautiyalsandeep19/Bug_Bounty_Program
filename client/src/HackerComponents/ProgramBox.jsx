@@ -1,10 +1,9 @@
 import React from 'react'
 import CTAButton from '../Common/Button/CTAButton'
-import { useParams } from 'react-router'
 import { useSelector } from 'react-redux'
 
 const ProgramBox = ({ className = '', program }) => {
-  console.log('data', program)
+  const userType = useSelector((state) => state.auth.userType)
   return (
     <section
       className={`w-full md:max-w-[400px] h-fit p-6 border border-gray-500 rounded-lg shadow-md space-y-6 bg-[#121212] ${className}`}
@@ -57,12 +56,21 @@ const ProgramBox = ({ className = '', program }) => {
         </div>
       </div>
 
-      <div className="pt-4">
-        <CTAButton
-          text="Submit Report"
-          linkto={`/hacker/report/${program._id}`}
-        />
-      </div>
+      {userType === 'hacker' ? (
+        <div className="pt-4">
+          <CTAButton
+            text="Submit Report"
+            linkto={`/hacker/report/${program._id}`}
+          />
+        </div>
+      ) : (
+        <div className="pt-4">
+          <CTAButton
+            text="View Report"
+            linkto={`/triager/reports/${program._id}`}
+          />
+        </div>
+      )}
     </section>
   )
 }

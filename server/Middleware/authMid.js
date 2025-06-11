@@ -15,7 +15,7 @@ export const authMid = async (req, res, next) => {
         ? authHeader.split(' ')[1]
         : null)
 
-    // console.log('from authmid', token)
+    console.log('from authmid', token)
 
     if (!token) {
       return res.status(401).json({
@@ -38,6 +38,8 @@ export const authMid = async (req, res, next) => {
 
       // Attach user info to request object
       req.user = decoded
+
+      console.log('decode', decoded)
 
       next()
     } catch (err) {

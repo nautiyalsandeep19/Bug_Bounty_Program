@@ -5,8 +5,8 @@ import { useParams, useNavigate } from 'react-router'
 import CTAButton from '../Common/Button/CTAButton'
 
 const HackerAllReports = () => {
-  const { reportId } = useParams() // For fetching a single report
-  const navigate = useNavigate() // For navigating to report details
+  const { reportId } = useParams()
+  const navigate = useNavigate()
   const [reports, setReports] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
@@ -15,7 +15,6 @@ const HackerAllReports = () => {
     const abortController = new AbortController()
     const fetchReports = async () => {
       try {
-        // Use reportId if provided, otherwise fetch all reports
         const response = await axios.get(
           'http://localhost:8000/api/reports/reportByHackerId',
           { withCredentials: true }
@@ -44,7 +43,7 @@ const HackerAllReports = () => {
     }
 
     fetchReports()
-    return () => abortController.abort() // Cleanup on unmount
+    return () => abortController.abort()
   }, [reportId])
 
   if (loading) {

@@ -41,7 +41,7 @@ function App() {
           {/* Admin Routes */}
 
           <Route path="/adminlogin" element={<AdminLogin />} />
-          <Route path="report/chat/:reportId" element={<ChatRoom />} />
+          {/* <Route path="report/chat/:reportId" element={<ChatRoom />} /> */}
           <Route
             path="/admin/*"
             element={
@@ -67,7 +67,8 @@ function App() {
 
             <Route path="dashboard" element={<TriagerDashboard />} />
             <Route path="users" element={<UsersData />} />
-            <Route path="reports" element={<TrigerReports />} />
+            <Route path="reports/:programId" element={<TrigerReports />} />
+            <Route path="programs" element={<ProgramsPage />} />
           </Route>
 
           {/* for / route */}
@@ -120,7 +121,7 @@ function App() {
             />
           </Route>
 
-          {/* 👇 Route for chat with dynamic reportId */}
+          {/*  Route for chat with dynamic reportId */}
           <Route path="addprogram" element={<ProgramFlow />} />
 
           {/* Report Program to show to all users */}
