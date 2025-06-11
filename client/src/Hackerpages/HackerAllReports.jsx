@@ -17,7 +17,7 @@ const HackerAllReports = () => {
       try {
         // Use reportId if provided, otherwise fetch all reports
         const response = await axios.get(
-          'http://localhost:8000/api/reports/reportById',
+          'http://localhost:8000/api/reports/reportByHackerId',
           { withCredentials: true }
         )
 
@@ -85,7 +85,7 @@ const HackerAllReports = () => {
                   </span>
                   <CTAButton
                     text="View Report"
-                    onClick={() => navigate(`/reports/${report._id}`)}
+                    onClick={() => navigate(`/hacker/chat/${report._id}`)}
                   />
                 </div>
               </div>
