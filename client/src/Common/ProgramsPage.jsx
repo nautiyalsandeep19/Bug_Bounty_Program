@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { toast } from 'react-toastify'
 import { getAllPrograms, getPrivatePrograms } from '../Services/programsApi'
-import ProgramCards from './ProgramCards'
 import ProgramCard from '../CompanyComponents/Programs/ProgramDetails/ProgramCard'
 import { useSelector } from 'react-redux'
 
