@@ -6,6 +6,7 @@ import { connectSocket, getSocket } from '../socket'
 import CTAButton from '../Common/Button/CTAButton'
 import TiptapEditor from '../Common/Editor/TiptapEditor'
 import '../Common/Editor/TiptapEditor.css'
+import ReportData from './ReportData'
 
 const ChatRoom = () => {
   const { reportId } = useParams()
@@ -13,9 +14,11 @@ const ChatRoom = () => {
   const [input, setInput] = useState('')
   const editorRef = useRef(null)
   const messagesEndRef = useRef(null)
+  const [report,setReport] = useState(null)
 
   const BASE_URL =
     import.meta.env.VITE_BACKEND_HOST_URL || 'http://localhost:8000'
+
 
   useEffect(() => {
     const fetchMessages = async () => {
@@ -90,74 +93,76 @@ const ChatRoom = () => {
 
   return (
     <div className="">
-      <div className="ProseMirror space-y-4 px-4 py-2 rounded-lg border-2 border-[#042d5b] overflow-y-auto bg-neutral-800 h-[50vh] top-0">
-        {messages.map((msg, index) => {
-          const isLog = msg.messageType === 'log'
-          const isSender = msg.senderInfo?._id === currentUserId
+       <ReportData/>
+     <div className="ProseMirror space-y-4 px-4 max-w-[50%] py-2 rounded-lg border-2 border-[#042d5b] overflow-y-auto bg-neutral-800 max-h-[400px] m-auto ">
+  {messages.map((msg, index) => {
+    const isLog = msg.messageType === 'log';
+    const isSender = msg.senderInfo?._id === currentUserId;
 
-          const senderName =
-            msg.senderInfo?.name || msg.senderInfo?.username || 'Unknown'
-          const avatar =
-            msg.senderInfo?.image ||
-            'https://img.dicebear.com/6.x/initials/svg?seed=' + senderName
+    const senderName =
+      msg.senderInfo?.name || msg.senderInfo?.username || 'Unknown';
+    const avatar =
+      msg.senderInfo?.image ||
+      'https://img.dicebear.com/6.x/initials/svg?seed=' + senderName;
 
-          const time = msg.createdAt
-            ? new Date(msg.createdAt).toLocaleTimeString([], {
-                hour: '2-digit',
-                minute: '2-digit',
-              })
-            : ''
+    const time = msg.createdAt
+      ? new Date(msg.createdAt).toLocaleTimeString([], {
+          hour: '2-digit',
+          minute: '2-digit',
+        })
+      : '';
 
-          return (
-            <div
-              key={index}
-              className={`chat ${
-                isLog ? ' ' : isSender ? 'chat-end' : 'chat-start'
-              }`}
-            >
-              {/* Only show avatar/name if not log (or if you want them even for logs, remove this condition) */}
-              {!isLog && (
-                <>
-                  <div className="!chat-image !avatar">
-                    <div className="!w-10 !rounded-full">
-                      <img src={avatar} alt="avatar" />
-                    </div>
-                  </div>
-
-                  <div className="chat-header">
-                    {senderName}
-                    <time className="text-xs opacity-50 ml-2">{time}</time>
-                  </div>
-                </>
-              )}
-
-              <div
-                className={`chat-bubble shadow-2xl ${
-                  isLog
-                    ? 'bg-gray-700 mx-auto text-yellow-300 italic'
-                    : 'bg-neutral-700'
-                }`}
-                dangerouslySetInnerHTML={{ __html: msg.message }}
-              />
-
-              {!isLog && (
-                <div className="chat-footer opacity-50">
-                  {isSender ? 'Delivered' : 'Seen at ' + time}
-                </div>
-              )}
+    return (
+      <div
+        key={index}
+        className={`chat text-white ${isLog ? '' : isSender ? 'chat-end' : 'chat-start'} ` }
+      >
+        {!isLog && (
+          <>
+            <div className="!chat-image !avatar text-white">
+              <div className="!w-10 !rounded-full">
+                <img src={avatar} alt="avatar" />
+              </div>
             </div>
-          )
-        })}
-        <div ref={messagesEndRef} />
+
+            <div className="chat-header">
+              {senderName}
+              <time className="text-xs text-white opacity-50 ml-2">{time}</time>
+            </div>
+          </>
+        )}
+
+        <div
+          className={`chat-bubble shadow-2xl text-white ${
+            isLog
+              ? 'bg-gray-700 mx-auto text-yellow-300 italic'
+              : 'bg-neutral-700'
+          }`}
+          dangerouslySetInnerHTML={{ __html: msg.message }}
+        />
+
+        {!isLog && (
+          <div className="chat-footer opacity-50">
+            {isSender ? 'Delivered' : 'Seen at ' + time}
+          </div>
+        )}
       </div>
+    );
+  })}
+  <div ref={messagesEndRef} />
+</div>
+
 
       {/* Input + Editor */}
-      <div className="sticky bottom-0 dark:bg-black z-10">
+      <div className="sticky bottom-0  z-10">
         <div className="flex mx-auto">
           <TiptapEditor onUpdate={(html) => setInput(html)} ref={editorRef} />
         </div>
         <CTAButton onClick={sendMessage} text="Send" className="flex mx-auto" />
       </div>
+
+
+     
     </div>
   )
 }
