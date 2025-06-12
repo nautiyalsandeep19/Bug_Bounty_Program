@@ -71,6 +71,15 @@ export const updateStatus = async (req, res) => {
   try {
     const { reportId } = req.params
     const { status } = req.body
+    const userType = req.user.userType
+    console.log('report', userType)
+
+    if (userType !== 'triager') {
+      return res.status(403).json({
+        success: false,
+        message: 'Unauthorized',
+      })
+    }
 
     if (!reportId || !status) {
       return res.status(400).json({
@@ -88,7 +97,6 @@ export const updateStatus = async (req, res) => {
       })
     }
 
-    // ✅ If status is already same, do nothing
     if (existingReport.status === status) {
       return res.status(200).json({
         success: false,
@@ -100,9 +108,26 @@ export const updateStatus = async (req, res) => {
     existingReport.status = status
     await existingReport.save()
 
-    const logText = `Report status was updated to "${status}" by ${
-      req.user?.name || 'a triager'
-    }`
+    // Generate custom log text
+    let logText = ''
+    const userName = req.user?.name || 'a triager'
+
+    switch (status.toLowerCase()) {
+      case 'spam':
+        logText = `Report was marked as <b>Spam</b> by ${userName}`
+        break
+      case 'completed':
+        logText = `Report was <b>marked as Completed</b> by ${userName}`
+        break
+      case 'in progress':
+        logText = `Report status was set to <b>In Progress</b> by ${userName}`
+        break
+      case 'duplicate':
+        logText = `Report was marked as <b>Duplicate</b> by ${userName}`
+        break
+      default:
+        logText = `Report status was updated to <b>${status}</b> by ${userName}`
+    }
 
     const logMessage = new Message({
       reportId,
@@ -114,7 +139,6 @@ export const updateStatus = async (req, res) => {
 
     await logMessage.save()
 
-    // Fetch sender info to emit with message
     const senderDetails = await Admin.findById(req.user.id).select(
       'name email image _id'
     )
@@ -163,7 +187,8 @@ export const getAllReports = async (req, res) => {
     })
   }
 }
-export const getReportsById = async (req, res) => {
+
+export const getReportsByHackerId = async (req, res) => {
   try {
     const hackerId = req.user.id
 
@@ -188,5 +213,56 @@ export const getReportsById = async (req, res) => {
       message: 'Server error while fetching hacker reports',
       error: error.message,
     })
+  }
+}
+// export const getReportsByProgramId = async (req, res) => {
+//   try {
+//     console.log('body  ', req.body)
+
+//     const programId = req.body
+
+//     if (!programId) {
+//       return res.status(400).json({
+//         success: false,
+//         message: 'Data not found!',
+//       })
+//     }
+
+//     const reports = await Report.find({ programId })
+
+//     return res.status(200).json({
+//       success: true,
+//       count: reports.length,
+//       reports,
+//     })
+//   } catch (error) {
+//     console.error('Error fetching program reports:', error)
+//     return res.status(500).json({
+//       success: false,
+//       message: 'Server error while fetching program reports',
+//       error: error.message,
+//     })
+//   }
+// }
+
+export const getReportById = async (req, res) => {
+  try {
+    const { id } = req.params
+    const report = await Report.findById(id)
+      .populate('hackerId')
+      .populate('programId')
+
+    if (!report) {
+      return res
+        .status(404)
+        .json({ success: false, message: 'Report not found' })
+    }
+
+    res.status(200).json({ success: true, report })
+  } catch (error) {
+    console.error('Error fetching report:', error)
+    res
+      .status(500)
+      .json({ success: false, message: 'Server error while fetching report' })
   }
 }

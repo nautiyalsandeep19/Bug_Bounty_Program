@@ -2,8 +2,7 @@ import React from 'react'
 import { useSelector } from 'react-redux'
 
 const ProgramHeader = () => {
-  const program = useSelector((state) => state.program.programData)
-  console.log('sandeep ahi kya', program)
+  const program = useSelector((state) => state.program.programData);
 
   if (!program) {
     return <div className="p-4 text-white">Program not found.</div>

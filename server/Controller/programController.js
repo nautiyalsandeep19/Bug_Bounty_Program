@@ -169,13 +169,10 @@ export const getProgramsByCompany = async (req, res) => {
 
 export const getProgramByIds = async (req, res) => {
   try {
-    const id = req.params.programId
+    const { programId } = req.body
+    console.log('ID dd', programId)
 
-    if (!mongoose.Types.ObjectId.isValid(id)) {
-      return res.status(400).json({ message: 'Invalid program ID format' })
-    }
-
-    const program = await Program.findById(id)
+    const program = await Program.findById(programId)
       .populate('assets')
       .populate('company')
     // console.log("Fetched program:", program);
@@ -195,8 +192,9 @@ export const getProgramByIds = async (req, res) => {
 
 export const fetchPrivateProgramsForHacker = async (req, res) => {
   try {
+    console.log('requser', req.user)
+
     if (!req.user && req.user.userType !== 'hacker') {
-      // made changes &&
       return res.status(403).json({
         success: false,
         message: 'Access denied. Only hackers can access private programs.',
@@ -209,11 +207,12 @@ export const fetchPrivateProgramsForHacker = async (req, res) => {
       visibility: 'private',
       invitedHackers: hackerId,
     })
+    console.log('pro', programs)
 
     return res.status(200).json({
       success: true,
-      count: programs.length,
       programs,
+      count: programs.length,
     })
   } catch (error) {
     console.error('Error fetching private programs for hacker:', error)

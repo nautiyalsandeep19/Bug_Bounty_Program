@@ -10,17 +10,18 @@ import {
   fetchPrivateProgramsForHacker,
   updateProgramVisibility,
 } from '../Controller/programController.js'
+import { authMid } from '../Middleware/authMid.js'
 
 const router = express.Router()
 
 router.post('/', createProgram)
 router.put('/update/:id', upload.none(), updateProgramById)
 router.get('/companyPrograms/:companyId', getProgramsByCompany)
-router.get('/:programId', getProgramByIds) // For testing purposes
+router.post('/programDetail', getProgramByIds)
 router.patch('/:id/visibility', updateProgramVisibility)
 
 // for hackers
-router.get('/', fetchAllPrograms)
-router.get('/privatePrograms', fetchPrivateProgramsForHacker)
+router.get('/allPrograms', fetchAllPrograms)
+router.get('/privatePrograms', authMid, fetchPrivateProgramsForHacker)
 
 export default router

@@ -41,15 +41,13 @@ app.post('/register', (req, res) => {
 
 app.use('/api/auth', authRoute)
 
-app.use('/api/programs/allPrograms', programRouter)
-app.use('/api/programs/Programs', programRouter)
+app.use('/api/programs', programRouter)
 app.use(authMid)
 app.use(logRequest)
 
 app.use('/api/company', companyRoute)
 app.use('/api/assets', assetRouter)
 app.use('/api/hacker', hackerRoute)
-app.use('/api/programs', programRouter)
 app.use('/api/reports', reportRoute)
 app.use('/api/messages', messageRoute)
 

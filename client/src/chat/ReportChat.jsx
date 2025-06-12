@@ -6,6 +6,7 @@ import { connectSocket, getSocket } from '../socket'
 import CTAButton from '../Common/Button/CTAButton'
 import TiptapEditor from '../Common/Editor/TiptapEditor'
 import '../Common/Editor/TiptapEditor.css'
+import ReportData from './ReportData'
 
 const ChatRoom = () => {
   const { reportId } = useParams()
@@ -13,6 +14,7 @@ const ChatRoom = () => {
   const [input, setInput] = useState('')
   const editorRef = useRef(null)
   const messagesEndRef = useRef(null)
+  const [report, setReport] = useState(null)
 
   const BASE_URL =
     import.meta.env.VITE_BACKEND_HOST_URL || 'http://localhost:8000'
@@ -90,7 +92,8 @@ const ChatRoom = () => {
 
   return (
     <div className="">
-      <div className="ProseMirror space-y-4 px-4 py-2 rounded-lg border-2 border-[#042d5b] overflow-y-auto bg-neutral-800 h-[50vh] top-0">
+      <ReportData />
+      <div className="ProseMirror space-y-4 px-4 max-w-[50%] py-2 rounded-lg border-2 border-[#042d5b] overflow-y-auto bg-neutral-800 max-h-[400px] m-auto ">
         {messages.map((msg, index) => {
           const isLog = msg.messageType === 'log'
           const isSender = msg.senderInfo?._id === currentUserId
@@ -99,7 +102,7 @@ const ChatRoom = () => {
             msg.senderInfo?.name || msg.senderInfo?.username || 'Unknown'
           const avatar =
             msg.senderInfo?.image ||
-            'https://img.dicebear.com/6.x/initials/svg?seed=' + senderName
+            'https://api.dicebear.com/9.x/initials/svg?seed=${senderName}'
 
           const time = msg.createdAt
             ? new Date(msg.createdAt).toLocaleTimeString([], {
@@ -111,14 +114,13 @@ const ChatRoom = () => {
           return (
             <div
               key={index}
-              className={`chat ${
-                isLog ? ' ' : isSender ? 'chat-end' : 'chat-start'
-              }`}
+              className={`chat text-white ${
+                isLog ? '' : isSender ? 'chat-end' : 'chat-start'
+              } `}
             >
-              {/* Only show avatar/name if not log (or if you want them even for logs, remove this condition) */}
               {!isLog && (
                 <>
-                  <div className="!chat-image !avatar">
+                  <div className="!chat-image !avatar text-white">
                     <div className="!w-10 !rounded-full">
                       <img src={avatar} alt="avatar" />
                     </div>
@@ -126,13 +128,15 @@ const ChatRoom = () => {
 
                   <div className="chat-header">
                     {senderName}
-                    <time className="text-xs opacity-50 ml-2">{time}</time>
+                    <time className="text-xs text-white opacity-50 ml-2">
+                      {time}
+                    </time>
                   </div>
                 </>
               )}
 
               <div
-                className={`chat-bubble shadow-2xl ${
+                className={`chat-bubble shadow-2xl text-white ${
                   isLog
                     ? 'bg-gray-700 mx-auto text-yellow-300 italic'
                     : 'bg-neutral-700'
@@ -152,7 +156,7 @@ const ChatRoom = () => {
       </div>
 
       {/* Input + Editor */}
-      <div className="sticky bottom-0 dark:bg-black z-10">
+      <div className="sticky bottom-0  z-10">
         <div className="flex mx-auto">
           <TiptapEditor onUpdate={(html) => setInput(html)} ref={editorRef} />
         </div>

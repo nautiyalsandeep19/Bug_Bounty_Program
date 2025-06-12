@@ -1,20 +1,5 @@
 // programSlice.js or wherever you define your slice
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import axios from 'axios';
-
-// Thunk to fetch program by ID
-// export const fetchProgramById = createAsyncThunk(
-//   'program/fetchProgramById',
-//   async (programId, { rejectWithValue }) => {
-//     try {
-//       const res = await axios.get(`/api/programs/Programs/${programId}`);
-//       console.log("Fetched program data:", res.data);
-//       return res.data.data; // only return the "data" part
-//     } catch (err) {
-//       return rejectWithValue(err.response?.data?.message || err.message);
-//     }
-//   }
-// );
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 
 // Slice
 const programSlice = createSlice({
@@ -26,10 +11,10 @@ const programSlice = createSlice({
   },
   reducers: {
     setProgramData: (state, action) => {
-      state.programData = action.payload;
+      state.programData = action.payload
     },
   },
-});
+})
 
-export const { setProgramData } = programSlice.actions;
-export default programSlice.reducer;
+export const { setProgramData } = programSlice.actions
+export default programSlice.reducer
