@@ -9,6 +9,7 @@ const ProgramsPage = () => {
   const [programs, setPrograms] = useState([])
   const [loading, setLoading] = useState(true)
   const token = useSelector((state) => state.auth.token)
+  const userType = useSelector((state) => state.auth.userType)
 
   const fetchPrograms = async (type) => {
     setLoading(true)
@@ -19,7 +20,6 @@ const ProgramsPage = () => {
         console.log('Data from all programs: ', data)
       } else if (type === 'privatePrograms' && token) {
         data = await getPrivatePrograms()
-        console.log('Data from private programs: ', data)
       }
 
       if (data) {
@@ -83,7 +83,7 @@ const ProgramsPage = () => {
         >
           Programs
         </button>
-        {token ? (
+        {token && userType === 'hacker' ? (
           <button
             onClick={() => setActiveTab('privatePrograms')}
             className={`pb-2 border-b-2 cursor-pointer ${

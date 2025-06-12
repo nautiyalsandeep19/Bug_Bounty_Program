@@ -77,7 +77,7 @@ const TrigerReports = () => {
           <div>{report.status}</div>
           <div>{new Date(report?.submitDate).toISOString().slice(0, 10)}</div>
 
-          <Link to={`/report/chat/${report?._id}`}>
+          <Link to={`/hacker/chat/${report?._id}`}>
             <CTAButton text="View Report" />
           </Link>
         </div>

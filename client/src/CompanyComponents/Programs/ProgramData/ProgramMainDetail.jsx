@@ -14,8 +14,9 @@ const ProgramMainDetail = () => {
   useEffect(() => {
     const fetchProgram = async () => {
       try {
-        const response = await axios.get(
-          `http://localhost:8000/api/programs/Programs/${programId}`
+        const response = await axios.post(
+          `http://localhost:8000/api/programs/programDetail`,
+          { programId }
         )
         dispatch(setProgramData(response.data.data))
       } catch (error) {

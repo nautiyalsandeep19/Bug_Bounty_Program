@@ -34,11 +34,8 @@ export const sendOtp = (
         toast.error(response.errors[0].msg)
         throw new Error(response.message)
       }
-
-      // toast otp sent successfull
       toast.success('OTP Sent Successfully')
 
-      // navigate to verify email
       navigate('/verifyOtp')
     } catch (error) {
       console.log('SENDOTP API ERROR............', error)
@@ -106,7 +103,7 @@ export const login = (email, password, userType, navigate) => {
         }
       )
 
-      console.log(response)
+      // console.log(response)
 
       if (!response.success) {
         toast.error(response.message || response.errors[0].msg)
