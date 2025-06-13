@@ -32,6 +32,8 @@ import TriagerDashboard from './TriagerPages/TriagerDashboard'
 import UsersData from './TriagerPages/UsersData'
 import TrigerReports from './TriagerPages/TrigerReports'
 import HackerAllReports from './Hackerpages/HackerAllReports'
+import AdminDashboard from './AdminPages/AdminDashboard'
+
 
 function App() {
   return (
@@ -50,7 +52,10 @@ function App() {
               </ProtectedRoute>
             }
           >
-            <Route path="home" element={<AdminHome />} />
+            <Route path="home" element={<AdminDashboard />} />
+            <Route path="programlist" element={<ProgramsPage />} />
+            <Route path="programadd" element={<ProgramFlow />} />
+
           </Route>
 
           {/* Triager route */}
