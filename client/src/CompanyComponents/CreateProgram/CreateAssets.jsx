@@ -13,13 +13,16 @@ import TiptapEditor from '../../Common/Editor/TiptapEditor' // adjust the path
 
 const CreateAssets = ({ updateScope }) => {
   const editor = useRef(null);
+  
   // const STATIC_COMPANY_ID = '6652f1a1f57c9c48e16b3400';
   const storedUser = localStorage.getItem('user');
   const userObj = JSON.parse(storedUser);
   const STATIC_COMPANY_ID = userObj._id;
   const Vite_BACKEND_HOST_URL = import.meta.env.VITE_BACKEND_HOST_URL;
-
+  const VITE_BACKEND_HOST_URL = import.meta.env.VITE_BACKEND_HOST_URL
   const [STATIC_PROGRAM_ID, SET_STATIC_PROGRAM_ID] = useState('');
+
+  
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -81,16 +84,6 @@ const CreateAssets = ({ updateScope }) => {
   ];
 
   useEffect(() => {
-    // const fetchAssets = async () => {
-    //   try {
-    //     const response = await axios.get(`${Vite_BACKEND_HOST_URL}/api/assets?programId=${STATIC_PROGRAM_ID}`);
-    //     if (response.data.success) {
-    //         setAssets(response.data.data);
-    //     }
-    //   } catch (error) {
-    //     console.error('Error fetching assets:', error);
-    //   }
-    // };
     const fetchAssets = async () => {
    try {
     const token = localStorage.getItem('token'); // or whatever key you use
@@ -126,38 +119,6 @@ const CreateAssets = ({ updateScope }) => {
       scopeGroupLabels: selected ? selected.map(option => option.value) : []
     }));
   };
-
-  // const handleSubmit = async (e) => {
-  //   e.preventDefault();
-  //   try {
-  //     const response = await axios.post(`${Vite_BACKEND_HOST_URL}/api/assets`, formData);
-  //     alert('Asset created successfully!');
-
-  //     const newAssetId = response.data.data._id; 
-  //     const companyId = STATIC_COMPANY_ID;
-  //     updateScope(prevScope => [...prevScope, newAsset]); 
-  //     addAssetIdForCompany(companyId, newAssetId);
-      
-  //     setFormData({
-  //       assetURL: '',
-  //       assetDescription: '',
-  //       assetType: 'website',
-  //       labels: [],
-  //       scopeGroupLabels: [],
-  //       scopeGroupType: 'In Scope',
-  //       company: STATIC_COMPANY_ID,
-  //       programId: STATIC_PROGRAM_ID || ''
-  //     });
-
-  //     const refreshed = await axios.get(`${Vite_BACKEND_HOST_URL}/api/assets`);
-  //     if (refreshed.data.success) {
-  //       setAssets(refreshed.data.data);
-  //     }
-  //   } catch (error) {
-  //     console.error(error);
-  //     alert(error.response?.data?.message || 'Error creating asset');
-  //   }
-  // };
 
   const handleSubmit = async (e) => {
   e.preventDefault();
@@ -225,16 +186,59 @@ const CreateAssets = ({ updateScope }) => {
     alert(error.response?.data?.message || 'Error creating asset');
   }
 };
+
+
+
+  const [assetsForCompany, setAssetsForCompany] = useState([])
+  useEffect(() => {
+    const fetchCompanyAssets = async () => {
+      try {
+        // Get company ID from localStorage or wherever you store it
+        const user = localStorage.getItem('user')
+        const companyId = user ? JSON.parse(user)._id : null
+        // console.log('Company IDdassadsad:', companyId)
+        
+        if (!companyId) {
+          console.error('Company ID not found')
+          return
+        }
+
+        // console.log('Fetching assets for company ID:',`${VITE_BACKEND_HOST_URL}/api/assets/${companyId}` )
+
+        const response = await axios.get(
+          `${VITE_BACKEND_HOST_URL}/api/assets/${companyId}`,
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem('token')}`
+            }
+          }
+        )
+
+        // console.log('Response data:', response.data)
+
+        if (response.data.success) {
+          setAssetsForCompany(response.data.data)
+        }
+      } catch (error) {
+        console.error('Error fetching company assets:', error)
+      }
+    }
+
+    fetchCompanyAssets()
+  }, [])
+  console.log(assetsForCompany)
+
+
   return (
     <div className="flex flex-col lg:flex-row max-w-7xl w-full mx-auto mt-10 bg-white rounded-2xl shadow-xl p-4 sm:p-6 lg:p-8 gap-6">
       {/* Sidebar */}
-      <aside className="w-full lg:w-1/3 border-b lg:border-b-0 lg:border-r border-gray-300 pb-4 lg:pb-0 lg:pr-4 max-h-[300px] lg:max-h-[550px] overflow-y-auto">
+      <aside className="w-full lg:w-1/3 border-b lg:border-b-0 lg:border-r border-gray-300 pb-4 lg:pb-0 lg:pr-4 max-h-[300px] lg:max-h-[80vh] overflow-y-auto">
         <h2 className="text-xl sm:text-2xl font-semibold mb-4 text-gray-800">Assets</h2>
-        {assets.length === 0 ? (
+        {assetsForCompany.length === 0 ? (
           <p className="text-gray-500">No assets found.</p>
         ) : (
           <ul className="space-y-3">
-            {assets.length>0 && assets.map(asset => (
+            {assetsForCompany.length>0 && assetsForCompany.map(asset => (
               <li key={asset._id} className="p-2 border rounded bg-gray-50 cursor-pointer">
                 <a
                   href={asset.assetURL}
