@@ -71,7 +71,7 @@ const ProgramBox = ({ className = '', program }) => {
         <div className="pt-4">
           <CTAButton
             text="View Report"
-            linkto={`/triager/reports/${program._id}`}
+            linkto={`/${userType}/reports/${program._id}`}
           />
         </div>
       )}
