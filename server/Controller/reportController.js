@@ -251,6 +251,7 @@ export const getReportById = async (req, res) => {
     const report = await Report.findById(id)
       .populate('hackerId')
       .populate('programId')
+    console.log(id)
 
     if (!report) {
       return res

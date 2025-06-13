@@ -23,7 +23,6 @@ const TrigerReports = () => {
 
         const allReports = response.data?.reports || []
 
-        // ✅ Filter by programId from URL param
         const filteredReports =
           programId === 'all'
             ? allReports

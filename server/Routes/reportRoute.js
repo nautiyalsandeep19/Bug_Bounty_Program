@@ -15,6 +15,7 @@ router.put('/updateStatus/:reportId', authMid, updateStatus)
 router.get('/allReports', authMid, getAllReports)
 router.get('/reportByHackerId', authMid, getReportsByHackerId)
 // router.post('/reportByProgramId', authMid, getReportsByProgramId)
+
 router.get('/:id', authMid, getReportById)
 
 export default router

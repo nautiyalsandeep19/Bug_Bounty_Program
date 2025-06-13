@@ -345,6 +345,7 @@ import ChatRoom from './chat/ReportChat'
 
 // Protection Wrapper
 import ProtectedRoute from './ProtectedRoute'
+import CompanyReports from './CompanyPages/CompanyReports'
 
 function App() {
   const dispatch = useDispatch()
@@ -426,6 +427,7 @@ function App() {
             <Route path="leaderboard" element={<CompanyLeaderBoard />} />
             <Route path="assets" element={<CompanyAssets />} />
             <Route path="bounties" element={<CompanyBounties />} />
+            <Route path="reports" element={<CompanyReports />} />
             <Route path="programs" element={<ProgramList />} />
             <Route path="programs/:programId" element={<ProgramMainDetail />} />
           </Route>
