@@ -378,7 +378,6 @@ function App() {
           <Route path="/checkemail" element={<CheckEmailPage />} />
           <Route path="/programs" element={<ProgramsPage />} />
           <Route path="/programs/:programId" element={<ProgramMainDetail />} />
-          <Route path="/addprogram" element={<ProgramFlow />} />
 
           {/* Admin Routes */}
           <Route path="/adminlogin" element={<AdminLogin />} />
