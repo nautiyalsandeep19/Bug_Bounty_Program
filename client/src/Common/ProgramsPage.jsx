@@ -17,7 +17,7 @@ const ProgramsPage = () => {
       let data = null
       if (type === 'allPrograms') {
         data = await getAllPrograms()
-        console.log('Data from all programs: ', data)
+        console.log('Data from all programs:  ', data)
       } else if (type === 'privatePrograms' && token) {
         data = await getPrivatePrograms()
       }
@@ -39,29 +39,6 @@ const ProgramsPage = () => {
   useEffect(() => {
     fetchPrograms(activeTab)
   }, [activeTab])
-
-  const renderTag = (type) => {
-    switch (type) {
-      case 'Bug Bounty':
-        return (
-          <span className="bg-blue-600 text-white text-xs px-2 py-1 rounded">
-            Bug Bounty
-          </span>
-        )
-      case 'Vulnerability Disclosure':
-        return (
-          <span className="bg-yellow-400 text-black text-xs px-2 py-1 rounded">
-            Vulnerability Disclosure
-          </span>
-        )
-      default:
-        return (
-          <span className="bg-gray-500 text-white text-xs px-2 py-1 rounded">
-            {type}
-          </span>
-        )
-    }
-  }
 
   return (
     <div className="p-6 bg-black min-h-screen text-white">
@@ -105,20 +82,10 @@ const ProgramsPage = () => {
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
           {programs.map((program) => (
-            <ProgramCard
-              key={program._id}
-              program={program}
-              // title={program.title}
-              // companyName={program.company?.name}
-              // companyImage={program.company?.image}
-              // bountyRange={program.bountyRange}
-              // type={program.type}
-            />
+            <ProgramCard key={program._id} program={program} />
           ))}
         </div>
       )}
-
-      {/* <ProgramCards title={"Hello"} company={programs?.company} type={"BugBounty"}/> */}
     </div>
   )
 }

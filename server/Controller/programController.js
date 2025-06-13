@@ -1,4 +1,5 @@
 import Program from '../Models/Program.js'
+import Report from '../Models/Report.js'
 import mongoose from 'mongoose'
 
 export const createProgram = async (req, res) => {
@@ -37,59 +38,6 @@ export const createProgram = async (req, res) => {
     })
   }
 }
-
-// export const updateProgramById = async (req, res) => {
-//   try {
-//     // Helper function to safely parse JSON
-//     const safeParse = (value) => {
-//       if (!value || value === 'null') return null;
-//       try {
-//         return typeof value === 'string' ? JSON.parse(value) : value;
-//       } catch (e) {
-//         console.warn(`Failed to parse value:`, value);
-//         return null;
-//       }
-//     };9
-
-//     // console.log("Update request body:", req.body);
-
-//     const updateData = {
-//       title: req.body.title,
-//       guidelines: req.body.guidelines,
-//       areasOfConcern: req.body.concerns,
-//       policy: req.body.policy,
-//       additionalDetails: req.body.additionalDetails,
-//       type: req.body.type,
-//       startDate: req.body.startDate,
-//       endDate: req.body.endDate,
-//       assets: safeParse(req.body.scope),
-//       brand: req.body.brand,
-//       bountyRange:req.body.bounty,
-//       // description: req.body.description || ""
-//     };
-//     const programId = req.params.id;
-//     // console.log(programId, "Program ID from params");
-//     // console.log("Update data:", updateData);
-//     const updatedProgram = await Program.findByIdAndUpdate(
-//       req.params.id,
-//       updateData,
-//       { new: true }
-//     );
-
-//     if (!updatedProgram) {
-//       return res.status(404).json({ message: "Program not found" });
-//     }
-
-//     res.status(200).json({ message: "Program updated", data: updatedProgram });
-//   } catch (error) {
-//     console.error("Update error:", error);
-//     res.status(500).json({
-//       message: "Update failed",
-//       error: error.message,
-//       receivedData: req.body
-//     });
-//   }
-// };
 
 export const updateProgramById = async (req, res) => {
   try {
@@ -172,18 +120,22 @@ export const getProgramByIds = async (req, res) => {
     const { programId } = req.body
     console.log('ID dd', programId)
 
-    const program = await Program.findById(programId)
+    const programData = await Program.findById(programId)
       .populate('assets')
       .populate('company')
-    // console.log("Fetched program:", program);
 
-    if (!program) {
+    if (!programData) {
       return res.status(404).json({ message: 'Program not found' })
     }
 
-    res
-      .status(200)
-      .json({ message: 'Program fetched successfully', data: program })
+    const reportCount = await Report.find({ programId })
+
+    const program = programData.toObject()
+    program.reportCount = reportCount.length
+    res.status(200).json({
+      message: 'Program fetched successfully',
+      data: program,
+    })
   } catch (error) {
     console.error('Fetch Program Error:', error)
     res.status(500).json({ message: 'Server error', error: error.message })
@@ -225,9 +177,9 @@ export const fetchPrivateProgramsForHacker = async (req, res) => {
 
 export const fetchAllPrograms = async (req, res) => {
   try {
-    const publicPrograms = await Program.find({
-      visibility: 'public',
-    }).populate('company')
+    const publicPrograms = await Program.find({ visibility: 'public' })
+      .sort({ createdAt: -1 })
+      .populate('company')
 
     res.status(200).json({
       success: true,

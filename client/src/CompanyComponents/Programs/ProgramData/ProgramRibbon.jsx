@@ -17,38 +17,7 @@ const tabs = [
 ]
 
 export default function ProgramTabs() {
-  // const token = localStorage.getItem('token')
-
   const programId = useParams().programId
-
-  // console.log('Param /: ', programId)
-
-  // const dispatch = useDispatch()
-  // console.log('Program ID from URL:', programId)
-  // useEffect(() => {
-  //   console.log('Inside UseEffect')
-  //   const fetchProgram = async () => {
-  //     try {
-  //       const programData = await axios.get(
-  //         `http://localhost:8000/api/programs/Programs/${programId}`,
-  //         {
-  //           headers: {
-  //             Authorization: `Bearer ${token}`,
-  //             'Content-Type': 'application/json',
-  //           },
-  //         }
-  //       )
-  //       console.log('Fetched program data:', programData.data.data)
-  //       dispatch(setProgramData(programData.data.data))
-  //     } catch (error) {
-  //       console.error('Failed to fetch program:', error)
-  //     }
-  //   }
-
-  //   if (programId) {
-  //     fetchProgram()
-  //   }
-  // }, [programId])
 
   const [activeTab, setActiveTab] = useState('policy')
 
