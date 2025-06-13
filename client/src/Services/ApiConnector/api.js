@@ -15,13 +15,13 @@ export const endPoints = {
   GET_COMPANY_DETAILS: BASE_URL + '/api/company/companyDetails',
   UPDATE_COMPANY_DETAILS: BASE_URL + '/api/company/updateDetails',
   GET_COMPANY_PROGRAMS: BASE_URL + '/api/company/companyPrograms',
-
   GET_ALL_PROGRAMS: BASE_URL + '/api/programs/allPrograms',
   GET_PRIVATE_PROGRAMS: BASE_URL + '/api/programs/privatePrograms',
 
   //hackers
   GET_HACKER_DETAILS: BASE_URL + '/api/hacker/hackerDetails',
   UPDATE_HACKER_DETAILS: BASE_URL + '/api/hacker/updateHackerDetails',
+
   //leaderBoard
   GET_LEADERBOARD: BASE_URL + '/api/hacker/leaderBoard',
   //reports
@@ -30,6 +30,9 @@ export const endPoints = {
 
   //upload
   UPLOAD: BASE_URL + '/api/upload',
+
+  //Programs
+  GET_PROGRAMBY_ID: BASE_URL + '/api/programs/programDetail',
 }
 
 export const axiosInstance = axios.create({ withCredentials: true })
