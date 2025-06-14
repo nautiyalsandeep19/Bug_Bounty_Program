@@ -2,7 +2,7 @@ import React from 'react'
 import CTAButton from '../Common/Button/CTAButton'
 import { useSelector } from 'react-redux'
 
-const ProgramBox = ({ className = '', program }) => {
+const ProgramBox = ({ className = '', program, hideSubmit = false }) => {
   const userType = useSelector((state) => state.auth.userType)
   const token = useSelector((state) => state.auth.token)
   console.log('data of program', program)
@@ -60,21 +60,22 @@ const ProgramBox = ({ className = '', program }) => {
         </div>
       </div>
 
-      {userType === 'hacker' || !token ? (
-        <div className="pt-4">
-          <CTAButton
-            text="Submit Report"
-            linkto={`/hacker/report/${program._id}`}
-          />
-        </div>
-      ) : (
-        <div className="pt-4">
-          <CTAButton
-            text="View Report"
-            linkto={`/${userType}/reports/${program._id}`}
-          />
-        </div>
-      )}
+      {!hideSubmit &&
+        (userType === 'hacker' || !token ? (
+          <div className="pt-4">
+            <CTAButton
+              text="Submit Report"
+              linkto={`/hacker/report/${program._id}`}
+            />
+          </div>
+        ) : (
+          <div className="pt-4">
+            <CTAButton
+              text="View Report"
+              linkto={`/${userType}/reports/${program._id}`}
+            />
+          </div>
+        ))}
     </section>
   )
 }
