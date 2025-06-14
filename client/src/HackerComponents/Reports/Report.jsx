@@ -135,7 +135,6 @@ const Report = () => {
 
     try {
       await createReport(payload)
-      // Optionally reset form here
     } catch (error) {
       console.error('Report submission failed:', error.message)
     }
