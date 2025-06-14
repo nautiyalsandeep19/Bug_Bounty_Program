@@ -4,7 +4,6 @@ import Navbar from './Navbar'
 const Home = () => {
   return (
     <>
-      <Navbar />
       <section className="relative min-h-[100vh] flex items-center justify-center px-4 sm:px-6 md:px-12 bg-[#060A58] overflow-hidden">
         <div className="absolute inset-0 z-0">
           {/* <img

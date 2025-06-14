@@ -3,6 +3,7 @@ import { toast } from 'react-toastify'
 import { getAllPrograms, getPrivatePrograms } from '../Services/programsApi'
 import ProgramCard from '../CompanyComponents/Programs/ProgramDetails/ProgramCard'
 import { useSelector } from 'react-redux'
+import Loader from '../Common/Loader'
 
 const ProgramsPage = () => {
   const [activeTab, setActiveTab] = useState('allPrograms')
@@ -78,7 +79,7 @@ const ProgramsPage = () => {
 
       {/* Cards Grid */}
       {loading ? (
-        <div>Loading...</div>
+        <Loader />
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
           {programs.map((program) => (

@@ -346,6 +346,7 @@ import ChatRoom from './chat/ReportChat'
 // Protection Wrapper
 import ProtectedRoute from './ProtectedRoute'
 import CompanyReports from './CompanyPages/CompanyReports'
+import VrtData from './Common/VrtData'
 
 function App() {
   const dispatch = useDispatch()
@@ -379,7 +380,7 @@ function App() {
           <Route path="/checkemail" element={<CheckEmailPage />} />
           <Route path="/programs" element={<ProgramsPage />} />
           <Route path="/programs/:programId" element={<ProgramMainDetail />} />
-
+          <Route path="/vrt" element={<VrtData />} />
           {/* Admin Routes */}
           <Route path="/adminlogin" element={<AdminLogin />} />
           <Route

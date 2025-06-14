@@ -93,7 +93,7 @@ const ChatRoom = () => {
   return (
     <div className="">
       <ReportData />
-      <div className="ProseMirror space-y-4 px-4 max-w-[50%] py-2 rounded-lg border-2 border-[#042d5b] overflow-y-auto bg-neutral-800 max-h-[400px] m-auto ">
+      <div className="ProseMirror space-y-4 px-4 max-w-[50%] py-2 rounded-lg border-2 border-[#042d5b] overflow-y-auto bg-neutral-800 max-h-[400px] m-auto min-h-20 ">
         {messages.map((msg, index) => {
           const isLog = msg.messageType === 'log'
           const isSender = msg.senderInfo?._id === currentUserId

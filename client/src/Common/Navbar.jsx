@@ -50,7 +50,7 @@ const Navbar = () => {
                 </ul>
               </li>
               <li>
-                <Link to="/item3">Item 3</Link>
+                <Link to="/vrt">Vrt</Link>
               </li>
             </ul>
           </div>
@@ -80,7 +80,7 @@ const Navbar = () => {
               </details>
             </li>
             <li>
-              <Link to="/item3">Item 3</Link>
+              <Link to="/vrt">vrt</Link>
             </li>
           </ul>
         </div>

@@ -167,6 +167,107 @@ export const updateStatus = async (req, res) => {
   }
 }
 
+export const updateSeverity = async (req, res) => {
+  try {
+    const { reportId } = req.params
+    const { severity } = req.body
+    const userType = req.user.userType
+
+    if (userType !== 'triager') {
+      return res.status(403).json({
+        success: false,
+        message: 'Unauthorized',
+      })
+    }
+
+    if (!reportId || !severity) {
+      return res.status(400).json({
+        success: false,
+        message: 'Report ID and severity are required',
+      })
+    }
+
+    const existingReport = await Report.findById(reportId)
+
+    if (!existingReport) {
+      return res.status(404).json({
+        success: false,
+        message: 'Report not found',
+      })
+    }
+
+    if (existingReport.severity === severity) {
+      return res.status(200).json({
+        success: false,
+        message: `Severity is already "${severity}"`,
+      })
+    }
+
+    existingReport.severity = severity
+    await existingReport.save()
+
+    // Log message
+    let logText = ''
+    const userName = req.user?.name || 'a triager'
+
+    switch (severity.toLowerCase()) {
+      case 'critical':
+        logText = `Severity changed to <b>Critical</b> by ${userName}`
+        break
+      case 'high':
+        logText = `Severity changed to <b>High</b> by ${userName}`
+        break
+      case 'moderate':
+        logText = `Severity changed to <b>Moderate</b> by ${userName}`
+        break
+      case 'low':
+        logText = `Severity changed to <b>Low</b> by ${userName}`
+        break
+      case 'informational':
+        logText = `Severity changed to <b>Informational</b> by ${userName}`
+        break
+      default:
+        logText = `Severity updated to <b>${severity}</b> by ${userName}`
+    }
+
+    const logMessage = new Message({
+      reportId,
+      senderId: req.user.id,
+      senderModel: 'Triager',
+      message: `<i>${logText}</i>`,
+      messageType: 'log',
+    })
+
+    await logMessage.save()
+
+    const senderDetails = await Admin.findById(req.user.id).select(
+      'name email image _id'
+    )
+
+    const io = req.app.get('io')
+    io.to(reportId).emit('receiveMessage', {
+      ...logMessage.toObject(),
+      senderInfo: senderDetails || {
+        _id: 'system',
+        name: 'System',
+        image: 'https://img.icons8.com/ios-filled/50/activity-history.png',
+      },
+    })
+
+    return res.status(200).json({
+      success: true,
+      message: 'Severity updated successfully',
+      report: existingReport,
+    })
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: 'Server error',
+      error: error.message,
+    })
+  }
+}
+
 export const getAllReports = async (req, res) => {
   try {
     const allReports = await Report.find()
