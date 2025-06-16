@@ -387,31 +387,61 @@ const CreateProgram = () => {
       }))
     }
 
+    // const interval = setInterval(() => {
+    //   const currentAssets = localStorage.getItem('assets')
+      
+
+    //   if (currentAssets && currentAssets !== previousAssets) {
+    //     const storedData = localStorage.getItem('programData')
+    //     const selectedProgramType = localStorage.getItem('selectedProgramType')
+
+    //     let updatedData = {}
+    //     if (storedData) {
+    //       updatedData = JSON.parse(storedData)
+    //     }
+
+    //     updatedData.scope = JSON.parse(currentAssets)
+    //     if (selectedProgramType) {
+    //       updatedData.type = selectedProgramType
+    //       // Maintain the visibility setting
+    //       updatedData.visibility =
+    //         updatedData.visibility ||
+    //         (selectedProgramType.includes('Private') ? 'private' : 'public')
+    //     }
+
+    //     setProgramData(updatedData)
+    //     previousAssets = currentAssets
+    //   }
+    // }, 500)
     const interval = setInterval(() => {
-      const currentAssets = localStorage.getItem('assets')
+  const currentAssets = localStorage.getItem('assets');
 
-      if (currentAssets && currentAssets !== previousAssets) {
-        const storedData = localStorage.getItem('programData')
-        const selectedProgramType = localStorage.getItem('selectedProgramType')
+  if (currentAssets && currentAssets !== previousAssets) {
+    const storedData = localStorage.getItem('programData');
+    const selectedProgramType = localStorage.getItem('selectedProgramType');
 
-        let updatedData = {}
-        if (storedData) {
-          updatedData = JSON.parse(storedData)
-        }
+    let updatedData = {};
+    if (storedData) {
+      updatedData = JSON.parse(storedData);
+    }
 
-        updatedData.scope = JSON.parse(currentAssets)
-        if (selectedProgramType) {
-          updatedData.type = selectedProgramType
-          // Maintain the visibility setting
-          updatedData.visibility =
-            updatedData.visibility ||
-            (selectedProgramType.includes('Private') ? 'private' : 'public')
-        }
+    const parsedAssets = JSON.parse(currentAssets || '[]');
+    if (!updatedData.scope || updatedData.scope.length === 0) {
+      updatedData.scope = parsedAssets;
+    }
 
-        setProgramData(updatedData)
-        previousAssets = currentAssets
-      }
-    }, 500)
+    if (selectedProgramType) {
+      updatedData.type = selectedProgramType;
+      updatedData.visibility =
+        updatedData.visibility ||
+        (selectedProgramType.includes('Private') ? 'private' : 'public');
+    }
+
+    setProgramData(updatedData);
+    previousAssets = currentAssets;
+  }
+}, 500);
+
 
     return () => clearInterval(interval)
   }, [])
@@ -484,6 +514,7 @@ const CreateProgram = () => {
     try {
       const programData = JSON.parse(
         localStorage.getItem('programData') || '{}'
+
       )
       const token = localStorage.getItem('token')
 
