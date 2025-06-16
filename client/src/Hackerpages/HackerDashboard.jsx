@@ -17,7 +17,7 @@ const FeedDashboard = () => {
   useEffect(() => {
     const fetchHacker = async () => {
       const data = await getHackerDetails()
-       if (data) {
+      if (data) {
         setHacker(data)
         const logs = await fetchLogsForHacker(data._id)
         setLogs(logs)
@@ -116,14 +116,18 @@ const FeedDashboard = () => {
                 >
                   <div className="flex justify-between items-center">
                     <span
-  className="  ProseMirror"
-  dangerouslySetInnerHTML={{ __html: log.message }}
-></span>
+                      className="  ProseMirror"
+                      dangerouslySetInnerHTML={{ __html: log.message }}
+                    ></span>
                     <span className="text-xs text-zinc-500">
                       {new Date(log.createdAt).toLocaleString()}
                     </span>
                   </div>
-                  <Button className='!w-fit' text='view report' onClick={()=>navigate(`/hacker/chat/${log.reportId}`)}/>
+                  <Button
+                    className="!w-fit"
+                    text="view report"
+                    onClick={() => navigate(`/chat/${log.reportId}`)}
+                  />
                 </li>
               ))}
             </ul>
