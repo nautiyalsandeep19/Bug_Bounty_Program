@@ -14,7 +14,6 @@ import Navbar from './Common/Navbar'
 // Shared Program Pages
 import ProgramsPage from './Common/ProgramsPage'
 import ProgramMainDetail from './CompanyComponents/Programs/ProgramData/ProgramMainDetail'
-import ProgramFlow from './CompanyComponents/CreateProgram/ProgramCreation'
 
 // Hacker Pages
 import HackerDashboard from './Hackerpages/HackerDashboard'
@@ -88,25 +87,29 @@ function App() {
           {/* Admin Routes */}
           <Route path="/adminlogin" element={<AdminLogin />} />
 
+          {/* ROUTE FOR THE INTERNAL WORKING */}
           <Route
-            path="reports/:programId"
             element={
               <ProtectedRoute typeUser={['admin', 'triager', 'company']}>
-                <TrigerReports />
+                <CommonLayout />
               </ProtectedRoute>
             }
-          />
+          >
+            <Route path="/reports/:programId" element={<TrigerReports />} />
+          </Route>
 
+          {/* 2nd */}
           <Route
-            path="/chat/:id"
             element={
               <ProtectedRoute
                 typeUser={['admin', 'triager', 'company', 'hacker']}
               >
-                <ChatRoom />
+                <CommonLayout />
               </ProtectedRoute>
             }
-          />
+          >
+            <Route path="/chat/:id" element={<ChatRoom />} />
+          </Route>
 
           <Route
             path="/admin/*"
@@ -169,7 +172,7 @@ function App() {
           >
             <Route path="dashboard" element={<TriagerDashboard />} />
             <Route path="users" element={<UsersData />} />
-            {/* <Route path="reports/:programId" element={<TrigerReports />} /> */}
+            <Route path="reports/:programId" element={<TrigerReports />} />
             <Route path="programs" element={<ProgramsPage />} />
             <Route path="programs/:programId" element={<ProgramMainDetail />} />
           </Route>

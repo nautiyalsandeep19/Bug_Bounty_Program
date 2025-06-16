@@ -84,7 +84,7 @@ const CommonSidebar = () => {
       <div
         className={`${
           isMobileMenuOpen ? 'block' : 'hidden'
-        } sm:block w-64 bg-[#121212] p-4 fixed sm:relative h-full sm:h-screen z-50`}
+        } sm:block w-64 bg-[#121212] p-4  sm:relative h-full sm:h-screen z-50 border-r-1 border-blue-500 sticky top-0 left-0`}
       >
         <h1 className="text-blue-500 text-2xl font-bold mb-10 sm:block hidden">
           Versantix
