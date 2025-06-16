@@ -70,26 +70,41 @@ export const getAllAssets = async (req, res) => {
 
 export const getAssetsByCompany = async (req, res) => {
   try {
-    const companyId = req.user.id; // Adjust this based on your auth setup
-    // console.log('Company ID frknsasad asdasd sadsa das das d:', companyId);
-
+    // Get companyId from authenticated user (adjust based on your auth middleware)
+    const companyId = req.user._id || req.params.id;
+    
     if (!mongoose.Types.ObjectId.isValid(companyId)) {
       return res.status(400).json({
         success: false,
-        message: 'Invalid companyId'
+        message: 'Invalid company ID format'
       });
     }
 
-    const assets = await Asset.find({ company: companyId }).sort({ createdAt: -1 });
+    const assets = await Asset.find({ company: companyId })
+      .sort({ createdAt: -1 })
+      .lean()
+      .exec();
+
+    if (!assets) {
+      return res.status(404).json({
+        success: false,
+        message: 'No assets found for this company'
+      });
+    }
 
     res.status(200).json({
       success: true,
-      data: assets,
+      count: assets.length,
+      data: assets
     });
   } catch (error) {
+    console.error('Error fetching company assets:', error);
     res.status(500).json({
       success: false,
-      message: error.message,
+      message: 'Server error while fetching assets',
+      error: error.message
     });
   }
 };
+
+
