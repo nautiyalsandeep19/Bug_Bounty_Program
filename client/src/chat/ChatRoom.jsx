@@ -9,7 +9,9 @@ import '../Common/Editor/TiptapEditor.css'
 import ReportData from './ReportData'
 
 const ChatRoom = () => {
-  const { reportId } = useParams()
+  const { id } = useParams()
+  console.log('repCha', id)
+
   const [messages, setMessages] = useState([])
   const [input, setInput] = useState('')
   const editorRef = useRef(null)
@@ -22,7 +24,7 @@ const ChatRoom = () => {
   useEffect(() => {
     const fetchMessages = async () => {
       try {
-        const res = await axios.get(`${BASE_URL}/api/messages/${reportId}`, {
+        const res = await axios.get(`${BASE_URL}/api/messages/${id}`, {
           withCredentials: true,
         })
 
@@ -37,10 +39,10 @@ const ChatRoom = () => {
       }
     }
 
-    if (reportId) {
+    if (id) {
       fetchMessages()
     }
-  }, [reportId])
+  }, [id])
 
   useEffect(() => {
     const existingSocket = getSocket()
@@ -50,9 +52,9 @@ const ChatRoom = () => {
     }
 
     const socket = getSocket()
-    if (!socket || !reportId) return
+    if (!socket || !id) return
 
-    socket.emit('joinRoom', reportId)
+    socket.emit('joinRoom', id)
 
     socket.on('receiveMessage', (message) => {
       setMessages((prev) => [...prev, message])
@@ -61,7 +63,7 @@ const ChatRoom = () => {
     return () => {
       socket.off('receiveMessage')
     }
-  }, [reportId])
+  }, [id])
 
   useEffect(() => {
     if (messagesEndRef.current) {
@@ -76,7 +78,7 @@ const ChatRoom = () => {
 
     if (socket && input.trim()) {
       socket.emit('sendMessage', {
-        reportId,
+        id,
         senderId: user._id,
         senderModel: userType.charAt(0).toUpperCase() + userType.slice(1),
         message: input,
@@ -92,7 +94,7 @@ const ChatRoom = () => {
 
   return (
     <div className="">
-      <ReportData />
+      <ReportData id={id} />
       <div className="ProseMirror space-y-4 px-4 max-w-[50%] py-2 rounded-lg border-2 border-[#042d5b] overflow-y-auto bg-neutral-800 max-h-[400px] m-auto min-h-20 ">
         {messages.map((msg, index) => {
           const isLog = msg.messageType === 'log'

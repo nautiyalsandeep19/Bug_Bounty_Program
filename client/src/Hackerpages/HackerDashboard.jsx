@@ -4,7 +4,7 @@ import Button from '../Common/Button/CTAButton'
 import { FaBug, FaBullhorn, FaSyncAlt, FaUserPlus } from 'react-icons/fa'
 import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router'
-import axios from 'axios'
+
 import { fetchLogsForHacker } from '../Services/messageApi'
 
 const FeedDashboard = () => {
@@ -75,29 +75,6 @@ const FeedDashboard = () => {
               )
             }
           )}
-        </div>
-
-        {/* Feed Card */}
-        <div className="bg-zinc-900 p-6 rounded-2xl border border-zinc-700 shadow-lg hover:shadow-2xl transition-all duration-300">
-          <div className="flex justify-between items-center mb-2 flex-wrap gap-y-2">
-            <h2 className="text-lg sm:text-xl font-semibold">
-              📋 Report Status
-            </h2>
-            <span className="text-sm text-zinc-400">
-              {new Date().toLocaleString()}
-            </span>
-          </div>
-          <p className="text-sm leading-relaxed">
-            <strong className="text-white">The report is </strong>
-            marked as{' '}
-            <span className="text-red-400 font-semibold">invalid</span> on
-            <span className="text-blue-500 font-semibold"> #43702361 abg</span>.
-          </p>
-
-          <Button
-            text="View Report"
-            className="!mt-4 !px-4 !py-2 !rounded-lg !bg-indigo-600 hover:!bg-indigo-500 !text-white transition"
-          />
         </div>
 
         {/* Logs Section */}
