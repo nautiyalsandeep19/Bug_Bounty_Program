@@ -10,14 +10,13 @@ const programSchema = new mongoose.Schema(
       required: true,
     },
     brand: {
-      
-      programName: { type: String, default: "" },
-      programTagline: { type: String, default: "" },
-      programWebsite: { type: String, default: "" },
-      programDescription: { type: String, default: "" }
+      programName: { type: String, default: '' },
+      programTagline: { type: String, default: '' },
+      programWebsite: { type: String, default: '' },
+      programDescription: { type: String, default: '' },
     },
-    policy: { type: String, default: "" },
-    additionalDetails: { type: String, default: "" },
+    policy: { type: String, default: '' },
+    additionalDetails: { type: String, default: '' },
     visibility: {
       type: String,
       enum: ['private', 'public'],
@@ -52,6 +51,7 @@ const programSchema = new mongoose.Schema(
     guidelines: { type: String },
     areasOfConcern: { type: String },
     logo: { type: String },
+    isPublished: { type: Boolean, default: false },
   },
   { timestamps: true }
 )

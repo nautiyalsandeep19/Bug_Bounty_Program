@@ -1,6 +1,8 @@
 import { apiConnector, endPoints } from './ApiConnector/api'
 import toast from 'react-hot-toast'
 
+//API CALLS
+
 export const getAllPrograms = async () => {
   try {
     const response = await apiConnector('GET', endPoints.GET_ALL_PROGRAMS)

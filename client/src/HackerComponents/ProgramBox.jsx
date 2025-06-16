@@ -2,8 +2,10 @@ import React from 'react'
 import CTAButton from '../Common/Button/CTAButton'
 import { useSelector } from 'react-redux'
 
-const ProgramBox = ({ className = '', program }) => {
+const ProgramBox = ({ className = '', program, hideSubmit = false }) => {
   const userType = useSelector((state) => state.auth.userType)
+  const token = useSelector((state) => state.auth.token)
+  console.log('data of program', program)
   return (
     <section
       className={`w-full md:max-w-[400px] h-fit p-6 border border-gray-500 rounded-lg shadow-md space-y-6 bg-[#121212] ${className}`}
@@ -33,7 +35,9 @@ const ProgramBox = ({ className = '', program }) => {
         <h3 className="text-lg font-medium mb-2">Report Statistics</h3>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>
-            <span className="text-2xl font-bold block">{program.reports}</span>
+            <span className="text-2xl font-bold block">
+              {program.reportCount}
+            </span>
             <span>Total Reports Received</span>
           </div>
           <div>
@@ -56,21 +60,22 @@ const ProgramBox = ({ className = '', program }) => {
         </div>
       </div>
 
-      {userType === 'hacker' ? (
-        <div className="pt-4">
-          <CTAButton
-            text="Submit Report"
-            linkto={`/hacker/report/${program._id}`}
-          />
-        </div>
-      ) : (
-        <div className="pt-4">
-          <CTAButton
-            text="View Report"
-            linkto={`/triager/reports/${program._id}`}
-          />
-        </div>
-      )}
+      {!hideSubmit &&
+        (userType === 'hacker' || !token ? (
+          <div className="pt-4">
+            <CTAButton
+              text="Submit Report"
+              linkto={`/hacker/report/${program._id}`}
+            />
+          </div>
+        ) : (
+          <div className="pt-4">
+            <CTAButton
+              text="View Report"
+              linkto={`/${userType}/reports/${program._id}`}
+            />
+          </div>
+        ))}
     </section>
   )
 }

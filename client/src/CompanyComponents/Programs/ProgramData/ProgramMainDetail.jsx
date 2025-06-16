@@ -5,20 +5,26 @@ import { useEffect } from 'react'
 import axios from 'axios'
 import ProgramBox from '../../../HackerComponents/ProgramBox.jsx'
 import ProgramTabs from './ProgramRibbon.jsx'
+import { apiConnector, endPoints } from '../../../Services/ApiConnector/api.js'
+import Loader from '../../../Common/Loader.jsx'
 
 const ProgramMainDetail = () => {
   const { programId } = useParams()
   const dispatch = useDispatch()
   const program = useSelector((state) => state.program.programData)
   const token = useSelector((state) => state.auth.token)
+
   useEffect(() => {
     const fetchProgram = async () => {
       try {
-        const response = await axios.post(
-          `http://localhost:8000/api/programs/programDetail`,
+        const response = await apiConnector(
+          'POST',
+          endPoints.GET_PROGRAMBY_ID,
           { programId }
         )
-        dispatch(setProgramData(response.data.data))
+        console.log(response)
+
+        dispatch(setProgramData(response.data))
       } catch (error) {
         console.error('Failed to fetch program:', error)
       }
@@ -30,7 +36,7 @@ const ProgramMainDetail = () => {
   }, [programId, dispatch])
 
   if (!program) {
-    return <div>Loading...</div>
+    return <Loader />
   }
 
   return (
@@ -39,15 +45,11 @@ const ProgramMainDetail = () => {
         <ProgramTabs />
       </div>
 
-      {token ? (
-        <div className="w-full lg:w-[450px] p-4">
-          <div className="sticky top-4">
-            <ProgramBox program={program} />
-          </div>
+      <div className="w-full lg:w-[450px] p-4">
+        <div className="sticky top-4">
+          <ProgramBox program={program} />
         </div>
-      ) : (
-        ''
-      )}
+      </div>
     </div>
   )
 }
