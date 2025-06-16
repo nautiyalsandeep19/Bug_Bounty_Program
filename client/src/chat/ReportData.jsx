@@ -4,11 +4,9 @@ import { toast } from 'react-hot-toast'
 import { useSelector } from 'react-redux'
 import '../Common/Editor/TiptapEditor.css'
 
-const ReportData = ({ id }) => {
+const ReportData = ({ reportId }) => {
   const [report, setReport] = useState(null)
   const [isUpdating, setIsUpdating] = useState(false)
-
-  console.log({ id })
 
   const BASE_URL =
     import.meta.env.VITE_BACKEND_HOST_URL || 'http://localhost:8000'
@@ -39,7 +37,7 @@ const ReportData = ({ id }) => {
         return
       }
 
-      const res = await axios.get(`${BASE_URL}/api/reports/${id}`, {
+      const res = await axios.get(`${BASE_URL}/api/reports/${reportId}`, {
         headers: { Authorization: `Bearer ${token}` },
         withCredentials: true,
       })
@@ -60,17 +58,17 @@ const ReportData = ({ id }) => {
   }
 
   useEffect(() => {
-    if (id) fetchReportDetails()
-  }, [id])
+    if (reportId) fetchReportDetails()
+  }, [reportId])
 
   const handleStatusUpdate = async (newStatus) => {
-    if (!id || !newStatus || isUpdating) return
+    if (!reportId || !newStatus || isUpdating) return
 
     setIsUpdating(true)
     try {
       const token = localStorage.getItem('token')
       const response = await axios.put(
-        `${BASE_URL}/api/reports/updateStatus/${id}`,
+        `${BASE_URL}/api/reports/updateStatus/${reportId}`,
         { status: newStatus },
         {
           headers: { Authorization: `Bearer ${token}` },
@@ -93,13 +91,13 @@ const ReportData = ({ id }) => {
   }
 
   const handleSeverityUpdate = async (newSeverity) => {
-    if (!id || !newSeverity || isUpdating) return
+    if (!reportId || !newSeverity || isUpdating) return
 
     setIsUpdating(true)
     try {
       const token = localStorage.getItem('token')
       const response = await axios.put(
-        `${BASE_URL}/api/reports/updateSeverity/${id}`,
+        `${BASE_URL}/api/reports/updateSeverity/${reportId}`,
         { severity: newSeverity },
         {
           headers: { Authorization: `Bearer ${token}` },
@@ -157,7 +155,7 @@ const ReportData = ({ id }) => {
 
   return (
     <div className="min-h-screen bg-[#0e0e0e] py-8 px-4">
-      <div className="max-w-4xl m-auto bg-white rounded-xl shadow-md overflow-hidden">
+      <div className="max-w-4xl m-auto bg-white rounded-xl shadow-md overflow-hreportIdden">
         {/* Header */}
         <div className="p-6 bg-gradient-to-r from-gray-800 to-gray-500 text-white">
           <div className="flex justify-between items-start">
@@ -245,7 +243,7 @@ const ReportData = ({ id }) => {
 
         {/* Body */}
         <div className="p-6 space-y-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-black">
+          <div className="grreportId grreportId-cols-1 md:grreportId-cols-2 gap-4 text-black">
             <div>
               <h2 className="text-lg font-semibold text-gray-700 mb-2">
                 Vulnerability Details
@@ -318,7 +316,7 @@ const ReportData = ({ id }) => {
             />
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm text-gray-600">
+          <div className="grreportId grreportId-cols-1 md:grreportId-cols-2 gap-4 text-sm text-gray-600">
             <div>
               <p>
                 <span className="font-medium">Created:</span>{' '}
