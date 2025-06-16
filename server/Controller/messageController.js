@@ -82,3 +82,45 @@ export const getLogsForHacker = async (req, res) => {
     })
   }
 }
+ 
+
+
+
+
+export const updateMessage = async (req, res) => {
+  try {
+    const { messageId, message } = req.body;
+
+    if (!messageId || !message) {
+      return res.status(400).json({
+        success: false,
+        message: 'Both messageId and updated message are required',
+      });
+    }
+
+    const updated = await Message.findByIdAndUpdate(
+      messageId,
+      { message },
+      { new: true }
+    );
+
+    if (!updated) {
+      return res.status(404).json({
+        success: false,
+        message: 'Message not found',
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      message: 'Message updated successfully',
+      updatedMessage: updated,
+    });
+  } catch (error) {
+    console.error('Error updating message:', error);
+    return res.status(500).json({
+      success: false,
+      message: 'Internal Server Error',
+    });
+  }
+};
