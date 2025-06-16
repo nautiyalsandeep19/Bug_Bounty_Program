@@ -100,6 +100,7 @@ const ChatRoom = () => {
         { withCredentials: true }
       )
 
+      console.log(res)
       if (res.data.success) {
         setMessages((prev) =>
           prev.map((msg) =>
@@ -108,11 +109,11 @@ const ChatRoom = () => {
         )
         toast.success('Message updated')
       } else {
-        toast.error('Failed to update message')
+        toast.error("message not updated")
       }
     } catch (err) {
       console.error(err)
-      toast.error('Error updating message')
+      toast.error(err.response?.data?.message)
     }
 
     setEditingMessageId(null)

@@ -98,18 +98,30 @@ export const updateMessage = async (req, res) => {
       });
     }
 
-    const updated = await Message.findByIdAndUpdate(
-      messageId,
-      { message },
-      { new: true }
-    );
+    const existingMessage = await Message.findById(messageId);
 
-    if (!updated) {
+    if (!existingMessage) {
       return res.status(404).json({
         success: false,
         message: 'Message not found',
       });
     }
+
+    // Check if the message is older than 10 minutes
+    const createdAt = new Date(existingMessage.createdAt);
+    const now = new Date();
+    const diffInMinutes = (now - createdAt) / (1000 * 60);
+
+    if (diffInMinutes > 10) {
+      return res.status(403).json({
+        success: false,
+        message: 'You can only edit messages within 10 minutes of sending.',
+      });
+    }
+
+    // Update message
+    existingMessage.message = message;
+    const updated = await existingMessage.save();
 
     return res.status(200).json({
       success: true,
