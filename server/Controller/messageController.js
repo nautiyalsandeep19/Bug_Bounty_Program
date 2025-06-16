@@ -21,8 +21,10 @@ export const getMessagesForReport = async (req, res) => {
           senderDetails = await Company.findById(msg.senderId).select(
             'name email image _id'
           )
-        } else if( msg.senderModel === 'Triager'){
-          senderDetails = await Admin.findById(msg.senderId).select('name email _id')
+        } else if (msg.senderModel === 'Triager') {
+          senderDetails = await Admin.findById(msg.senderId).select(
+            'name email _id'
+          )
         }
 
         return {
