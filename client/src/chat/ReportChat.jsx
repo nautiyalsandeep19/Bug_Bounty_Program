@@ -9,6 +9,8 @@ import '../Common/Editor/TiptapEditor.css'
 import ReportData from './ReportData'
 
 const ChatRoom = () => {
+
+  
   const { reportId } = useParams()
   const [messages, setMessages] = useState([])
   const [input, setInput] = useState('')
@@ -88,11 +90,10 @@ const ChatRoom = () => {
   }
   const user = JSON.parse(localStorage.getItem('user'))
   const currentUserId = user?._id
-  console.log('currect user: ', currentUserId)
 
   return (
     <div className="">
-      <ReportData />
+      <ReportData reportId={reportId}/>
       <div className="ProseMirror space-y-4 px-4 max-w-[50%] py-2 rounded-lg border-2 border-[#042d5b] overflow-y-auto bg-neutral-800 max-h-[400px] m-auto min-h-20 ">
         {messages.map((msg, index) => {
           const isLog = msg.messageType === 'log'

@@ -90,7 +90,7 @@ function App() {
           <Route path="/adminlogin" element={<AdminLogin />} />
 
           <Route
-            path="/chat/:id"
+            path="/chat/:reportId"
             element={
               <ProtectedRoute
                 typeUser={['admin', 'triager', 'company', 'hacker']}

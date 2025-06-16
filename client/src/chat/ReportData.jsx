@@ -4,11 +4,9 @@ import { toast } from 'react-hot-toast'
 import { useSelector } from 'react-redux'
 import '../Common/Editor/TiptapEditor.css'
 
-const ReportData = ({ reportId }) => {
+const ReportData = ( {reportId} ) => {
   const [report, setReport] = useState(null)
   const [isUpdating, setIsUpdating] = useState(false)
-  const { id } = reportId
-  console.log('repDATA PAGFE', id)
 
   const BASE_URL =
     import.meta.env.VITE_BACKEND_HOST_URL || 'http://localhost:8000'
@@ -39,7 +37,7 @@ const ReportData = ({ reportId }) => {
         return
       }
 
-      const res = await axios.get(`${BASE_URL}/api/reports/${id}`, {
+      const res = await axios.get(`${BASE_URL}/api/reports/${reportId}`, {
         headers: { Authorization: `Bearer ${token}` },
         withCredentials: true,
       })
@@ -70,7 +68,7 @@ const ReportData = ({ reportId }) => {
     try {
       const token = localStorage.getItem('token')
       const response = await axios.put(
-        `${BASE_URL}/api/reports/updateStatus/${id}`,
+        `${BASE_URL}/api/reports/updateStatus/${reportId}`,
         { status: newStatus },
         {
           headers: { Authorization: `Bearer ${token}` },

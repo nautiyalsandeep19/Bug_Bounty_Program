@@ -348,11 +348,10 @@ export const getReportsByHackerId = async (req, res) => {
 
 export const getReportById = async (req, res) => {
   try {
-    const { id } = req.params
-    const report = await Report.findById(id)
+    const { reportId } = req.params
+    const report = await Report.findById(reportId)
       .populate('hackerId')
       .populate('programId')
-    console.log(id)
 
     if (!report) {
       return res

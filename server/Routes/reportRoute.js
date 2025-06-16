@@ -11,6 +11,7 @@ import {
 import { authMid, isCompany } from '../Middleware/authMid.js'
 const router = express.Router()
 
+router.get('/:reportId', authMid, getReportById)
 router.post('/createReport', authMid, createReport)
 router.put('/updateStatus/:reportId', authMid, updateStatus)
 router.put('/updateSeverity/:reportId', authMid, updateSeverity)
@@ -18,6 +19,5 @@ router.get('/allReports', authMid, getAllReports)
 router.get('/reportByHackerId', authMid, getReportsByHackerId)
 // router.post('/reportByProgramId', authMid, getReportsByProgramId)
 
-router.get('/:id', authMid, getReportById)
 
 export default router
