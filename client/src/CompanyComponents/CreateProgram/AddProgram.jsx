@@ -375,15 +375,15 @@ const CreateProgram = () => {
   // Load from localStorage on mount and set initial visibility
   useEffect(() => {
     let previousAssets = localStorage.getItem('assets')
-    
+
     // Set initial visibility based on program type
     const selectedProgramType = localStorage.getItem('selectedProgramType')
     if (selectedProgramType) {
       const isPrivate = selectedProgramType.includes('Private')
-      setProgramData(prev => ({
+      setProgramData((prev) => ({
         ...prev,
         visibility: isPrivate ? 'private' : 'public',
-        type: selectedProgramType
+        type: selectedProgramType,
       }))
     }
 
@@ -403,7 +403,8 @@ const CreateProgram = () => {
         if (selectedProgramType) {
           updatedData.type = selectedProgramType
           // Maintain the visibility setting
-          updatedData.visibility = updatedData.visibility || 
+          updatedData.visibility =
+            updatedData.visibility ||
             (selectedProgramType.includes('Private') ? 'private' : 'public')
         }
 
@@ -448,7 +449,7 @@ const CreateProgram = () => {
         type: selectedProgramType,
         title: programData.programName || 'New Program',
         company: userObj._id,
-        visibility: visibility // Set visibility here based on program type
+        visibility: visibility, // Set visibility here based on program type
       }
 
       const response = await axios.post(

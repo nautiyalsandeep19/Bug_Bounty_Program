@@ -4,7 +4,6 @@ import Button from '../Common/Button/CTAButton'
 import { FaBug, FaBullhorn, FaSyncAlt, FaUserPlus } from 'react-icons/fa'
 import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router'
-
 import { fetchLogsForHacker } from '../Services/messageApi'
 
 const FeedDashboard = () => {
@@ -42,7 +41,7 @@ const FeedDashboard = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-zinc-950 via-black to-zinc-900 text-white px-4 py-10 grid grid-cols-1 md:grid-cols-3 gap-6 ">
+    <div className="min-h-screen bg-gradient-to-b  px-4 py-10 grid grid-cols-1 md:grid-cols-3 gap-6 ">
       {/* Main Dashboard Content */}
       <div className="md:col-span-2 space-y-8">
         <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight">
@@ -78,14 +77,14 @@ const FeedDashboard = () => {
         </div>
 
         {/* Logs Section */}
-        <div className="bg-zinc-900 p-6 rounded-2xl border border-zinc-700 shadow-md space-y-4">
+        <div className=" p-6 rounded-2xl border border-zinc-700 shadow-md space-y-4">
           <h2 className="text-lg font-semibold text-yellow-400">
             📜 Your System Logs
           </h2>
           {logs.length === 0 ? (
             <p className="text-sm text-zinc-500">No logs yet.</p>
           ) : (
-            <ul className="space-y-3 max-h-[300px] overflow-y-auto pr-2">
+            <ul className="space-y-3 max-h-[700px] overflow-y-auto pr-2">
               {logs.map((log, idx) => (
                 <li
                   key={idx}
@@ -93,13 +92,14 @@ const FeedDashboard = () => {
                 >
                   <div className="flex justify-between items-center">
                     <span
-                      className="  ProseMirror"
+                      className="ProseMirror"
                       dangerouslySetInnerHTML={{ __html: log.message }}
                     ></span>
                     <span className="text-xs text-zinc-500">
                       {new Date(log.createdAt).toLocaleString()}
                     </span>
                   </div>
+
                   <Button
                     className="!w-fit"
                     text="view report"

@@ -1,4 +1,4 @@
-import { Routes, Route, Outlet } from 'react-router'
+import { Routes, Route } from 'react-router'
 import { useSelector, useDispatch } from 'react-redux'
 import { useEffect } from 'react'
 
@@ -38,7 +38,6 @@ import TriagerDashboard from './TriagerPages/TriagerDashboard'
 import UsersData from './TriagerPages/UsersData'
 import TrigerReports from './TriagerPages/TrigerReports'
 
-
 // Admin Pages
 import AdminLogin from './AdminLogin'
 import AdminHome from './AdminPages/AdminHome'
@@ -51,7 +50,6 @@ import ProtectedRoute from './ProtectedRoute'
 import CompanyReports from './CompanyPages/CompanyReports'
 import VrtData from './Common/VrtData'
 import CommonLayout from './Common/LayoutSidebar/CommonLayout'
-
 
 function App() {
   const dispatch = useDispatch()
@@ -97,9 +95,7 @@ function App() {
               </ProtectedRoute>
             }
           >
-
             <Route path="/reports/:programId" element={<TrigerReports />} />
-
           </Route>
 
           {/* 2nd */}

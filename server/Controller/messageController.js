@@ -44,11 +44,10 @@ export const getMessagesForReport = async (req, res) => {
   }
 }
 
-
 export const getLogsForHacker = async (req, res) => {
   try {
     const { hackerId } = req.params
-    console.log("HackerID backend: ",hackerId)
+    console.log('HackerID backend: ', hackerId)
 
     if (!hackerId) {
       return res.status(400).json({
@@ -69,6 +68,12 @@ export const getLogsForHacker = async (req, res) => {
     })
       .sort({ createdAt: -1 }) // latest logs first
       .lean()
+      .populate({
+        path: 'reportId',
+        populate: {
+          path: 'programId', // this field should exist in the Report schema
+        },
+      })
 
     return res.status(200).json({
       success: true,
