@@ -31,7 +31,9 @@ export const getPrivatePrograms = async () => {
 
     return response.programs
   } catch (error) {
-    toast.error('No program assigned to you')
+    // toast.error('No program assigned to you')
+    console.error(error)
+
     return null
   }
 }
