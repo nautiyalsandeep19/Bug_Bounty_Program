@@ -26,6 +26,9 @@ server/build/
 client/node_modules/
 server/node_modules/
 
+
+server/temp
+
 # Local database files
 *.sqlite
 *.db
