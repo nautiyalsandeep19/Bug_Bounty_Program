@@ -9,11 +9,10 @@ const CompanyAssets = () => {
   useEffect(() => {
     const fetchCompanyAssets = async () => {
       try {
-        // Get company ID from localStorage or wherever you store it
         const user = localStorage.getItem('user')
         const companyId = user ? JSON.parse(user)._id : null
         // console.log('Company IDdassadsad:', companyId)
-        
+
         if (!companyId) {
           console.error('Company ID not found')
           return
@@ -25,8 +24,8 @@ const CompanyAssets = () => {
           `${VITE_BACKEND_HOST_URL}/api/assets/${companyId}`,
           {
             headers: {
-              Authorization: `Bearer ${localStorage.getItem('token')}`
-            }
+              Authorization: `Bearer ${localStorage.getItem('token')}`,
+            },
           }
         )
 
@@ -55,7 +54,9 @@ const CompanyAssets = () => {
       </h2>
 
       {assets.length === 0 ? (
-        <p className="text-gray-400 text-center mt-[300px]">No assets found for your company.</p>
+        <p className="text-gray-400 text-center mt-[300px]">
+          No assets found for your company.
+        </p>
       ) : (
         <div className="space-y-6 max-h-[79vh] max-w-full overflow-y-auto pr-2">
           {assets.map((asset) => (
@@ -65,15 +66,20 @@ const CompanyAssets = () => {
             >
               <div className="flex-1">
                 <p className="text-white font-semibold break-words max-w-full">
-                  <span className="text-gray-400 mr-2">URL:</span> {asset.assetURL}
+                  <span className="text-gray-400 mr-2">URL:</span>{' '}
+                  {asset.assetURL}
                 </p>
                 <p className="text-gray-400 text-sm mt-1">
-                  <span className="text-gray-400 mr-2">Type:</span> {asset.assetType}
+                  <span className="text-gray-400 mr-2">Type:</span>{' '}
+                  {asset.assetType}
                 </p>
               </div>
               <div className="mt-2 sm:mt-0 flex gap-2">
                 {asset.labels?.map((label, i) => (
-                  <span key={i} className="bg-gray-600 text-indigo-100 text-xs font-medium px-2 py-1 rounded-full">
+                  <span
+                    key={i}
+                    className="bg-gray-600 text-indigo-100 text-xs font-medium px-2 py-1 rounded-full"
+                  >
                     {label}
                   </span>
                 ))}

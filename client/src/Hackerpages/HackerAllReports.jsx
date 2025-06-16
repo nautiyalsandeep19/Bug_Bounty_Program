@@ -3,6 +3,7 @@ import axios from 'axios'
 import { useEffect, useState } from 'react'
 import { useParams, useNavigate } from 'react-router'
 import CTAButton from '../Common/Button/CTAButton'
+import { useSelector } from 'react-redux'
 
 const HackerAllReports = () => {
   const { reportId } = useParams()
@@ -11,6 +12,7 @@ const HackerAllReports = () => {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
 
+  const userType = useSelector((state) => state.auth.userType)
   useEffect(() => {
     const abortController = new AbortController()
     const fetchReports = async () => {
@@ -84,7 +86,7 @@ const HackerAllReports = () => {
                   </span>
                   <CTAButton
                     text="View Report"
-                    onClick={() => navigate(`/hacker/chat/${report._id}`)}
+                    onClick={() => navigate(`/chat/${report?._id}`)}
                   />
                 </div>
               </div>

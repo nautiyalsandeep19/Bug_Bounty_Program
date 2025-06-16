@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import { useParams, Link } from 'react-router'
 import CTAButton from '../Common/Button/CTAButton'
+import { useSelector } from 'react-redux'
 
 const TrigerReports = () => {
   const [reports, setReports] = useState([])
@@ -9,7 +10,7 @@ const TrigerReports = () => {
   const [error, setError] = useState(null)
 
   const { programId } = useParams()
-
+  const userType = useSelector((state) => state.auth.userType)
   console.log(programId)
   const BASE_URL = import.meta.env.VITE_BACKEND_HOST_URL
 
@@ -23,7 +24,6 @@ const TrigerReports = () => {
 
         const allReports = response.data?.reports || []
 
-        // ✅ Filter by programId from URL param
         const filteredReports =
           programId === 'all'
             ? allReports
@@ -77,9 +77,7 @@ const TrigerReports = () => {
           <div>{report.status}</div>
           <div>{new Date(report?.submitDate).toISOString().slice(0, 10)}</div>
 
-          <Link to={`/hacker/chat/${report?._id}`}>
-            <CTAButton text="View Report" />
-          </Link>
+          <CTAButton text="View Report" linkto={`/chat/${report?._id}`} />
         </div>
       ))}
     </div>

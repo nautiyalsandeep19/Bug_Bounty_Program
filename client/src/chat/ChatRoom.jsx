@@ -10,6 +10,7 @@ import ReportData from './ReportData'
 
 const ChatRoom = () => {
   const { reportId } = useParams()
+
   const [messages, setMessages] = useState([])
   const [input, setInput] = useState('')
   const editorRef = useRef(null)
@@ -46,7 +47,7 @@ const ChatRoom = () => {
     const existingSocket = getSocket()
     if (!existingSocket && localStorage.getItem('user')) {
       const user = JSON.parse(localStorage.getItem('user'))
-      connectSocket(user._id)
+      connectSocket(user._reportId)
     }
 
     const socket = getSocket()
@@ -92,8 +93,8 @@ const ChatRoom = () => {
 
   return (
     <div className="">
-      <ReportData />
-      <div className="ProseMirror space-y-4 px-4 max-w-[50%] py-2 rounded-lg border-2 border-[#042d5b] overflow-y-auto bg-neutral-800 max-h-[400px] m-auto ">
+      <ReportData reportId={reportId} />
+      <div className="ProseMirror space-y-4 px-4 max-w-[50%] py-2 rounded-lg border-2 border-[#042d5b] overflow-y-auto bg-neutral-800 max-h-[400px] m-auto min-h-20 ">
         {messages.map((msg, index) => {
           const isLog = msg.messageType === 'log'
           const isSender = msg.senderInfo?._id === currentUserId

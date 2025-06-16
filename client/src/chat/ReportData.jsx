@@ -1,17 +1,17 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import { toast } from 'react-hot-toast'
-import { useParams } from 'react-router'
 import { useSelector } from 'react-redux'
+import '../Common/Editor/TiptapEditor.css'
 
-const ReportData = () => {
+const ReportData = ({ reportId }) => {
   const [report, setReport] = useState(null)
   const [isUpdating, setIsUpdating] = useState(false)
-  const { reportId } = useParams()
+
   const BASE_URL =
     import.meta.env.VITE_BACKEND_HOST_URL || 'http://localhost:8000'
   const userType = useSelector((state) => state.auth.userType)
-  // Status options from your enum
+
   const statusOptions = [
     'submitted',
     'underreview',
@@ -19,6 +19,14 @@ const ReportData = () => {
     'completed',
     'rejected',
     'draft',
+  ]
+
+  const severityOptions = [
+    'Critical',
+    'High',
+    'Moderate',
+    'Low',
+    'Informational',
   ]
 
   const fetchReportDetails = async () => {
@@ -82,6 +90,35 @@ const ReportData = () => {
     }
   }
 
+  const handleSeverityUpdate = async (newSeverity) => {
+    if (!reportId || !newSeverity || isUpdating) return
+
+    setIsUpdating(true)
+    try {
+      const token = localStorage.getItem('token')
+      const response = await axios.put(
+        `${BASE_URL}/api/reports/updateSeverity/${reportId}`,
+        { severity: newSeverity },
+        {
+          headers: { Authorization: `Bearer ${token}` },
+          withCredentials: true,
+        }
+      )
+
+      if (response.data.success) {
+        toast.success(response.data.message)
+        setReport((prev) => ({ ...prev, severity: newSeverity }))
+      } else {
+        toast(response.data.message || 'Update failed', { icon: 'ℹ️' })
+      }
+    } catch (error) {
+      console.error('Severity update error:', error)
+      toast.error(error.response?.data?.message || 'Failed to update severity')
+    } finally {
+      setIsUpdating(false)
+    }
+  }
+
   if (!report) {
     return (
       <div className="flex justify-center items-center h-64">
@@ -90,7 +127,6 @@ const ReportData = () => {
     )
   }
 
-  // Severity color mapping
   const severityColors = {
     Critical: 'bg-red-600',
     High: 'bg-red-500',
@@ -99,7 +135,6 @@ const ReportData = () => {
     Informational: 'bg-gray-500',
   }
 
-  // Status color mapping
   const statusColors = {
     submitted: 'bg-blue-100 text-blue-800',
     underreview: 'bg-purple-100 text-purple-800',
@@ -109,7 +144,6 @@ const ReportData = () => {
     draft: 'bg-gray-100 text-gray-800',
   }
 
-  // Status display names
   const statusDisplayNames = {
     submitted: 'Submitted',
     underreview: 'Under Review',
@@ -121,21 +155,51 @@ const ReportData = () => {
 
   return (
     <div className="min-h-screen bg-[#0e0e0e] py-8 px-4">
-      <div className="max-w-4xl m-auto bg-white rounded-xl shadow-md overflow-hidden">
-        {/* Report Header */}
+      <div className="max-w-4xl m-auto bg-white rounded-xl shadow-md overflow-hreportIdden">
+        {/* Header */}
         <div className="p-6 bg-gradient-to-r from-gray-800 to-gray-500 text-white">
           <div className="flex justify-between items-start">
             <div>
               <h1 className="text-3xl font-bold mb-2">{report.title}</h1>
-              <div className="flex items-center space-x-4">
-                <span
-                  className={`px-3 py-1 rounded-full text-sm font-semibold ${
-                    severityColors[report.severity] || 'bg-gray-500'
-                  }`}
-                >
-                  {report.severity}
-                </span>
+              <div className="flex items-center space-x-4 flex-wrap">
+                {/* Severity Select */}
                 {userType === 'triager' ? (
+                  <div className="relative group">
+                    <select
+                      value={report.severity}
+                      onChange={(e) => handleSeverityUpdate(e.target.value)}
+                      disabled={isUpdating}
+                      className={`px-3 py-1 rounded-full text-sm font-semibold ${
+                        severityColors[report.severity] || 'bg-gray-500'
+                      } appearance-none pr-8 cursor-pointer focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-200 ${
+                        isUpdating
+                          ? 'opacity-70 cursor-not-allowed'
+                          : 'hover:opacity-90'
+                      }`}
+                    >
+                      {severityOptions.map((sev) => (
+                        <option
+                          key={sev}
+                          value={sev}
+                          className="bg-white text-gray-800"
+                        >
+                          {sev}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                ) : (
+                  <span
+                    className={`px-3 py-1 rounded-full text-sm font-semibold ${
+                      severityColors[report.severity] || 'bg-gray-500'
+                    }`}
+                  >
+                    {report.severity}
+                  </span>
+                )}
+
+                {/* Status Select */}
+                {userType === 'triager' && (
                   <div className="relative group">
                     <select
                       value={report.status}
@@ -160,41 +224,7 @@ const ReportData = () => {
                         </option>
                       ))}
                     </select>
-                    <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
-                      {isUpdating ? (
-                        <svg
-                          className="animate-spin h-4 w-4 text-white"
-                          xmlns="http://www.w3.org/2000/svg"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                        >
-                          <circle
-                            className="opacity-25"
-                            cx="12"
-                            cy="12"
-                            r="10"
-                            stroke="currentColor"
-                            strokeWidth="4"
-                          ></circle>
-                          <path
-                            className="opacity-75"
-                            fill="currentColor"
-                            d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                          ></path>
-                        </svg>
-                      ) : (
-                        <svg
-                          className="fill-current h-4 w-4"
-                          xmlns="http://www.w3.org/2000/svg"
-                          viewBox="0 0 20 20"
-                        >
-                          <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
-                        </svg>
-                      )}
-                    </div>
                   </div>
-                ) : (
-                  ''
                 )}
               </div>
             </div>
@@ -211,10 +241,9 @@ const ReportData = () => {
           </div>
         </div>
 
-        {/* Report Body */}
+        {/* Body */}
         <div className="p-6 space-y-6">
-          {/* Basic Info */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-black">
+          <div className="grreportId grreportId-cols-1 md:grreportId-cols-2 gap-4 text-black">
             <div>
               <h2 className="text-lg font-semibold text-gray-700 mb-2">
                 Vulnerability Details
@@ -226,7 +255,7 @@ const ReportData = () => {
                 </p>
                 <p>
                   <span className="font-medium text-gray-600">Scope:</span>{' '}
-                  {report?.scope}
+                  {report.scope}
                 </p>
                 <p>
                   <span className="font-medium text-gray-600">Endpoint:</span>{' '}
@@ -257,7 +286,6 @@ const ReportData = () => {
             </div>
           </div>
 
-          {/* Summary */}
           <div>
             <h2 className="text-lg font-semibold text-gray-700 mb-2">
               Summary
@@ -267,7 +295,6 @@ const ReportData = () => {
             </p>
           </div>
 
-          {/* Impact */}
           {report.vulnerabilityImpact && (
             <div>
               <h2 className="text-lg font-semibold text-gray-700 mb-2">
@@ -279,19 +306,17 @@ const ReportData = () => {
             </div>
           )}
 
-          {/* Proof of Concept */}
-          <div className="text-black">
+          <div className="text-black ">
             <h2 className="text-lg font-semibold text-gray-700 mb-2">
               Proof of Concept
             </h2>
             <div
-              className="prose max-w-none bg-gray-50 p-4 mt-5 rounded-lg border border-gray-200"
+              className="ProseMirror max-w-none bg-gray-50 p-4 mt-5 rounded-lg border border-gray-200"
               dangerouslySetInnerHTML={{ __html: report.POC }}
             />
           </div>
 
-          {/* Additional Info */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm text-gray-600">
+          <div className="grreportId grreportId-cols-1 md:grreportId-cols-2 gap-4 text-sm text-gray-600">
             <div>
               <p>
                 <span className="font-medium">Created:</span>{' '}

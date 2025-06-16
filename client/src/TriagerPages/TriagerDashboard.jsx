@@ -1,13 +1,10 @@
-import React from "react";
-import { updateReportStatus } from "../Services/reportApi";
+import React from 'react'
 
 const TriagerDashboard = () => {
-
-    return <div>
-      
+  return (
+    <div>
       <h1 className="text-2xl text-center ">Triager Dashboard </h1>
-
-  
     </div>
-};
-export default TriagerDashboard;
+  )
+}
+export default TriagerDashboard
