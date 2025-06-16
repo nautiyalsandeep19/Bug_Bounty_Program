@@ -11,8 +11,8 @@ import {
   Minus, Redo2, Undo2, Code2, Upload, ImageDown
 } from 'lucide-react'
 import { uploadFiles } from '../../Services/uploaderApi'
-import Video from '../../extensions/Video'
-import ExternalFile from '../../extensions/ExternalFile'
+import Video from './Video'
+import ExternalFile from './ExternalFile'
 
 const MAX_TOTAL_SIZE_MB = 10
 

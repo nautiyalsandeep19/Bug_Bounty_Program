@@ -33,6 +33,10 @@ export const endPoints = {
 
   //Programs
   GET_PROGRAMBY_ID: BASE_URL + '/api/programs/programDetail',
+
+  // messages/Logs
+  GET_LOGS: BASE_URL + '/api/messages/logs'
+
 }
 
 export const axiosInstance = axios.create({ withCredentials: true })
