@@ -58,11 +58,11 @@ const ReportData = ( {reportId} ) => {
   }
 
   useEffect(() => {
-    if (reportId) fetchReportDetails()
-  }, [reportId])
+    if (id) fetchReportDetails()
+  }, [id])
 
   const handleStatusUpdate = async (newStatus) => {
-    if (!reportId || !newStatus || isUpdating) return
+    if (!id || !newStatus || isUpdating) return
 
     setIsUpdating(true)
     try {
@@ -91,13 +91,13 @@ const ReportData = ( {reportId} ) => {
   }
 
   const handleSeverityUpdate = async (newSeverity) => {
-    if (!reportId || !newSeverity || isUpdating) return
+    if (!id || !newSeverity || isUpdating) return
 
     setIsUpdating(true)
     try {
       const token = localStorage.getItem('token')
       const response = await axios.put(
-        `${BASE_URL}/api/reports/updateSeverity/${reportId}`,
+        `${BASE_URL}/api/reports/updateSeverity/${id}`,
         { severity: newSeverity },
         {
           headers: { Authorization: `Bearer ${token}` },

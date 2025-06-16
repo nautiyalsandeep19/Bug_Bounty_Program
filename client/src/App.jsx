@@ -17,7 +17,6 @@ import ProgramMainDetail from './CompanyComponents/Programs/ProgramData/ProgramM
 import ProgramFlow from './CompanyComponents/CreateProgram/ProgramCreation'
 
 // Hacker Pages
-import HackerLayout from './Layouts/HackerLayout'
 import HackerDashboard from './Hackerpages/HackerDashboard'
 import HackerSettings from './Hackerpages/HackerSettings'
 import HackerLeaderboard from './HackerPages/HackerLeaderboard'
@@ -26,7 +25,7 @@ import HackerReports from './HackerPages/HackerReports'
 import HackerAllReports from './Hackerpages/HackerAllReports'
 
 // Company Pages
-import CompanyLayout from './Layouts/CompanyLayout'
+
 import CompanyDashboard from './CompanyPages/CompanyDashboard'
 import CompanySetting from './CompanyPages/CompanySetting'
 import CompanyLeaderBoard from './CompanyPages/CompanyLeaderboard'
@@ -35,7 +34,7 @@ import CompanyBounties from './CompanyPages/CompanyBounties'
 import ProgramList from './CompanyComponents/Programs/ProgramDetails/ProgramList'
 
 // Triager Pages
-import TriagerLayout from './Layouts/TriagerLayout'
+
 import TriagerDashboard from './TriagerPages/TriagerDashboard'
 import UsersData from './TriagerPages/UsersData'
 import TrigerReports from './TriagerPages/TrigerReports'
@@ -43,15 +42,15 @@ import TrigerReports from './TriagerPages/TrigerReports'
 // Admin Pages
 import AdminLogin from './AdminLogin'
 import AdminHome from './AdminPages/AdminHome'
-import AdminLayout from './Layouts/AdminLayout'
 
 // Chat
-import ChatRoom from './chat/ReportChat'
+import ChatRoom from './chat/ChatRoom'
 
 // Protection Wrapper
 import ProtectedRoute from './ProtectedRoute'
 import CompanyReports from './CompanyPages/CompanyReports'
 import VrtData from './Common/VrtData'
+import CommonLayout from './Common/LayoutSidebar/CommonLayout'
 
 function App() {
   const dispatch = useDispatch()
@@ -90,7 +89,16 @@ function App() {
           <Route path="/adminlogin" element={<AdminLogin />} />
 
           <Route
-            path="/chat/:reportId"
+            path="reports/:programId"
+            element={
+              <ProtectedRoute typeUser={['admin', 'triager', 'company']}>
+                <TrigerReports />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/chat/:id"
             element={
               <ProtectedRoute
                 typeUser={['admin', 'triager', 'company', 'hacker']}
@@ -104,7 +112,7 @@ function App() {
             path="/admin/*"
             element={
               <ProtectedRoute typeUser={['admin']}>
-                <AdminLayout />
+                <CommonLayout />
               </ProtectedRoute>
             }
           >
@@ -116,7 +124,7 @@ function App() {
             path="/hacker/*"
             element={
               <ProtectedRoute typeUser={['hacker', 'triager']}>
-                <HackerLayout />
+                <CommonLayout />
               </ProtectedRoute>
             }
           >
@@ -125,7 +133,7 @@ function App() {
             <Route path="leaderboard" element={<HackerLeaderboard />} />
             <Route path="bounties" element={<HackerBounties />} />
             <Route path="report/:id" element={<HackerReports />} />
-            <Route path="chat/:reportId" element={<ChatRoom />} />
+            {/* <Route path="chat/:reportId" element={<ChatRoom />} /> */}
             <Route path="reports" element={<HackerAllReports />} />
             <Route path="programs" element={<ProgramsPage />} />
             <Route path="programs/:programId" element={<ProgramMainDetail />} />
@@ -136,7 +144,7 @@ function App() {
             path="/company/*"
             element={
               <ProtectedRoute typeUser="company">
-                <CompanyLayout />
+                <CommonLayout />
               </ProtectedRoute>
             }
           >
@@ -155,16 +163,15 @@ function App() {
             path="/triager/*"
             element={
               <ProtectedRoute typeUser="triager">
-                <TriagerLayout />
+                <CommonLayout />
               </ProtectedRoute>
             }
           >
             <Route path="dashboard" element={<TriagerDashboard />} />
             <Route path="users" element={<UsersData />} />
-            <Route path="reports/:programId" element={<TrigerReports />} />
+            {/* <Route path="reports/:programId" element={<TrigerReports />} /> */}
             <Route path="programs" element={<ProgramsPage />} />
             <Route path="programs/:programId" element={<ProgramMainDetail />} />
-            <Route path="chat/:reportId" element={<ChatRoom />} />
           </Route>
         </Routes>
       </main>

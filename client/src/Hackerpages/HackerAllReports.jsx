@@ -86,7 +86,7 @@ const HackerAllReports = () => {
                   </span>
                   <CTAButton
                     text="View Report"
-                    onClick={() => navigate(`/${userType}/chat/${report?._id}`)}
+                    onClick={() => navigate(`/chat/${report?._id}`)}
                   />
                 </div>
               </div>

@@ -24,7 +24,7 @@ const ChatRoom = () => {
   useEffect(() => {
     const fetchMessages = async () => {
       try {
-        const res = await axios.get(`${BASE_URL}/api/messages/${reportId}`, {
+        const res = await axios.get(`${BASE_URL}/api/messages/${id}`, {
           withCredentials: true,
         })
 
@@ -39,10 +39,10 @@ const ChatRoom = () => {
       }
     }
 
-    if (reportId) {
+    if (id) {
       fetchMessages()
     }
-  }, [reportId])
+  }, [id])
 
   useEffect(() => {
     const existingSocket = getSocket()
@@ -52,9 +52,9 @@ const ChatRoom = () => {
     }
 
     const socket = getSocket()
-    if (!socket || !reportId) return
+    if (!socket || !id) return
 
-    socket.emit('joinRoom', reportId)
+    socket.emit('joinRoom', id)
 
     socket.on('receiveMessage', (message) => {
       setMessages((prev) => [...prev, message])
@@ -63,7 +63,7 @@ const ChatRoom = () => {
     return () => {
       socket.off('receiveMessage')
     }
-  }, [reportId])
+  }, [id])
 
   useEffect(() => {
     if (messagesEndRef.current) {
@@ -78,7 +78,7 @@ const ChatRoom = () => {
 
     if (socket && input.trim()) {
       socket.emit('sendMessage', {
-        reportId,
+        id,
         senderId: user._id,
         senderModel: userType.charAt(0).toUpperCase() + userType.slice(1),
         message: input,
