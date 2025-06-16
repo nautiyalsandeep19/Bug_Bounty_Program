@@ -1,14 +1,15 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import { toast } from 'react-hot-toast'
-import { useParams } from 'react-router'
 import { useSelector } from 'react-redux'
 import '../Common/Editor/TiptapEditor.css'
 
-const ReportData = () => {
+const ReportData = ({ reportId }) => {
   const [report, setReport] = useState(null)
   const [isUpdating, setIsUpdating] = useState(false)
-  const { reportId } = useParams()
+  const { id } = reportId
+  console.log('repDATA PAGFE', id)
+
   const BASE_URL =
     import.meta.env.VITE_BACKEND_HOST_URL || 'http://localhost:8000'
   const userType = useSelector((state) => state.auth.userType)
@@ -38,7 +39,7 @@ const ReportData = () => {
         return
       }
 
-      const res = await axios.get(`${BASE_URL}/api/reports/${reportId}`, {
+      const res = await axios.get(`${BASE_URL}/api/reports/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
         withCredentials: true,
       })
@@ -69,7 +70,7 @@ const ReportData = () => {
     try {
       const token = localStorage.getItem('token')
       const response = await axios.put(
-        `${BASE_URL}/api/reports/updateStatus/${reportId}`,
+        `${BASE_URL}/api/reports/updateStatus/${id}`,
         { status: newStatus },
         {
           headers: { Authorization: `Bearer ${token}` },
