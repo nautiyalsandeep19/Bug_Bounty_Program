@@ -3,11 +3,8 @@ import Policy from '../Tabs/Policy'
 import Scope from '../Tabs/Scope'
 import Announcements from '../Tabs/Announcements'
 import HallOfFame from '../Tabs/HallOfFame'
-import { useEffect } from 'react'
-import axios from 'axios'
 import { useParams } from 'react-router'
-import { useDispatch, useSelector } from 'react-redux'
-import { setProgramData } from '../../../Slices/programSlice'
+
 
 const tabs = [
   { label: 'POLICY', key: 'policy' },
@@ -30,7 +27,7 @@ export default function ProgramTabs() {
       case 'announcements':
         return <Announcements />
       case 'hallOfFame':
-        return <HallOfFame />
+        return <HallOfFame/>
       default:
         return null
     }
