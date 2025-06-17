@@ -303,7 +303,7 @@ export const updateSeverity = async (req, res) => {
 
 export const getAllReports = async (req, res) => {
   try {
-    const allReports = await Report.find()
+    const allReports = await Report.find({ status: { $ne: 'draft' } })
       .populate('hackerId')
       .populate('programId')
     console.log(allReports)
