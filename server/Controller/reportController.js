@@ -1,7 +1,9 @@
 import Admin from '../Models/admin.js'
-import Hacker from '../Models/hacker.js'
 import Message from '../Models/message.js'
 import Report from '../Models/Report.js'
+import { updateGlobalLeaderBoard, updateProgramLeaderBoard } from '../Utils/leaderBoard.js'
+
+
 export const createReport = async (req, res) => {
   try {
     const hackerId = req.user.id
@@ -68,105 +70,6 @@ export const createReport = async (req, res) => {
   }
 }
 
-// export const updateStatus = async (req, res) => {
-//   try {
-//     const { reportId } = req.params
-//     const { status } = req.body
-//     const userType = req.user.userType
-//     console.log('report', userType)
-
-//     if (userType !== 'triager') {
-//       return res.status(403).json({
-//         success: false,
-//         message: 'Unauthorized',
-//       })
-//     }
-
-//     if (!reportId || !status) {
-//       return res.status(400).json({
-//         success: false,
-//         message: 'Report ID and status are required',
-//       })
-//     }
-
-//     const existingReport = await Report.findById(reportId)
-
-//     if (!existingReport) {
-//       return res.status(404).json({
-//         success: false,
-//         message: 'Report not found',
-//       })
-//     }
-
-//     if (existingReport.status === status) {
-//       return res.status(200).json({
-//         success: false,
-//         message: `Status is already "${status}"`,
-//       })
-//     }
-
-//     // Update status
-//     existingReport.status = status
-//     await existingReport.save()
-
-//     // Generate custom log text
-//     let logText = ''
-//     const userName = req.user?.name || 'a triager'
-
-//     switch (status.toLowerCase()) {
-//       case 'spam':
-//         logText = `Report was marked as <b>Spam</b> by ${userName}`
-//         break
-//       case 'completed':
-//         logText = `Report was <b>marked as Completed</b> by ${userName}`
-//         break
-//       case 'in progress':
-//         logText = `Report status was set to <b>In Progress</b> by ${userName}`
-//         break
-//       case 'duplicate':
-//         logText = `Report was marked as <b>Duplicate</b> by ${userName}`
-//         break
-//       default:
-//         logText = `Report status was updated to <b>${status}</b> by ${userName}`
-//     }
-
-//     const logMessage = new Message({
-//       reportId,
-//       senderId: req.user.id,
-//       senderModel: 'Triager',
-//       message: `<i>${logText}</i>`,
-//       messageType: 'log',
-//     })
-
-//     await logMessage.save()
-
-//     const senderDetails = await Admin.findById(req.user.id).select(
-//       'name email image _id'
-//     )
-
-//     const io = req.app.get('io')
-//     io.to(reportId).emit('receiveMessage', {
-//       ...logMessage.toObject(),
-//       senderInfo: senderDetails || {
-//         _id: 'system',
-//         name: 'System',
-//         image: 'https://img.icons8.com/ios-filled/50/activity-history.png',
-//       },
-//     })
-
-//     return res.status(200).json({
-//       success: true,
-//       message: 'Report status updated successfully',
-//       report: existingReport,
-//     })
-//   } catch (error) {
-//     return res.status(500).json({
-//       success: false,
-//       message: 'Server error',
-//       error: error.message,
-//     })
-//   }
-// }
 
 export const updateStatus = async (req, res) => {
   try {
@@ -210,16 +113,17 @@ export const updateStatus = async (req, res) => {
     await existingReport.save()
 
     const hackerId = existingReport.hackerId
+    const programId = existingReport.programId
     console.log('Hacker Id: ', hackerId)
 
-    const existingHacker = await Hacker.findById(hackerId)
+    // const existingHacker = await Hacker.findById(hackerId)
 
-    if (!existingHacker) {
-      return res.status(404).json({
-        success: false,
-        message: 'Hacker not found',
-      })
-    }
+    // if (!existingHacker) {
+    //   return res.status(404).json({
+    //     success: false,
+    //     message: 'Hacker not found',
+    //   })
+    // }
 
     // Define point changes for each status
     const statusPointsMap = {
@@ -231,8 +135,10 @@ export const updateStatus = async (req, res) => {
 
     // Check if status is valid and apply points
     if (status in statusPointsMap) {
-      existingHacker.totalPoints += statusPointsMap[status]
-      await existingHacker.save()
+      updateGlobalLeaderBoard(hackerId,statusPointsMap[status])
+      updateProgramLeaderBoard(programId, hackerId,statusPointsMap[status])
+      // existingHacker.totalPoints += statusPointsMap[status]
+      // await existingHacker.save()
     }
 
     // Generate custom log text
@@ -283,8 +189,8 @@ export const updateStatus = async (req, res) => {
     return res.status(200).json({
       success: true,
       message: 'Report status updated successfully',
-      report: existingReport,
-      hacker: existingHacker,
+      // report: existingReport,
+      // hacker: existingHacker,
     })
   } catch (error) {
     return res.status(500).json({
@@ -397,7 +303,7 @@ export const updateSeverity = async (req, res) => {
 
 export const getAllReports = async (req, res) => {
   try {
-    const allReports = await Report.find()
+    const allReports = await Report.find({ status: { $ne: 'draft' } })
       .populate('hackerId')
       .populate('programId')
     console.log(allReports)
