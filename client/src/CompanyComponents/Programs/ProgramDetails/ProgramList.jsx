@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import axios from 'axios'
 import ProgramCard from './ProgramCard'
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router'
 
 const ProgramList = () => {
   const [search, setSearch] = useState('')
