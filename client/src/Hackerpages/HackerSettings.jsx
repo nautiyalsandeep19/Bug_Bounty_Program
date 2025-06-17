@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { updateHackerProfile } from '../Services/hackerApi.js'
 import Button from '../Common/Button/CTAButton'
+import Loader from '../Common/Loader.jsx'
 
 const HackerSettings = () => {
   const dispatch = useDispatch()
@@ -66,11 +67,7 @@ const HackerSettings = () => {
   }
 
   if (!user) {
-    return (
-      <div className="text-white text-center p-4">
-        Loading user information...
-      </div>
-    )
+    return <Loader />
   }
 
   return (
