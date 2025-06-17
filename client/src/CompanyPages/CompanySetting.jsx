@@ -17,7 +17,6 @@ const CompanySetting = () => {
     image: '',
   })
 
-  const [profilePicture, setProfilePicture] = useState('')
   const profilePictureInputRef = useRef(null)
 
   useEffect(() => {
@@ -29,7 +28,6 @@ const CompanySetting = () => {
         position: user?.contactPerson?.position || '',
         image: user?.image || '',
       })
-      setProfilePicture(user?.image || '')
     }
   }, [user])
 
@@ -39,12 +37,15 @@ const CompanySetting = () => {
   }
 
   const handlePictureUpload = async (e) => {
-    const file = e.target.files[0]
+    const file = e.target.files?.[0]
+    if (!file) return
 
-    const imageUrl = await uploadFiles(file)
-    console.log('Image URL : ', imageUrl)
-    setProfilePicture(imageUrl)
-    setFormData((prev) => ({ ...prev, image: imageUrl }))
+    try {
+      const imageUrl = await uploadFiles(file)
+      setFormData((prev) => ({ ...prev, image: imageUrl }))
+    } catch (err) {
+      console.error('Image upload failed', err)
+    }
   }
 
   const handleSubmit = (e) => {
@@ -58,12 +59,12 @@ const CompanySetting = () => {
   if (!user) return <Loader />
 
   return (
-    <div className="h-full  p-8 flex items-center justify-center">
+    <div className="h-full p-8 flex items-center justify-center">
       <form
         onSubmit={handleSubmit}
         className="max-w-5xl w-full p-8 rounded-xl shadow-md grid grid-cols-1 md:grid-cols-3 gap-8 max-h-[90vh]"
       >
-        {/* Form Fields */}
+        {/* Left Side Form */}
         <div className="md:col-span-2 space-y-4">
           <h2 className="text-2xl font-bold">Company Profile</h2>
 
@@ -107,10 +108,11 @@ const CompanySetting = () => {
               name="representative"
               value={formData.representative}
               onChange={handleChange}
-              className="w-full bg-[#1a1a1a] border border-[#333] p-2 rounded"
               required
+              className="w-full bg-[#1a1a1a] border border-[#333] p-2 rounded"
             />
           </div>
+
           <div>
             <label className="block text-sm mb-1 font-bold text-white">
               * Position
@@ -119,8 +121,8 @@ const CompanySetting = () => {
               name="position"
               value={formData.position}
               onChange={handleChange}
-              className="w-full bg-[#1a1a1a] border border-[#333] p-2 rounded"
               required
+              className="w-full bg-[#1a1a1a] border border-[#333] p-2 rounded"
             />
           </div>
 
@@ -132,8 +134,8 @@ const CompanySetting = () => {
               name="phone"
               value={formData.phone}
               onChange={handleChange}
-              className="w-full bg-[#1a1a1a] border border-[#333] p-2 rounded"
               required
+              className="w-full bg-[#1a1a1a] border border-[#333] p-2 rounded"
             />
           </div>
 
@@ -146,8 +148,8 @@ const CompanySetting = () => {
               value={formData.domain}
               onChange={handleChange}
               placeholder="Enter website url"
-              className="w-full bg-[#1a1a1a] border border-[#333] p-2 rounded"
               required
+              className="w-full bg-[#1a1a1a] border border-[#333] p-2 rounded"
             />
           </div>
 
@@ -161,22 +163,24 @@ const CompanySetting = () => {
             />
           </div>
 
-          <CTAButton text="Submit" onClick={handleSubmit} />
+          <CTAButton text="Submit" type="submit" />
         </div>
 
-        {/* Profile Picture Upload */}
-        <div className="flex flex-col items-center">
-          <label className="text-sm mb-2">Profile Picture</label>
-          <div className="w-40 h-40 bg-[#ddd] rounded-lg overflow-hidden mb-4">
-            {profilePicture ? (
+        {/* Right Side: Profile Picture */}
+        <div className="flex flex-col items-center justify-start">
+          <label className="text-sm mb-2 font-medium text-white">
+            Profile Picture
+          </label>
+          <div className="w-40 h-40 bg-[#ddd] overflow-hidden mb-4 rounded-full">
+            {formData.image ? (
               <img
-                src={profilePicture}
+                src={formData.image}
                 alt="Profile"
                 className="w-full h-full object-cover"
               />
             ) : (
-              <div className="w-full h-full bg-gray-900 text-4xl flex justify-center items-center">
-                S
+              <div className="w-full h-full bg-gray-900 text-4xl text-white flex justify-center items-center rounded-full">
+                {user?.name?.charAt(0)?.toUpperCase() || 'S'}
               </div>
             )}
           </div>
