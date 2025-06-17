@@ -13,8 +13,14 @@ const programSlice = createSlice({
     setProgramData: (state, action) => {
       state.programData = action.payload
     },
+    updateProgramField: (state, action) => {
+      const { field, value } = action.payload;
+      if (state.programData) {
+        state.programData[field] = value;
+      }
+    },
   },
 })
 
-export const { setProgramData } = programSlice.actions
+export const { setProgramData, updateProgramField } = programSlice.actions
 export default programSlice.reducer

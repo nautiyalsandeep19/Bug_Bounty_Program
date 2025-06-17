@@ -2,7 +2,10 @@ import React from 'react'
 import CTAButton from '../Common/Button/CTAButton'
 import { useSelector } from 'react-redux'
 
-const ProgramBox = ({ className = '', program, hideSubmit = false }) => {
+const ProgramBox = ({ className = '', hideSubmit = false }) => {
+  
+  const program = useSelector((state) => state.program.programData);
+  
   const userType = useSelector((state) => state.auth.userType)
   const token = useSelector((state) => state.auth.token)
   console.log('data of program', program)

@@ -2,14 +2,23 @@ import React, { useMemo } from "react";
 import { useSelector } from "react-redux";
 
 const HallOfFame = () => {
-  const leaderBoard = useSelector(
-    (state) => state.program.programData?.leaderboard || []
-  );
+  const programData = useSelector((state) => state.program.programData);
 
-  // Sort leaderboard by score descending
+  const leaderBoard = programData?.leaderboard || [];
+  const leaderboardView = programData?.leaderboardVisibility;
+
   const sortedLeaderboard = useMemo(() => {
     return [...leaderBoard].sort((a, b) => b.score - a.score);
   }, [leaderBoard]);
+
+  if (!leaderboardView) {
+    return (
+      <div className="text-center text-black py-20">
+        <h2 className="text-2xl font-semibold">Leaderboard Closed</h2>
+        <p className="text-gray-400 mt-2">This company has disabled leaderboard visibility.</p>
+      </div>
+    );
+  }
 
   if (!sortedLeaderboard.length) {
     return (
