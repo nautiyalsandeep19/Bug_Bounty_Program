@@ -80,7 +80,7 @@ const ChatRoom = () => {
         senderId: user._id,
         senderModel: userType.charAt(0).toUpperCase() + userType.slice(1),
         message: input,
-        messageType: 'text',
+        messageType: 'text', 
       })
       setInput('')
       editorRef.current?.editor?.commands.clearContent(true)
