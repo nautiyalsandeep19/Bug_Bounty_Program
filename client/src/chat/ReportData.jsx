@@ -18,7 +18,7 @@ const ReportData = ({ reportId }) => {
     'triage',
     'completed',
     'rejected',
-    'draft',
+    'spam',
   ]
 
   const severityOptions = [
@@ -141,7 +141,7 @@ const ReportData = ({ reportId }) => {
     triage: 'bg-yellow-100 text-yellow-800',
     completed: 'bg-green-100 text-green-800',
     rejected: 'bg-red-100 text-red-800',
-    draft: 'bg-gray-100 text-gray-800',
+    spam: 'bg-gray-100 text-gray-800',
   }
 
   const statusDisplayNames = {
@@ -150,7 +150,7 @@ const ReportData = ({ reportId }) => {
     triage: 'Triage',
     completed: 'Completed',
     rejected: 'Rejected',
-    draft: 'Draft',
+    spam: 'Spam',
   }
 
   return (

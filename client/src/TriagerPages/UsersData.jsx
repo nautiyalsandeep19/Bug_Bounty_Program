@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import { toast } from 'react-hot-toast'
+import Loader from '../Common/Loader'
 
 const UsersPage = () => {
   const [activeTab, setActiveTab] = useState('hackers')
@@ -45,6 +46,9 @@ const UsersPage = () => {
     fetchUsers(activeTab)
   }, [activeTab])
 
+  if (loading) {
+    return <Loader />
+  }
   return (
     <div className="p-6  min-h-screen ">
       <h2 className="text-3xl font-semibold mb-4">Users</h2>

@@ -12,6 +12,7 @@ const FeedDashboard = () => {
   const navigate = useNavigate()
 
   const token = useSelector((state) => state.auth.token)
+  console.log('ss', logs)
 
   useEffect(() => {
     const fetchHacker = async () => {
@@ -103,7 +104,7 @@ const FeedDashboard = () => {
                   <Button
                     className="!w-fit"
                     text="view report"
-                    onClick={() => navigate(`/chat/${log.reportId}`)}
+                    onClick={() => navigate(`/chat/${log.reportId._id}`)}
                   />
                 </li>
               ))}

@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 import { useParams, useNavigate } from 'react-router'
 import CTAButton from '../Common/Button/CTAButton'
 import { useSelector } from 'react-redux'
+import Loader from '../Common/Loader'
 
 const HackerAllReports = () => {
   const { reportId } = useParams()
@@ -49,7 +50,7 @@ const HackerAllReports = () => {
   }, [reportId])
 
   if (loading) {
-    return <div className="text-center text-white">Loading...</div>
+    return <Loader />
   }
 
   if (error) {

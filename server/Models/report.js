@@ -71,6 +71,7 @@ const reportScheema = new mongoose.Schema(
         'draft',
         'triage', // triaged
         'submitted',
+        'spam',
       ],
 
       default: 'draft',
