@@ -33,6 +33,7 @@ export const endPoints = {
 
   //Programs
   GET_PROGRAMBY_ID: BASE_URL + '/api/programs/programDetail',
+  TOGGLE_LEADERBOARD_VISIBILITY: BASE_URL + '/api/programs/visibilityChange',
 
   // messages/Logs
   GET_LOGS: BASE_URL + '/api/messages/logs'

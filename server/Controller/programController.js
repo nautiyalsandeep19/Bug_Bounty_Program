@@ -233,3 +233,27 @@ export const updateProgramVisibility = async (req, res) => {
     })
   }
 }
+
+
+// controller/programController.js
+export const toggleLeaderboardVisibility = async (req, res) => {
+  const { programId } = req.body;
+
+  try {
+    const program = await Program.findById(programId);
+    if (!program) {
+      return res.status(404).json({ success: false, message: "Program not found" });
+    }
+
+    program.leaderboardVisibility = !program.leaderboardVisibility;
+    await program.save();
+
+    return res.status(200).json({
+      success: true,
+      message: "Leaderboard visibility toggled",
+      updatedProgram: program,
+    });
+  } catch (error) {
+    return res.status(500).json({ success: false, message: "Server error", error });
+  }
+};

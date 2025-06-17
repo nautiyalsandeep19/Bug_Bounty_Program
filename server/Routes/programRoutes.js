@@ -9,6 +9,7 @@ import {
   fetchAllPrograms,
   fetchPrivateProgramsForHacker,
   updateProgramVisibility,
+  toggleLeaderboardVisibility,
 } from '../Controller/programController.js'
 import { authMid } from '../Middleware/authMid.js'
 
@@ -18,6 +19,7 @@ router.post('/', createProgram)
 router.put('/update/:id', upload.none(), updateProgramById)
 router.get('/companyPrograms/:companyId', getProgramsByCompany)
 router.post('/programDetail', getProgramByIds)
+router.post('/visibilityChange', toggleLeaderboardVisibility)
 router.patch('/:id/visibility', updateProgramVisibility)
 
 // for hackers
