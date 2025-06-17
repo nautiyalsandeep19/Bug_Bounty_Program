@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import CTAButton from '../Common/Button/CTAButton'
 import { updateCompanyProfile } from '../Services/companyApi'
 import { useDispatch, useSelector } from 'react-redux'
