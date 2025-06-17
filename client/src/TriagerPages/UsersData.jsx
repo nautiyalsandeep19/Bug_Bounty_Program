@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
-import { toast } from 'react-toastify'
+import { toast } from 'react-hot-toast'
+import Loader from '../Common/Loader'
 
 const UsersPage = () => {
   const [activeTab, setActiveTab] = useState('hackers')
@@ -8,7 +9,8 @@ const UsersPage = () => {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
 
-  const BASE_URL = import.meta.env.VITE_BACKEND_HOST_URL || 'http://localhost:8000'
+  const BASE_URL =
+    import.meta.env.VITE_BACKEND_HOST_URL || 'http://localhost:8000'
 
   const fetchUsers = async (type) => {
     setLoading(true)
@@ -23,6 +25,7 @@ const UsersPage = () => {
       }
 
       const response = await axios.get(url, { withCredentials: true })
+      console.log('usersdatra', response)
 
       if (response.data?.hackers || response.data?.companies) {
         setUsers(response.data.hackers || response.data.companies || [])
@@ -43,8 +46,11 @@ const UsersPage = () => {
     fetchUsers(activeTab)
   }, [activeTab])
 
+  if (loading) {
+    return <Loader />
+  }
   return (
-    <div className="p-6 bg-black min-h-screen text-white">
+    <div className="p-6  min-h-screen ">
       <h2 className="text-3xl font-semibold mb-4">Users</h2>
 
       {/* Tabs */}
@@ -79,21 +85,34 @@ const UsersPage = () => {
       ) : users.length === 0 ? (
         <div className="text-center text-gray-400">No {activeTab} found.</div>
       ) : (
-        <ul className="space-y-4">
+        <ul className="space-y-4 ">
           {users.map((user) => (
-            <li key={user._id || user.id} className="bg-gray-800 p-4 rounded-lg">
+            <li
+              key={user._id || user.id}
+              className="bg-gray-800 p-4 rounded-lg hover:bg-yellow-500"
+            >
               <div className="flex items-center gap-4">
                 <img
-                  src={user.image || 'https://img.dicebear.com/6.x/initials/svg?seed=' + (user.name || 'User')}
+                  src={
+                    user.image ||
+                    'https://img.dicebear.com/6.x/initials/svg?seed=' +
+                      (user.name || 'User')
+                  }
                   alt={user.name || 'User Avatar'}
                   className="w-12 h-12 rounded-full object-cover"
                 />
                 <div>
                   <p className="font-semibold">{user.name || 'No Name'}</p>
-                  <p className="text-sm text-gray-400">{user.email || 'No Email'}</p>
+                  <p className="text-sm text-gray-400">
+                    {user.email || 'No Email'}
+                  </p>
                   {activeTab === 'companies' && user.website && (
                     <p className="text-xs text-blue-400 underline">
-                      <a href={user.website} target="_blank" rel="noopener noreferrer">
+                      <a
+                        href={user.website}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
                         {user.website}
                       </a>
                     </p>

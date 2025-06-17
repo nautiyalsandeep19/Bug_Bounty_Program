@@ -4,17 +4,24 @@ import Button from '../Common/Button/CTAButton'
 import { FaBug, FaBullhorn, FaSyncAlt, FaUserPlus } from 'react-icons/fa'
 import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router'
+import { fetchLogsForHacker } from '../Services/messageApi'
 
 const FeedDashboard = () => {
   const [hacker, setHacker] = useState(null)
+  const [logs, setLogs] = useState([])
   const navigate = useNavigate()
 
   const token = useSelector((state) => state.auth.token)
+  console.log('ss', logs)
 
   useEffect(() => {
     const fetchHacker = async () => {
       const data = await getHackerDetails()
-      if (data) setHacker(data)
+      if (data) {
+        setHacker(data)
+        const logs = await fetchLogsForHacker(data._id)
+        setLogs(logs)
+      }
     }
     fetchHacker()
   }, [])
@@ -35,7 +42,7 @@ const FeedDashboard = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-zinc-950 via-black to-zinc-900 text-white px-4 py-10 grid grid-cols-1 md:grid-cols-3 gap-6 ">
+    <div className="min-h-screen bg-gradient-to-b  px-4 py-10 grid grid-cols-1 md:grid-cols-3 gap-6 ">
       {/* Main Dashboard Content */}
       <div className="md:col-span-2 space-y-8">
         <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight">
@@ -70,27 +77,39 @@ const FeedDashboard = () => {
           )}
         </div>
 
-        {/* Feed Card */}
-        <div className="bg-zinc-900 p-6 rounded-2xl border border-zinc-700 shadow-lg hover:shadow-2xl transition-all duration-300">
-          <div className="flex justify-between items-center mb-2 flex-wrap gap-y-2">
-            <h2 className="text-lg sm:text-xl font-semibold">
-              📋 Report Status
-            </h2>
-            <span className="text-sm text-zinc-400">
-              {new Date().toLocaleString()}
-            </span>
-          </div>
-          <p className="text-sm leading-relaxed">
-            <strong className="text-white">The report is </strong>
-            marked as{' '}
-            <span className="text-red-400 font-semibold">invalid</span> on
-            <span className="text-blue-500 font-semibold"> #43702361 abg</span>.
-          </p>
+        {/* Logs Section */}
+        <div className=" p-6 rounded-2xl border border-zinc-700 shadow-md space-y-4">
+          <h2 className="text-lg font-semibold text-yellow-400">
+            📜 Your System Logs
+          </h2>
+          {logs.length === 0 ? (
+            <p className="text-sm text-zinc-500">No logs yet.</p>
+          ) : (
+            <ul className="space-y-3 max-h-[700px] overflow-y-auto pr-2">
+              {logs.map((log, idx) => (
+                <li
+                  key={idx}
+                  className="flex flex-col gap-5 bg-neutral-800 px-4 py-2 rounded-lg text-sm text-yellow-300 border-l-4 border-yellow-500 shadow"
+                >
+                  <div className="flex justify-between items-center">
+                    <span
+                      className="ProseMirror"
+                      dangerouslySetInnerHTML={{ __html: log.message }}
+                    ></span>
+                    <span className="text-xs text-zinc-500">
+                      {new Date(log.createdAt).toLocaleString()}
+                    </span>
+                  </div>
 
-          <Button
-            text="View Report"
-            className="!mt-4 !px-4 !py-2 !rounded-lg !bg-indigo-600 hover:!bg-indigo-500 !text-white transition"
-          />
+                  <Button
+                    className="!w-fit"
+                    text="view report"
+                    onClick={() => navigate(`/chat/${log.reportId._id}`)}
+                  />
+                </li>
+              ))}
+            </ul>
+          )}
         </div>
       </div>
 

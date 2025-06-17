@@ -80,6 +80,10 @@ const ProgramsPage = () => {
       {/* Cards Grid */}
       {loading ? (
         <Loader />
+      ) : programs.length === 0 ? (
+        <div className="flex mx-auto justify-center items-center">
+          No Program Assigned To You
+        </div>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
           {programs.map((program) => (

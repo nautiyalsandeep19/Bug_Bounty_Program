@@ -7,8 +7,6 @@ import '../Common/Editor/TiptapEditor.css'
 const ReportData = ({ reportId }) => {
   const [report, setReport] = useState(null)
   const [isUpdating, setIsUpdating] = useState(false)
-  const { id } = reportId
-  console.log('repDATA PAGFE', id)
 
   const BASE_URL =
     import.meta.env.VITE_BACKEND_HOST_URL || 'http://localhost:8000'
@@ -20,7 +18,7 @@ const ReportData = ({ reportId }) => {
     'triage',
     'completed',
     'rejected',
-    'draft',
+    'spam',
   ]
 
   const severityOptions = [
@@ -39,7 +37,7 @@ const ReportData = ({ reportId }) => {
         return
       }
 
-      const res = await axios.get(`${BASE_URL}/api/reports/${id}`, {
+      const res = await axios.get(`${BASE_URL}/api/reports/${reportId}`, {
         headers: { Authorization: `Bearer ${token}` },
         withCredentials: true,
       })
@@ -70,7 +68,7 @@ const ReportData = ({ reportId }) => {
     try {
       const token = localStorage.getItem('token')
       const response = await axios.put(
-        `${BASE_URL}/api/reports/updateStatus/${id}`,
+        `${BASE_URL}/api/reports/updateStatus/${reportId}`,
         { status: newStatus },
         {
           headers: { Authorization: `Bearer ${token}` },
@@ -143,7 +141,7 @@ const ReportData = ({ reportId }) => {
     triage: 'bg-yellow-100 text-yellow-800',
     completed: 'bg-green-100 text-green-800',
     rejected: 'bg-red-100 text-red-800',
-    draft: 'bg-gray-100 text-gray-800',
+    spam: 'bg-gray-100 text-gray-800',
   }
 
   const statusDisplayNames = {
@@ -152,12 +150,12 @@ const ReportData = ({ reportId }) => {
     triage: 'Triage',
     completed: 'Completed',
     rejected: 'Rejected',
-    draft: 'Draft',
+    spam: 'Spam',
   }
 
   return (
     <div className="min-h-screen bg-[#0e0e0e] py-8 px-4">
-      <div className="max-w-4xl m-auto bg-white rounded-xl shadow-md overflow-hidden">
+      <div className="max-w-4xl m-auto bg-white rounded-xl shadow-md overflow-hreportIdden">
         {/* Header */}
         <div className="p-6 bg-gradient-to-r from-gray-800 to-gray-500 text-white">
           <div className="flex justify-between items-start">
@@ -245,7 +243,7 @@ const ReportData = ({ reportId }) => {
 
         {/* Body */}
         <div className="p-6 space-y-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-black">
+          <div className="grreportId grreportId-cols-1 md:grreportId-cols-2 gap-4 text-black">
             <div>
               <h2 className="text-lg font-semibold text-gray-700 mb-2">
                 Vulnerability Details
@@ -318,7 +316,7 @@ const ReportData = ({ reportId }) => {
             />
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm text-gray-600">
+          <div className="grreportId grreportId-cols-1 md:grreportId-cols-2 gap-4 text-sm text-gray-600">
             <div>
               <p>
                 <span className="font-medium">Created:</span>{' '}

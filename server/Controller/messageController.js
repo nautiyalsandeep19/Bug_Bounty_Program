@@ -1,6 +1,7 @@
 import Message from '../Models/message.js'
 import Hacker from '../Models/hacker.js'
 import Company from '../Models/company.js'
+import Report from '../Models/Report.js'
 import Admin from '../Models/admin.js'
 
 export const getMessagesForReport = async (req, res) => {
@@ -42,3 +43,101 @@ export const getMessagesForReport = async (req, res) => {
       .json({ success: false, message: 'Failed to fetch messages' })
   }
 }
+
+export const getLogsForHacker = async (req, res) => {
+  try {
+    const { hackerId } = req.params
+    console.log('HackerID backend: ', hackerId)
+
+    if (!hackerId) {
+      return res.status(400).json({
+        success: false,
+        message: 'Hacker ID is required',
+      })
+    }
+
+    // Find all reports submitted by this hacker
+    const reports = await Report.find({ hackerId: hackerId }).select('_id')
+
+    const reportIds = reports.map((r) => r._id)
+
+    // Now fetch log messages for those reports (i.e. roomId == reportId)
+    const logs = await Message.find({
+      messageType: 'log',
+      reportId: { $in: reportIds },
+    })
+      .sort({ createdAt: -1 }) // latest logs first
+      .lean()
+      .populate({
+        path: 'reportId',
+        populate: {
+          path: 'programId', // this field should exist in the Report schema
+        },
+      })
+
+    return res.status(200).json({
+      success: true,
+      logs,
+    })
+  } catch (error) {
+    console.error('Error fetching logs for hacker:', error)
+    return res.status(500).json({
+      success: false,
+      message: 'Server error while fetching logs',
+    })
+  }
+}
+ 
+
+
+
+
+export const updateMessage = async (req, res) => {
+  try {
+    const { messageId, message } = req.body;
+
+    if (!messageId || !message) {
+      return res.status(400).json({
+        success: false,
+        message: 'Both messageId and updated message are required',
+      });
+    }
+
+    const existingMessage = await Message.findById(messageId);
+
+    if (!existingMessage) {
+      return res.status(404).json({
+        success: false,
+        message: 'Message not found',
+      });
+    }
+
+    // Check if the message is older than 10 minutes
+    const createdAt = new Date(existingMessage.createdAt);
+    const now = new Date();
+    const diffInMinutes = (now - createdAt) / (1000 * 60);
+
+    if (diffInMinutes > 10) {
+      return res.status(403).json({
+        success: false,
+        message: 'You can only edit messages within 10 minutes of sending.',
+      });
+    }
+
+    // Update message
+    existingMessage.message = message;
+    const updated = await existingMessage.save();
+
+    return res.status(200).json({
+      success: true,
+      message: 'Message updated successfully',
+      updatedMessage: updated,
+    });
+  } catch (error) {
+    console.error('Error updating message:', error);
+    return res.status(500).json({
+      success: false,
+      message: 'Internal Server Error',
+    });
+  }
+};

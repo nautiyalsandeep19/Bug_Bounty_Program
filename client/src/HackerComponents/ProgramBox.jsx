@@ -70,10 +70,7 @@ const ProgramBox = ({ className = '', program, hideSubmit = false }) => {
           </div>
         ) : (
           <div className="pt-4">
-            <CTAButton
-              text="View Report"
-              linkto={`/${userType}/reports/${program._id}`}
-            />
+            <CTAButton text="View Report" linkto={`/reports/${program._id}`} />
           </div>
         ))}
     </section>

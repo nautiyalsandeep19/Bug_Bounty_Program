@@ -14,7 +14,8 @@ const ChatRoom = () => {
   const [input, setInput] = useState('')
   const editorRef = useRef(null)
   const messagesEndRef = useRef(null)
-  const [report, setReport] = useState(null)
+  const [editingMessageId, setEditingMessageId] = useState(null)
+  const [activeBubbleId, setActiveBubbleId] = useState(null)
 
   const BASE_URL =
     import.meta.env.VITE_BACKEND_HOST_URL || 'http://localhost:8000'
@@ -25,7 +26,6 @@ const ChatRoom = () => {
         const res = await axios.get(`${BASE_URL}/api/messages/${reportId}`, {
           withCredentials: true,
         })
-
         if (res.data.success) {
           setMessages(res.data.messages)
         } else {
@@ -46,7 +46,7 @@ const ChatRoom = () => {
     const existingSocket = getSocket()
     if (!existingSocket && localStorage.getItem('user')) {
       const user = JSON.parse(localStorage.getItem('user'))
-      connectSocket(user._id)
+      connectSocket(user._reportId)
     }
 
     const socket = getSocket()
@@ -86,23 +86,56 @@ const ChatRoom = () => {
       editorRef.current?.editor?.commands.clearContent(true)
     }
   }
+
+  const handleSaveEdit = async (messageId) => {
+    if (!input.trim()) return
+
+    try {
+      const res = await axios.put(
+        `${BASE_URL}/api/messages/update`,
+        {
+          messageId,
+          message: input,
+        },
+        { withCredentials: true }
+      )
+
+      console.log(res)
+      if (res.data.success) {
+        setMessages((prev) =>
+          prev.map((msg) =>
+            msg._id === messageId ? { ...msg, message: input } : msg
+          )
+        )
+        toast.success('Message updated')
+      } else {
+        toast.error("message not updated")
+      }
+    } catch (err) {
+      console.error(err)
+      toast.error(err.response?.data?.message)
+    }
+
+    setEditingMessageId(null)
+    setInput('')
+    editorRef.current?.editor?.commands.clearContent(true)
+  }
+
   const user = JSON.parse(localStorage.getItem('user'))
   const currentUserId = user?._id
-  console.log('currect user: ', currentUserId)
 
   return (
     <div className="">
-      <ReportData />
-      <div className="ProseMirror space-y-4 px-4 max-w-[50%] py-2 rounded-lg border-2 border-[#042d5b] overflow-y-auto bg-neutral-800 max-h-[400px] m-auto min-h-20 ">
+      <ReportData reportId={reportId} />
+      <div className="ProseMirror space-y-4 px-4 max-w-[50%] py-2 rounded-lg border-2 border-[#042d5b] overflow-y-auto bg-neutral-800 max-h-[400px] m-auto min-h-20">
         {messages.map((msg, index) => {
           const isLog = msg.messageType === 'log'
           const isSender = msg.senderInfo?._id === currentUserId
-
           const senderName =
             msg.senderInfo?.name || msg.senderInfo?.username || 'Unknown'
           const avatar =
             msg.senderInfo?.image ||
-            'https://api.dicebear.com/9.x/initials/svg?seed=${senderName}'
+            `https://api.dicebear.com/9.x/initials/svg?seed=${senderName}`
 
           const time = msg.createdAt
             ? new Date(msg.createdAt).toLocaleTimeString([], {
@@ -116,7 +149,8 @@ const ChatRoom = () => {
               key={index}
               className={`chat text-white ${
                 isLog ? '' : isSender ? 'chat-end' : 'chat-start'
-              } `}
+              }`}
+              onClick={() => setActiveBubbleId(msg._id)}
             >
               {!isLog && (
                 <>
@@ -125,7 +159,6 @@ const ChatRoom = () => {
                       <img src={avatar} alt="avatar" />
                     </div>
                   </div>
-
                   <div className="chat-header">
                     {senderName}
                     <time className="text-xs text-white opacity-50 ml-2">
@@ -136,13 +169,27 @@ const ChatRoom = () => {
               )}
 
               <div
-                className={`chat-bubble shadow-2xl text-white ${
+                className={`chat-bubble relative shadow-2xl text-white ${
                   isLog
                     ? 'bg-gray-700 mx-auto text-yellow-300 italic'
                     : 'bg-neutral-700'
                 }`}
                 dangerouslySetInnerHTML={{ __html: msg.message }}
               />
+
+              {activeBubbleId === msg._id && isSender && !editingMessageId && (
+                <button
+                  className="text-xs mt-1 underline text-blue-400"
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    setEditingMessageId(msg._id)
+                    setInput(msg.message)
+                    editorRef.current?.editor?.commands.setContent(msg.message)
+                  }}
+                >
+                  Edit
+                </button>
+              )}
 
               {!isLog && (
                 <div className="chat-footer opacity-50">
@@ -155,12 +202,34 @@ const ChatRoom = () => {
         <div ref={messagesEndRef} />
       </div>
 
-      {/* Input + Editor */}
-      <div className="sticky bottom-0  z-10">
+      {/* Single Input Editor */}
+      <div className="sticky bottom-0 z-10 bg-black py-4">
         <div className="flex mx-auto">
-          <TiptapEditor onUpdate={(html) => setInput(html)} ref={editorRef} />
+          <TiptapEditor
+            ref={editorRef}
+            onUpdate={(html) => setInput(html)}
+          />
         </div>
-        <CTAButton onClick={sendMessage} text="Send" className="flex mx-auto" />
+
+        {editingMessageId ? (
+          <div className="flex gap-2 justify-center mt-2">
+            <CTAButton
+              text="Save"
+              onClick={() => handleSaveEdit(editingMessageId)}
+            />
+            <CTAButton
+              text="Cancel"
+              className="bg-red-600"
+              onClick={() => {
+                setEditingMessageId(null)
+                setInput('')
+                editorRef.current?.editor?.commands.clearContent(true)
+              }}
+            />
+          </div>
+        ) : (
+          <CTAButton onClick={sendMessage} text="Send" className="flex mx-auto mt-2" />
+        )}
       </div>
     </div>
   )

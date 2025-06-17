@@ -17,7 +17,7 @@ router.put('/updateSeverity/:reportId', authMid, updateSeverity)
 router.get('/allReports', authMid, getAllReports)
 router.get('/reportByHackerId', authMid, getReportsByHackerId)
 // router.post('/reportByProgramId', authMid, getReportsByProgramId)
+router.get('/:reportId', authMid, getReportById)
 
-router.get('/:id', authMid, getReportById)
 
 export default router
