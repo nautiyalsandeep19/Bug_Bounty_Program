@@ -1,65 +1,77 @@
 import { useState, useEffect } from 'react'
 import axios from 'axios'
 import ProgramCard from './ProgramCard'
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router'
 
 const ProgramList = () => {
   const [search, setSearch] = useState('')
   const [filter, setFilter] = useState('All')
   const [programs, setPrograms] = useState([])
+  const [draftPrograms, setDraftPrograms] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
+  const [activeTab, setActiveTab] = useState('published')
 
-  const storedUser = localStorage.getItem('user');
-  // const companyId = '6652f1a1f57c9c48e16b3400'
+  const storedUser = localStorage.getItem('user')
   const VITE_BACKEND_HOST_URL = import.meta.env.VITE_BACKEND_HOST_URL
-  const userObj = JSON.parse(storedUser);
-  const companyId = userObj._id ; 
+  const userObj = JSON.parse(storedUser)
+  const companyId = userObj._id
 
   useEffect(() => {
-  const fetchProgramsByCompany = async () => {
-    try {
-      setLoading(true);
-      const res = await fetch(
-        `${VITE_BACKEND_HOST_URL}/api/programs/companyPrograms/${companyId}`,
-        {
-          method: 'GET',
-          credentials: 'include',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${localStorage.getItem('token')}`
+    const fetchPrograms = async () => {
+      try {
+        setLoading(true)
+
+        // Fetch published programs
+        const publishedRes = await fetch(
+          `${VITE_BACKEND_HOST_URL}/api/programs/companyPrograms/${companyId}`,
+          {
+            method: 'GET',
+            credentials: 'include',
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: `Bearer ${localStorage.getItem('token')}`,
+            },
           }
-        }
-      );
+        )
 
-      // First check if response is OK before parsing JSON
-      if (!res.ok) {
-        const errorData = await res.text(); // Get response as text first
-        try {
-          // Try to parse as JSON if possible
-          const jsonError = JSON.parse(errorData);
-          throw new Error(jsonError.message || 'Failed to fetch programs');
-        } catch {
-          // If not JSON, use the raw text
-          throw new Error(errorData || 'Failed to fetch programs');
+        // Fetch draft programs
+        const draftRes = await fetch(
+          `${VITE_BACKEND_HOST_URL}/api/programs/companyPrograms/${companyId}?status=draft`,
+          {
+            method: 'GET',
+            credentials: 'include',
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: `Bearer ${localStorage.getItem('token')}`,
+            },
+          }
+        )
+
+        if (!publishedRes.ok || !draftRes.ok) {
+          throw new Error('Failed to fetch programs')
         }
+
+        const publishedData = await publishedRes.json()
+        const draftData = await draftRes.json()
+
+        setPrograms(publishedData.data)
+        setDraftPrograms(draftData.data)
+        setError(null)
+      } catch (err) {
+        console.error('Fetch error:', err)
+        setError(err.message)
+      } finally {
+        setLoading(false)
       }
-
-      const data = await res.json();
-      setPrograms(data.data);
-      setError(null);
-    } catch (err) {
-      console.error('Fetch error:', err);
-      setError(err.message);
-    } finally {
-      setLoading(false);
     }
-  };
 
-  fetchProgramsByCompany();
-}, [companyId]); 
+    fetchPrograms()
+  }, [companyId, VITE_BACKEND_HOST_URL])
 
-  const filtered = programs.filter((program) => {
+  const currentPrograms = activeTab === 'published' ? programs : draftPrograms
+
+  const filtered = currentPrograms.filter((program) => {
     const matchesSearch = program.title
       ?.toLowerCase()
       .includes(search.toLowerCase())
@@ -121,16 +133,44 @@ const ProgramList = () => {
         </select>
       </div>
 
+      {/* Tab Navigation */}
+      <div className="flex border-b border-gray-200 mb-6">
+        <button
+          className={`py-2 px-4 font-medium ${
+            activeTab === 'published'
+              ? 'text-blue-600 border-b-2 border-blue-600'
+              : 'text-gray-500'
+          }`}
+          onClick={() => setActiveTab('published')}
+        >
+          Published Programs
+        </button>
+        <button
+          className={`py-2 px-4 font-medium ${
+            activeTab === 'draft'
+              ? 'text-blue-600 border-b-2 border-blue-600'
+              : 'text-gray-500'
+          }`}
+          onClick={() => setActiveTab('draft')}
+        >
+          Draft Programs
+        </button>
+      </div>
+
       {filtered.length === 0 ? (
         <div className="text-center py-8 text-gray-500">
           {search || filter !== 'All'
             ? 'No programs match your search criteria'
-            : 'No programs available'}
+            : `No ${activeTab} programs available`}
         </div>
       ) : (
         <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-6">
           {filtered.map((program) => (
-            <ProgramCard key={program._id} program={program} />
+            <ProgramCard
+              key={program._id}
+              program={program}
+              isDraft={activeTab === 'draft'}
+            />
           ))}
         </div>
       )}

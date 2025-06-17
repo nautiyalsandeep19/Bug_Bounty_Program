@@ -4,38 +4,20 @@ import mongoose from 'mongoose'
 
 export const createProgram = async (req, res) => {
   try {
-    const { type, title, company } = req.body
+    const { type, title, company, visibility } = req.body
 
-    if (!type || !title || !company) {
-      return res
-        .status(400)
-        .json({ message: 'Type, title and company are required' })
-    }
-
-    // Validate company ID format
-    if (!mongoose.Types.ObjectId.isValid(company)) {
-      return res.status(400).json({ message: 'Invalid company ID format' })
-    }
-
-    const newProgram = new Program({
+    const program = new Program({
       type,
-      title,
+      title: title || 'New Program',
       company,
-      description: '', // Add default description
+      visibility,
+      status: 'draft', // Always create as draft initially
     })
 
-    await newProgram.save()
-
-    return res.status(201).json({
-      message: 'Program created',
-      data: newProgram,
-    })
-  } catch (err) {
-    console.error('Create Program Error:', err)
-    res.status(500).json({
-      message: 'Server error',
-      error: err.message,
-    })
+    await program.save()
+    res.status(201).json({ data: program })
+  } catch (error) {
+    res.status(400).json({ message: error.message })
   }
 }
 
@@ -68,6 +50,7 @@ export const updateProgramById = async (req, res) => {
         high: 0,
       },
       visibility: req.body.visibility || 'public',
+      status: req.body.status || 'draft', // Add status field
     }
 
     const programId = req.params.id
@@ -92,22 +75,54 @@ export const updateProgramById = async (req, res) => {
   }
 }
 
+// export const getProgramsByCompany = async (req, res) => {
+//   try {
+//     const { companyId } = req.params
+
+//     if (!companyId) {
+//       return res.status(400).json({ message: 'Company ID is required' })
+//     }
+
+//     const programs = await Program.find({ company: companyId })
+//       .populate('company')
+//       .populate('invitedHackers')
+//     // .populate("scope");
+
+//     res.status(200).json({
+//       message: 'Programs fetched successfully',
+//       data: programs, // Note: sending direct array, not wrapped in data property
+//     })
+//   } catch (err) {
+//     console.error('Error fetching programs:', err)
+//     res.status(500).json({ message: 'Server error' })
+//   }
+// }
 export const getProgramsByCompany = async (req, res) => {
   try {
     const { companyId } = req.params
+    const { status } = req.query // Get status from query params
 
     if (!companyId) {
       return res.status(400).json({ message: 'Company ID is required' })
     }
 
-    const programs = await Program.find({ company: companyId })
+    const query = { company: companyId }
+
+    // If status is provided, filter by status
+    if (status) {
+      query.status = status
+    } else {
+      // Default to only showing published programs if no status specified
+      query.status = 'published'
+    }
+
+    const programs = await Program.find(query)
       .populate('company')
       .populate('invitedHackers')
-    // .populate("scope");
 
     res.status(200).json({
       message: 'Programs fetched successfully',
-      data: programs, // Note: sending direct array, not wrapped in data property
+      data: programs,
     })
   } catch (err) {
     console.error('Error fetching programs:', err)
@@ -120,13 +135,13 @@ export const getProgramByIds = async (req, res) => {
     const { programId } = req.body
     console.log('ID dd', programId)
 
-   const programData = await Program.findById(programId)
-  .populate('assets')
-  .populate('company')
-  .populate({
-    path: 'leaderboard.hacker',
-    select: 'username name image' // Only get these fields
-  });
+    const programData = await Program.findById(programId)
+      .populate('assets')
+      .populate('company')
+      .populate({
+        path: 'leaderboard.hacker',
+        select: 'username name image', // Only get these fields
+      })
 
     if (!programData) {
       return res.status(404).json({ message: 'Program not found' })
@@ -179,9 +194,31 @@ export const fetchPrivateProgramsForHacker = async (req, res) => {
   }
 }
 
+// export const fetchAllPrograms = async (req, res) => {
+//   try {
+//     const publicPrograms = await Program.find({ visibility: 'public' })
+//       .sort({ createdAt: -1 })
+//       .populate('company')
+
+//     res.status(200).json({
+//       success: true,
+//       count: publicPrograms.length,
+//       programs: publicPrograms,
+//     })
+//   } catch (error) {
+//     console.error('Error fetching public programs:', error)
+//     res.status(500).json({
+//       success: false,
+//       message: 'Server error while fetching programs',
+//     })
+//   }
+// }
 export const fetchAllPrograms = async (req, res) => {
   try {
-    const publicPrograms = await Program.find({ visibility: 'public' })
+    const publicPrograms = await Program.find({
+      visibility: 'public',
+      status: 'published', // Only show published programs
+    })
       .sort({ createdAt: -1 })
       .populate('company')
 
@@ -257,3 +294,29 @@ export const toggleLeaderboardVisibility = async (req, res) => {
     return res.status(500).json({ success: false, message: "Server error", error });
   }
 };
+export const publishProgram = async (req, res) => {
+  try {
+    const programId = req.params.id
+
+    const updatedProgram = await Program.findByIdAndUpdate(
+      programId,
+      { status: 'published' },
+      { new: true }
+    )
+
+    if (!updatedProgram) {
+      return res.status(404).json({ message: 'Program not found' })
+    }
+
+    res.status(200).json({
+      message: 'Program published successfully',
+      data: updatedProgram,
+    })
+  } catch (error) {
+    console.error('Publish program error:', error)
+    res.status(500).json({
+      message: 'Failed to publish program',
+      error: error.message,
+    })
+  }
+}

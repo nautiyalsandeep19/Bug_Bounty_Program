@@ -3,6 +3,7 @@ import CTAButton from '../Common/Button/CTAButton'
 import { updateCompanyProfile } from '../Services/companyApi'
 import { useDispatch, useSelector } from 'react-redux'
 import Loader from '../Common/Loader'
+import { uploadFiles } from '../Services/uploaderApi'
 
 const CompanySetting = () => {
   const dispatch = useDispatch()
@@ -37,16 +38,13 @@ const CompanySetting = () => {
     setFormData((prev) => ({ ...prev, [name]: value }))
   }
 
-  const handlePictureUpload = (e) => {
+  const handlePictureUpload = async (e) => {
     const file = e.target.files[0]
-    if (file) {
-      const reader = new FileReader()
-      reader.onloadend = () => {
-        setProfilePicture(reader.result)
-        setFormData((prev) => ({ ...prev, image: reader.result }))
-      }
-      reader.readAsDataURL(file)
-    }
+
+    const imageUrl = await uploadFiles(file)
+    console.log('Image URL : ', imageUrl)
+    setProfilePicture(imageUrl)
+    setFormData((prev) => ({ ...prev, image: imageUrl }))
   }
 
   const handleSubmit = (e) => {
