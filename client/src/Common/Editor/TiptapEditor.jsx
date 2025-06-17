@@ -7,8 +7,18 @@ import ListItem from '@tiptap/extension-list-item'
 import Image from '@tiptap/extension-image'
 import './TiptapEditor.css'
 import {
-  Bold, Italic, Strikethrough, List, ListOrdered, Quote,
-  Minus, Redo2, Undo2, Code2, Upload, ImageDown
+  Bold,
+  Italic,
+  Strikethrough,
+  List,
+  ListOrdered,
+  Quote,
+  Minus,
+  Redo2,
+  Undo2,
+  Code2,
+  Upload,
+  ImageDown,
 } from 'lucide-react'
 import { uploadFiles } from '../../Services/uploaderApi'
 import Video from './Video'
@@ -38,9 +48,9 @@ const MenuBar = ({ editor }) => {
     }
   }, [showHeadings])
 
-  const headingLabel = [1, 2, 3, 4, 5, 6].find((level) =>
-    editor.isActive('heading', { level })
-  ) || (editor.isActive('paragraph') ? 'Para' : 'Heading')
+  const headingLabel =
+    [1, 2, 3, 4, 5, 6].find((level) => editor.isActive('heading', { level })) ||
+    (editor.isActive('paragraph') ? 'Para' : 'Heading')
 
   const formatButton = (icon, action, isActive, disabled = false) => (
     <button
@@ -49,7 +59,11 @@ const MenuBar = ({ editor }) => {
       type="button"
       className={`p-2 rounded border border-gray-300 flex items-center justify-center
         hover:bg-white/20 hover:text-white transition
-        ${isActive ? 'bg-white/20 text-white font-semibold' : 'bg-transparent text-white'}`}
+        ${
+          isActive
+            ? 'bg-white/20 text-white font-semibold'
+            : 'bg-transparent text-white'
+        }`}
     >
       {icon}
     </button>
@@ -73,41 +87,40 @@ const MenuBar = ({ editor }) => {
   }
 
   const uploadDoc = async (file) => {
-  const fileUrl = await uploadFiles(file)
+    const fileUrl = await uploadFiles(file)
 
-  if (fileUrl) {
-    editor
-  .chain()
-  .focus()
-  .insertContent({
-    type: 'externalFile',
-    attrs: {
-      href: fileUrl,
-      filename: file.name,
-    },
-  })
-  .run()
+    if (fileUrl) {
+      editor
+        .chain()
+        .focus()
+        .insertContent({
+          type: 'externalFile',
+          attrs: {
+            href: fileUrl,
+            filename: file.name,
+          },
+        })
+        .run()
+    }
   }
-}
 
-
-const uploadVideo = async (file) => {
-  const videoUrl = await uploadFiles(file)
-  if (videoUrl) {
-    editor
-      .chain()
-      .focus()
-      .insertContent({
-        type: 'video',
-        attrs: {
-          src: videoUrl,
-          controls: true,
-          class: 'w-full max-h-64',
-        },
-      })
-      .run()
+  const uploadVideo = async (file) => {
+    const videoUrl = await uploadFiles(file)
+    if (videoUrl) {
+      editor
+        .chain()
+        .focus()
+        .insertContent({
+          type: 'video',
+          attrs: {
+            src: videoUrl,
+            controls: true,
+            class: 'w-full max-h-64',
+          },
+        })
+        .run()
+    }
   }
-}
 
   const handleFileChange = async (e) => {
     const file = e.target.files?.[0]
@@ -124,14 +137,30 @@ const uploadVideo = async (file) => {
 
   return (
     <div className="flex flex-wrap gap-2 p-2 border rounded-md border-gray-300 bg-black w-full mb-4">
-      {formatButton(<Bold size={18} />, () => editor.chain().focus().toggleBold().run(), editor.isActive('bold'))}
-      {formatButton(<Italic size={18} />, () => editor.chain().focus().toggleItalic().run(), editor.isActive('italic'))}
-      {formatButton(<Strikethrough size={18} />, () => editor.chain().focus().toggleStrike().run(), editor.isActive('strike'))}
+      {formatButton(
+        <Bold size={18} />,
+        () => editor.chain().focus().toggleBold().run(),
+        editor.isActive('bold')
+      )}
+      {formatButton(
+        <Italic size={18} />,
+        () => editor.chain().focus().toggleItalic().run(),
+        editor.isActive('italic')
+      )}
+      {formatButton(
+        <Strikethrough size={18} />,
+        () => editor.chain().focus().toggleStrike().run(),
+        editor.isActive('strike')
+      )}
       <div className="relative" ref={dropdownRef}>
         <button
           onClick={() => setShowHeadings(!showHeadings)}
           className={`p-2 rounded border border-gray-300 flex items-center justify-center transition cursor-pointer
-            ${headingLabel ? 'bg-white/20 text-white font-semibold' : 'bg-transparent text-white hover:bg-white/20 hover:text-white'}`}
+            ${
+              headingLabel
+                ? 'bg-white/20 text-white font-semibold'
+                : 'bg-transparent text-white hover:bg-white/20 hover:text-white'
+            }`}
           type="button"
         >
           {headingLabel}
@@ -162,13 +191,43 @@ const uploadVideo = async (file) => {
           </div>
         )}
       </div>
-      {formatButton(<List size={18} />, () => editor.chain().focus().toggleBulletList().run(), editor.isActive('bulletList'))}
-      {formatButton(<ListOrdered size={18} />, () => editor.chain().focus().toggleOrderedList().run(), editor.isActive('orderedList'))}
-      {formatButton(<Code2 size={18} />, handleToggleCodeBlock, editor.isActive('codeBlock'))}
-      {formatButton(<Quote size={18} />, () => editor.chain().focus().toggleBlockquote().run(), editor.isActive('blockquote'))}
-      {formatButton(<Minus size={18} />, () => editor.chain().focus().setHorizontalRule().run(), false)}
-      {formatButton(<Undo2 size={18} />, () => editor.chain().focus().undo().run(), false, !editor.can().undo())}
-      {formatButton(<Redo2 size={18} />, () => editor.chain().focus().redo().run(), false, !editor.can().redo())}
+      {formatButton(
+        <List size={18} />,
+        () => editor.chain().focus().toggleBulletList().run(),
+        editor.isActive('bulletList')
+      )}
+      {formatButton(
+        <ListOrdered size={18} />,
+        () => editor.chain().focus().toggleOrderedList().run(),
+        editor.isActive('orderedList')
+      )}
+      {formatButton(
+        <Code2 size={18} />,
+        handleToggleCodeBlock,
+        editor.isActive('codeBlock')
+      )}
+      {formatButton(
+        <Quote size={18} />,
+        () => editor.chain().focus().toggleBlockquote().run(),
+        editor.isActive('blockquote')
+      )}
+      {formatButton(
+        <Minus size={18} />,
+        () => editor.chain().focus().setHorizontalRule().run(),
+        false
+      )}
+      {formatButton(
+        <Undo2 size={18} />,
+        () => editor.chain().focus().undo().run(),
+        false,
+        !editor.can().undo()
+      )}
+      {formatButton(
+        <Redo2 size={18} />,
+        () => editor.chain().focus().redo().run(),
+        false,
+        !editor.can().redo()
+      )}
 
       <button
         type="button"
@@ -198,7 +257,7 @@ const extensions = [
   }),
   Image,
   Video,
-  ExternalFile
+  ExternalFile,
 ]
 
 const TiptapEditor = forwardRef(({ onUpdate, setReportPOC }, ref) => {
@@ -207,7 +266,8 @@ const TiptapEditor = forwardRef(({ onUpdate, setReportPOC }, ref) => {
     content: '',
     editorProps: {
       attributes: {
-        class: 'ProseMirror h-[200px] w-[40vw] overflow-y-auto border border-gray-300 rounded-md p-4 focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white text-black',
+        class:
+          'ProseMirror h-[200px] w-[40vw] overflow-y-auto border border-gray-300 rounded-md p-4 focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white text-black',
       },
     },
     onUpdate: ({ editor }) => {

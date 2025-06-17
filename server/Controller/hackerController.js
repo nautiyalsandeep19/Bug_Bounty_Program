@@ -117,13 +117,11 @@ export const getLeaderboard = async (req, res) => {
       },
     ])
 
-    res
-      .status(200)
-      .json({
-        success: true,
-        message: 'Leader Board Data Fetched',
-        leaderBoard,
-      })
+    res.status(200).json({
+      success: true,
+      message: 'Leader Board Data Fetched',
+      leaderBoard,
+    })
   } catch (err) {
     console.error('Error fetching leaderboard:', err)
     res.status(500).json({ success: false, message: 'Server error' })

@@ -1,43 +1,40 @@
+import Program from '../Models/Program.js'
+import Hacker from '../Models/Hacker.js'
 
+export const updateProgramLeaderBoard = async (programId, hackerId, points) => {
+  if (!programId || !hackerId || typeof points !== 'number') return
 
+  const program = await Program.findById(programId)
 
-import Program from "../Models/Program.js";
-import Hacker from '../Models/Hacker.js';
+  if (!program) return
 
+  const existingEntry = program.leaderboard.find(
+    (entry) => entry.hacker.toString() === hackerId.toString()
+  )
+  if (existingEntry) {
+    existingEntry.score += points
+  } else {
+    program.leaderboard.push({ hacker: hackerId, score: points })
+  }
 
-export const updateProgramLeaderBoard= async(programId,hackerId, points )=>{
-    if (!programId || !hackerId || typeof points !== 'number') return
-
-    const program = await Program.findById(programId)
-
-    if(!program) return
-
-    const existingEntry = program.leaderboard.find(entry=>entry.hacker.toString() === hackerId.toString())
-    if(existingEntry){
-        existingEntry.score += points
-    }else{
-        program.leaderboard.push({hacker: hackerId, score: points })
-    }
-
-    await program.save()
+  await program.save()
 }
 
-
 export const updateGlobalLeaderBoard = async (hackerId, points) => {
-  if (!hackerId || typeof points !== 'number') return;
+  if (!hackerId || typeof points !== 'number') return
 
   try {
-    const hacker = await Hacker.findById(hackerId);
+    const hacker = await Hacker.findById(hackerId)
     if (!hacker) {
-      console.log('Hacker not found');
-      return;
+      console.log('Hacker not found')
+      return
     }
 
-    hacker.totalPoints += points; 
-    await hacker.save();
+    hacker.totalPoints += points
+    await hacker.save()
 
     // console.log(`Updated ${hacker.name}'s points to ${hacker.totalPoints}`);
   } catch (error) {
-    console.error('Error updating global leaderboard:', error.message);
+    console.error('Error updating global leaderboard:', error.message)
   }
-};
+}
