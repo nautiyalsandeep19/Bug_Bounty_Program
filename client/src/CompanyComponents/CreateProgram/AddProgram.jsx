@@ -1,8 +1,7 @@
-import React, { useState, useEffect } from 'react'
-import CreateAssets from './CreateAssets'
-import { useNavigate } from 'react-router-dom'
-import { useLocation } from 'react-router-dom'
-import axios from 'axios'
+import React, { useState, useEffect } from 'react';
+import CreateAssets from './CreateAssets';
+import { useNavigate, useLocation } from 'react-router-dom';
+import axios from 'axios';
 
 // Steps labels
 const stepsList = [
@@ -16,7 +15,7 @@ const stepsList = [
   'Brand Program',
   'Schedule Launch',
   'Review & Submit',
-]
+];
 
 // Step components
 const Step1_ProgramUsername = ({ data, updateData }) => (
@@ -109,16 +108,13 @@ const Step5_ProgramPolicy = ({ data, updateData }) => (
 )
 
 const Step6_BountyRange = ({ data, updateData }) => {
-  // Initialize bounty data if it doesn't exist
   const bounty = data.bounty || {
     high: '',
     medium: '',
     low: '',
   }
 
-  // Handler for bounty input updates
   const updateBountyData = (field, value) => {
-    // Ensure value is a number or empty string
     const numValue = value === '' ? '' : Number(value)
     updateData({
       bounty: {
@@ -223,7 +219,6 @@ const Step7_AdditionalDetails = ({ data, updateData }) => (
 )
 
 const Step8_BrandProgram = ({ data, updateData }) => {
-  // Extract brand object or initialize
   const brand = data.brand || {
     programName: '',
     programTagline: '',
@@ -231,7 +226,6 @@ const Step8_BrandProgram = ({ data, updateData }) => {
     programDescription: '',
   }
 
-  // Handler for brand input updates
   const updateBrandData = (field, value) => {
     updateData({ brand: { ...brand, [field]: value } })
   }
@@ -299,9 +293,7 @@ const Step8_BrandProgram = ({ data, updateData }) => {
         <textarea
           id="programDescription"
           value={brand.programDescription}
-          onChange={(e) =>
-            updateBrandData('programDescription', e.target.value)
-          }
+          onChange={(e) => updateBrandData('programDescription', e.target.value)}
           placeholder="Enter Program Description"
           rows={5}
           className="w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm resize-y
@@ -337,7 +329,6 @@ const Step9_ScheduleLaunch = ({ data, updateData }) => (
 )
 
 const Step10_ReviewAndSubmit = ({ data, onSubmit }) => {
-  // Format bounty for display
   const displayData = { ...data }
   if (displayData.bounty) {
     displayData.bounty = {
@@ -355,132 +346,156 @@ const Step10_ReviewAndSubmit = ({ data, onSubmit }) => {
       <pre className="bg-gray-100 p-4 rounded-lg overflow-x-auto max-h-96">
         {JSON.stringify(displayData, null, 2)}
       </pre>
-      <button
-        onClick={onSubmit}
-        className="mt-6 bg-green-600 hover:bg-green-700 transition text-white font-semibold px-6 py-3 rounded-lg shadow-md"
-      >
-        Submit Program
-      </button>
+      <div className="flex justify-between mt-6">
+        <button
+          onClick={() => onSubmit(false)}
+          className="bg-gray-600 hover:bg-gray-700 transition text-white font-semibold px-6 py-3 rounded-lg shadow-md"
+        >
+          Save as Draft
+        </button>
+        <button
+          onClick={() => onSubmit(true)}
+          className="bg-green-600 hover:bg-green-700 transition text-white font-semibold px-6 py-3 rounded-lg shadow-md"
+        >
+          Publish Program
+        </button>
+      </div>
     </div>
   )
 }
-
 // Main component
 const CreateProgram = () => {
-  const [step, setStep] = useState(0)
-  const [programData, setProgramData] = useState({})
-  const navigate = useNavigate()
-  const VITE_BACKEND_HOST_URL = import.meta.env.VITE_BACKEND_HOST_URL
-
-  // Load from localStorage on mount and set initial visibility
+  const [step, setStep] = useState(0);
+  const [programData, setProgramData] = useState({});
+  const [isEditing, setIsEditing] = useState(false);
+  const navigate = useNavigate();
+  const location = useLocation();
+  const VITE_BACKEND_HOST_URL = import.meta.env.VITE_BACKEND_HOST_URL;
+  
+  // Load program data when component mounts
   useEffect(() => {
-    let previousAssets = localStorage.getItem('assets')
-
-    // Set initial visibility based on program type
-    const selectedProgramType = localStorage.getItem('selectedProgramType')
-    if (selectedProgramType) {
-      const isPrivate = selectedProgramType.includes('Private')
-      setProgramData((prev) => ({
-        ...prev,
-        visibility: isPrivate ? 'private' : 'public',
-        type: selectedProgramType,
-      }))
-    }
-
-    // const interval = setInterval(() => {
-    //   const currentAssets = localStorage.getItem('assets')
+    const loadProgramData = async () => {
+      // Check if we're editing an existing program
+      const programId = location.state?.programId || localStorage.getItem('programIdToEdit');
       
+      if (programId) {
+        try {
+          setIsEditing(true);
+          const token = localStorage.getItem('token');
+          const response = await axios.get(
+            `${VITE_BACKEND_HOST_URL}/api/programs/${programId}`,
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            }
+          );
 
-    //   if (currentAssets && currentAssets !== previousAssets) {
-    //     const storedData = localStorage.getItem('programData')
-    //     const selectedProgramType = localStorage.getItem('selectedProgramType')
+          const program = response.data.data;
+          setProgramData({
+            programName: program.title,
+            guidelines: program.guidelines,
+            concerns: program.areasOfConcern,
+            programPolicy: program.policy,
+            additionalDetails: program.additionalDetails,
+            type: program.type,
+            startDate: program.startDate,
+            endDate: program.endDate,
+            visibility: program.visibility,
+            scope: program.scope,
+            brand: program.brand,
+            bounty: program.bountyRange,
+            status: program.status
+          });
 
-    //     let updatedData = {}
-    //     if (storedData) {
-    //       updatedData = JSON.parse(storedData)
-    //     }
+          localStorage.setItem('programId', programId);
+        } catch (error) {
+          console.error('Error loading program:', error);
+        }
+      } else {
+        // New program creation
+        const selectedProgramType = localStorage.getItem('selectedProgramType');
+        if (selectedProgramType) {
+          const isPrivate = selectedProgramType.includes('Private');
+          setProgramData((prev) => ({
+            ...prev,
+            visibility: isPrivate ? 'private' : 'public',
+            type: selectedProgramType,
+            status: 'draft',
+          }));
+        }
+      }
+    };
 
-    //     updatedData.scope = JSON.parse(currentAssets)
-    //     if (selectedProgramType) {
-    //       updatedData.type = selectedProgramType
-    //       // Maintain the visibility setting
-    //       updatedData.visibility =
-    //         updatedData.visibility ||
-    //         (selectedProgramType.includes('Private') ? 'private' : 'public')
-    //     }
+    loadProgramData();
 
-    //     setProgramData(updatedData)
-    //     previousAssets = currentAssets
-    //   }
-    // }, 500)
+    // Asset sync interval
+    let previousAssets = localStorage.getItem('assets');
     const interval = setInterval(() => {
-  const currentAssets = localStorage.getItem('assets');
+      const currentAssets = localStorage.getItem('assets');
+      if (currentAssets && currentAssets !== previousAssets) {
+        const storedData = localStorage.getItem('programData');
+        const selectedProgramType = localStorage.getItem('selectedProgramType');
 
-  if (currentAssets && currentAssets !== previousAssets) {
-    const storedData = localStorage.getItem('programData');
-    const selectedProgramType = localStorage.getItem('selectedProgramType');
+        let updatedData = {};
+        if (storedData) {
+          updatedData = JSON.parse(storedData);
+        }
 
-    let updatedData = {};
-    if (storedData) {
-      updatedData = JSON.parse(storedData);
-    }
+        const parsedAssets = JSON.parse(currentAssets || '[]');
+        if (!updatedData.scope || updatedData.scope.length === 0) {
+          updatedData.scope = parsedAssets;
+        }
 
-    const parsedAssets = JSON.parse(currentAssets || '[]');
-    if (!updatedData.scope || updatedData.scope.length === 0) {
-      updatedData.scope = parsedAssets;
-    }
+        if (selectedProgramType) {
+          updatedData.type = selectedProgramType;
+          updatedData.visibility =
+            updatedData.visibility ||
+            (selectedProgramType.includes('Private') ? 'private' : 'public');
+        }
 
-    if (selectedProgramType) {
-      updatedData.type = selectedProgramType;
-      updatedData.visibility =
-        updatedData.visibility ||
-        (selectedProgramType.includes('Private') ? 'private' : 'public');
-    }
+        setProgramData(updatedData);
+        previousAssets = currentAssets;
+      }
+    }, 500);
 
-    setProgramData(updatedData);
-    previousAssets = currentAssets;
-  }
-}, 500);
-
-
-    return () => clearInterval(interval)
-  }, [])
+    return () => clearInterval(interval);
+  }, [location.state, VITE_BACKEND_HOST_URL]);
 
   useEffect(() => {
-    localStorage.setItem('programData', JSON.stringify(programData))
-  }, [programData])
+    localStorage.setItem('programData', JSON.stringify(programData));
+  }, [programData]);
 
   const updateData = (newData) =>
-    setProgramData((prev) => ({ ...prev, ...newData }))
+    setProgramData((prev) => ({ ...prev, ...newData }));
 
-  // Initial program creation
   const initialCreation = async () => {
     try {
-      const selectedProgramType = localStorage.getItem('selectedProgramType')
-      const storedData = localStorage.getItem('programData')
-      const programData = storedData ? JSON.parse(storedData) : {}
-      const storedUser = localStorage.getItem('user')
-      const userObj = JSON.parse(storedUser)
-      const token = localStorage.getItem('token')
+      const selectedProgramType = localStorage.getItem('selectedProgramType');
+      const storedData = localStorage.getItem('programData');
+      const programData = storedData ? JSON.parse(storedData) : {};
+      const storedUser = localStorage.getItem('user');
+      const userObj = JSON.parse(storedUser);
+      const token = localStorage.getItem('token');
 
       if (!userObj?._id) {
-        throw new Error('User ID not found in localStorage')
+        throw new Error('User ID not found in localStorage');
       }
 
       if (!/^[0-9a-fA-F]{24}$/.test(userObj._id)) {
-        throw new Error('Invalid user ID format')
+        throw new Error('Invalid user ID format');
       }
 
-      // Determine visibility based on program type
-      const isPrivate = selectedProgramType.includes('Private')
-      const visibility = isPrivate ? 'private' : 'public'
+      const isPrivate = selectedProgramType.includes('Private');
+      const visibility = isPrivate ? 'private' : 'public';
 
       const payload = {
         type: selectedProgramType,
         title: programData.programName || 'New Program',
         company: userObj._id,
-        visibility: visibility, // Set visibility here based on program type
-      }
+        visibility: visibility,
+        status: 'draft',
+      };
 
       const response = await axios.post(
         `${VITE_BACKEND_HOST_URL}/api/programs`,
@@ -491,34 +506,30 @@ const CreateProgram = () => {
             'Content-Type': 'application/json',
           },
         }
-      )
+      );
 
       if (response.data.data && response.data.data._id) {
-        localStorage.setItem('programId', response.data.data._id)
-        return true
+        localStorage.setItem('programId', response.data.data._id);
+        return true;
       }
-      throw new Error('Program ID not found in response')
+      throw new Error('Program ID not found in response');
     } catch (error) {
       console.error('Program creation failed:', {
         message: error.message,
         response: error.response?.data,
-      })
-      throw error
+      });
+      throw error;
     }
-  }
+  };
 
-  const updateProgramData = async () => {
-    const programId = localStorage.getItem('programId')
-    if (!programId) return console.error('Program ID not found.')
+  const updateProgramData = async (publish = false) => {
+    const programId = localStorage.getItem('programId');
+    if (!programId) return console.error('Program ID not found.');
 
     try {
-      const programData = JSON.parse(
-        localStorage.getItem('programData') || '{}'
+      const programData = JSON.parse(localStorage.getItem('programData') || '{}');
+      const token = localStorage.getItem('token');
 
-      )
-      const token = localStorage.getItem('token')
-
-      // Create a plain object instead of FormData
       const payload = {
         title: programData.programName,
         guidelines: programData.guidelines,
@@ -536,9 +547,8 @@ const CreateProgram = () => {
           medium: 0,
           high: 0,
         },
-      }
-
-      console.log('Sending payload:', payload)
+        status: publish ? 'published' : 'draft',
+      };
 
       const response = await axios.put(
         `${VITE_BACKEND_HOST_URL}/api/programs/update/${programId}`,
@@ -549,22 +559,24 @@ const CreateProgram = () => {
             Authorization: `Bearer ${token}`,
           },
         }
-      )
+      );
 
-      console.log('✅ Program updated:', response.data)
-
-      // Clear storage and navigate
-      localStorage.removeItem('programId')
-      localStorage.removeItem('programData')
-      localStorage.removeItem('assets')
-      localStorage.removeItem('selectedProgramType')
-      navigate('/company/programs')
+      if (publish) {
+        localStorage.removeItem('programId');
+        localStorage.removeItem('programData');
+        localStorage.removeItem('assets');
+        localStorage.removeItem('selectedProgramType');
+        navigate('/company/programs');
+      } else {
+        alert('Program saved as draft successfully!');
+        navigate('/company/programs');
+      }
     } catch (error) {
-      console.error('❌ Update error:', error)
-      const errorMessage = error.response?.data?.message || error.message
-      alert(`Error updating program: ${errorMessage}`)
+      console.error('Update error:', error);
+      const errorMessage = error.response?.data?.message || error.message;
+      alert(`Error updating program: ${errorMessage}`);
     }
-  }
+  };
 
   const steps = [
     Step1_ProgramUsername,
@@ -577,13 +589,13 @@ const CreateProgram = () => {
     Step8_BrandProgram,
     Step9_ScheduleLaunch,
     Step10_ReviewAndSubmit,
-  ]
+  ];
 
-  const CurrentStep = steps[step]
+  const CurrentStep = steps[step];
 
   return (
     <div className="max-w-full h-[100vh] text-black mx-auto p-8 bg-white rounded-lg shadow-lg flex">
-      {/* Step Indicators - vertical on left */}
+      {/* Step Indicators */}
       <div className="w-1/4 pr-6">
         <ol className="flex flex-col mt-[200px] text-xs sm:text-sm font-medium text-gray-500 space-y-4">
           {stepsList.map((label, index) => (
@@ -603,9 +615,14 @@ const CreateProgram = () => {
 
       {/* Main content */}
       <div className="w-3/4">
-        <h1 className="text-3xl font-extrabold mb-8 text-center text-gray-900">
-          Create Bug Bounty Program
+        <h1 className="text-3xl font-extrabold mb-2 text-center text-gray-900">
+          {isEditing ? 'Edit Program' : 'Create Bug Bounty Program'}
         </h1>
+        <div className="mb-4 text-center">
+          <span className="inline-block bg-blue-100 text-blue-800 text-sm font-semibold px-3 py-1 rounded-full">
+            {programData.status === 'published' ? 'Published' : 'Draft'}
+          </span>
+        </div>
 
         {/* Step Form */}
         <div className="mb-8">
@@ -632,18 +649,18 @@ const CreateProgram = () => {
           {step < steps.length - 1 ? (
             <button
               onClick={async () => {
-                if (step === 0) {
+                if (step === 0 && !isEditing) {
                   try {
-                    await initialCreation()
-                    setStep((prev) => prev + 1)
+                    await initialCreation();
+                    setStep((prev) => prev + 1);
                   } catch (error) {
                     alert(
                       'Failed to create program: ' +
                         (error.response?.data?.message || error.message)
-                    )
+                    );
                   }
                 } else {
-                  setStep((prev) => prev + 1)
+                  setStep((prev) => prev + 1);
                 }
               }}
               className="px-6 py-3 rounded-lg shadow-md bg-blue-600 text-white font-semibold hover:bg-blue-700 transition"
@@ -654,7 +671,7 @@ const CreateProgram = () => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default CreateProgram
+export default CreateProgram;
