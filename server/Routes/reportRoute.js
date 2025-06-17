@@ -19,5 +19,4 @@ router.get('/reportByHackerId', authMid, getReportsByHackerId)
 // router.post('/reportByProgramId', authMid, getReportsByProgramId)
 router.get('/:reportId', authMid, getReportById)
 
-
 export default router
