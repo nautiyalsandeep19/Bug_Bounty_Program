@@ -83,5 +83,5 @@ hackerSchema.pre('save', async function (next) {
   next()
 })
 
-const Hacker = mongoose.model('Hacker', hackerSchema)
+const Hacker = mongoose.models.Hacker || mongoose.model('Hacker', hackerSchema)
 export default Hacker

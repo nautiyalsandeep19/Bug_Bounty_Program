@@ -120,9 +120,13 @@ export const getProgramByIds = async (req, res) => {
     const { programId } = req.body
     console.log('ID dd', programId)
 
-    const programData = await Program.findById(programId)
-      .populate('assets')
-      .populate('company')
+   const programData = await Program.findById(programId)
+  .populate('assets')
+  .populate('company')
+  .populate({
+    path: 'leaderboard.hacker',
+    select: 'username name image' // Only get these fields
+  });
 
     if (!programData) {
       return res.status(404).json({ message: 'Program not found' })

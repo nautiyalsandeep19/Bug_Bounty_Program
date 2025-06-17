@@ -52,6 +52,12 @@ const programSchema = new mongoose.Schema(
     areasOfConcern: { type: String },
     logo: { type: String },
     isPublished: { type: Boolean, default: false },
+    leaderboard: [
+  {
+    hacker: { type: mongoose.Schema.Types.ObjectId, ref: 'Hacker' },
+    score: { type: Number, default: 0 },
+  },
+],
   },
   { timestamps: true }
 )
