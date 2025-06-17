@@ -229,10 +229,41 @@ const CreateAssets = ({ updateScope }) => {
   console.log(assetsForCompany)
 
 
+
+
+
+
+
+  
+const handleAssetClick = (asset) => {
+  try {
+    const storedData = JSON.parse(localStorage.getItem("programData")) || {};
+    const currentScope = Array.isArray(storedData.scope) ? storedData.scope : [];
+
+    if (!currentScope.includes(asset._id)) {
+      const updatedScope = [...currentScope, asset._id];
+      const updatedProgramData = { ...storedData, scope: updatedScope };
+
+      localStorage.setItem("programData", JSON.stringify(updatedProgramData));
+      localStorage.setItem("assets", JSON.stringify(updatedScope)); // ✅ Add this line
+
+      console.log("✅ Asset ID added to programData.scope:", asset._id);
+    } else {
+      console.log("⚠️ Asset ID already in scope:", asset._id);
+    }
+  } catch (error) {
+    console.error("❌ Error handling asset click:", error);
+  }
+};
+
+
+
+
+
   return (
     <div className="flex flex-col lg:flex-row max-w-7xl w-full mx-auto mt-10 bg-white rounded-2xl shadow-xl p-4 sm:p-6 lg:p-8 gap-6">
       {/* Sidebar */}
-      <aside className="w-full lg:w-1/3 border-b lg:border-b-0 lg:border-r border-gray-300 pb-4 lg:pb-0 lg:pr-4 max-h-[300px] lg:max-h-[80vh] overflow-y-auto">
+      {/* <aside className="w-full lg:w-1/3 border-b lg:border-b-0 lg:border-r border-gray-300 pb-4 lg:pb-0 lg:pr-4 max-h-[300px] lg:max-h-[80vh] overflow-y-auto">
         <h2 className="text-xl sm:text-2xl font-semibold mb-4 text-gray-800">Assets</h2>
         {assetsForCompany.length === 0 ? (
           <p className="text-gray-500">No assets found.</p>
@@ -254,7 +285,35 @@ const CreateAssets = ({ updateScope }) => {
             ))}
           </ul>
         )}
-      </aside>
+      </aside> */}
+      <aside className="w-full lg:w-1/3 border-b lg:border-b-0 lg:border-r border-gray-300 pb-4 lg:pb-0 lg:pr-4 max-h-[300px] lg:max-h-[80vh] overflow-y-auto">
+  <h2 className="text-xl sm:text-2xl font-semibold mb-4 text-gray-800">Assets</h2>
+  {assetsForCompany.length === 0 ? (
+    <p className="text-gray-500">No assets found.</p>
+  ) : (
+    <ul className="space-y-3">
+      {assetsForCompany.map(asset => (
+        <li
+          key={asset._id}
+          className="p-2 border rounded bg-gray-50 cursor-pointer hover:bg-blue-50"
+          onClick={() => handleAssetClick(asset)}
+        >
+          <a
+            href={asset.assetURL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-blue-600 text-sm break-all"
+            title={asset.assetURL}
+          >
+            {asset.assetURL}
+          </a>
+          <p className="text-xs text-gray-700">{asset.assetType}</p>
+        </li>
+      ))}
+    </ul>
+  )}
+</aside>
+
 
       {/* Main Form */}
       <main className="w-full lg:w-2/3">
