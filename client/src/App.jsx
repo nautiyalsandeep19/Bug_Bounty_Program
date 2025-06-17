@@ -50,6 +50,7 @@ import ProtectedRoute from './ProtectedRoute'
 import CompanyReports from './CompanyPages/CompanyReports'
 import VrtData from './Common/VrtData'
 import CommonLayout from './Common/LayoutSidebar/CommonLayout'
+import ProgramCreation from './CompanyComponents/CreateProgram/ProgramCreation'
 
 function App() {
   const dispatch = useDispatch()
@@ -161,6 +162,8 @@ function App() {
             <Route path="programs" element={<ProgramList />} />
             <Route path="programs/:programId" element={<ProgramMainDetail />} />
           </Route>
+           <Route path="/addprogram" element={<ProgramCreation />} />
+
 
           {/* Triager Routes */}
           <Route
