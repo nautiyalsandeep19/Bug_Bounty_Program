@@ -130,36 +130,79 @@ export const getProgramsByCompany = async (req, res) => {
   }
 }
 
+// export const getProgramByIds = async (req, res) => {
+//   try {
+//     const { programId } = req.body
+//     console.log('ID dd', programId)
+
+//     const programData = await Program.findById(programId)
+//       .populate('assets')
+//       .populate('company')
+//       .populate({
+//         path: 'leaderboard.hacker',
+//         select: 'username name image', // Only get these fields
+//       })
+
+//     if (!programData) {
+//       return res.status(404).json({ message: 'Program not found' })
+//     }
+
+//     const reportCount = await Report.find({ programId })
+
+//     const program = programData.toObject()
+//     program.reportCount = reportCount.length
+//     res.status(200).json({
+//       message: 'Program fetched successfully',
+//       data: program,
+//     })
+//   } catch (error) {
+//     console.error('Fetch Program Error:', error)
+//     res.status(500).json({ message: 'Server error', error: error.message })
+//   }
+// }
+
+
 export const getProgramByIds = async (req, res) => {
   try {
-    const { programId } = req.body
-    console.log('ID dd', programId)
+    const { programId } = req.body;
+    console.log('ID dd', programId);
 
+    // First, fetch the program without leaderboard population
     const programData = await Program.findById(programId)
       .populate('assets')
-      .populate('company')
-      .populate({
-        path: 'leaderboard.hacker',
-        select: 'username name image', // Only get these fields
-      })
+      .populate('company');
 
     if (!programData) {
-      return res.status(404).json({ message: 'Program not found' })
+      return res.status(404).json({ message: 'Program not found' });
     }
 
-    const reportCount = await Report.find({ programId })
+    // Convert to plain object to allow editing
+    const program = programData.toObject();
 
-    const program = programData.toObject()
-    program.reportCount = reportCount.length
+    // If leaderboard visibility is true, manually populate leaderboard
+    if (programData.leaderboardVisibility) {
+      await Program.populate(program, {
+        path: 'leaderboard.hacker',
+        select: 'username name image',
+      });
+    } else {
+      // If not visible, clear the leaderboard
+      program.leaderboard = [];
+    }
+
+    // Add report count
+    const reportCount = await Report.countDocuments({ programId });
+    program.reportCount = reportCount;
+
     res.status(200).json({
       message: 'Program fetched successfully',
       data: program,
-    })
+    });
   } catch (error) {
-    console.error('Fetch Program Error:', error)
-    res.status(500).json({ message: 'Server error', error: error.message })
+    console.error('Fetch Program Error:', error);
+    res.status(500).json({ message: 'Server error', error: error.message });
   }
-}
+};
 
 export const fetchPrivateProgramsForHacker = async (req, res) => {
   try {
@@ -294,6 +337,8 @@ export const toggleLeaderboardVisibility = async (req, res) => {
     return res.status(500).json({ success: false, message: "Server error", error });
   }
 };
+
+
 export const publishProgram = async (req, res) => {
   try {
     const programId = req.params.id
