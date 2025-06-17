@@ -15,6 +15,11 @@ const programSchema = new mongoose.Schema(
       programWebsite: { type: String, default: '' },
       programDescription: { type: String, default: '' },
     },
+    status: {
+    type: String,
+    enum: ['draft', 'published'],
+    default: 'draft'
+  },
     policy: { type: String, default: '' },
     additionalDetails: { type: String, default: '' },
     visibility: {
