@@ -40,10 +40,11 @@ export const getCompanyDetails = async () => {
 }
 
 export const updateCompanyProfile = (
-  domain,
   representative,
+  phone,
+  domain,
   position,
-  phone
+  image
 ) => {
   return async (dispatch) => {
     try {
@@ -52,9 +53,10 @@ export const updateCompanyProfile = (
         endPoints.UPDATE_COMPANY_DETAILS,
         {
           representative,
-          position,
           phone,
           domain,
+          position,
+          image,
         }
       )
 

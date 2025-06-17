@@ -1,5 +1,6 @@
 import Program from '../Models/Program.js'
 import Company from '../Models/company.js'
+
 // get companys all programs
 export const getCompnayPrograms = async (req, res) => {
   try {
@@ -80,33 +81,40 @@ export const getCompanyDetails = async (req, res) => {
   }
 }
 
-
-
-export const updateContactPerson = async (req, res) => {
+//update company profile
+export const updateCompanyPerson = async (req, res) => {
   try {
-    const userId = req.user.id // assuming authentication middleware sets req.user
+    const userId = req.user.id
 
     const {
-      representative = ' ',
-      position = ' ',
-      phone = ' ',
-      domain = ' ',
+      representative = '',
+      phone = '',
+      domain = '',
+      position = '',
+      image = '',
     } = req.body
 
-    // Update the company document with the new contact person and domain
+    if (phone && !/^\d{10}$/.test(phone)) {
+      return res.status(400).json({
+        success: false,
+        message: 'Phone number must be exactly 10 digits',
+      })
+    }
+    //update details
     const updatedCompany = await Company.findByIdAndUpdate(
-      userId, // using the userId to find the company
+      userId,
       {
         contactPerson: {
           representative,
           position,
           phone,
         },
-        domain, // update domain
+        domain,
+        image,
       },
-      { new: true } // return the updated document
-    )
 
+      { new: true }
+    )
 
     if (!updatedCompany) {
       return res.status(404).json({
@@ -118,11 +126,11 @@ export const updateContactPerson = async (req, res) => {
     // Return the updated company information in the response
     return res.status(200).json({
       success: true,
-      message: 'Contact person updated successfully',
-      company: updatedCompany, // return updated company data
+      message: 'Profile updated successfully',
+      company: updatedCompany,
     })
   } catch (error) {
-    console.error('Error updating contact person:', error)
+    console.error('Error updating company person:', error)
     return res.status(500).json({
       success: false,
       message: 'Server error while updating contact person',
@@ -130,9 +138,8 @@ export const updateContactPerson = async (req, res) => {
   }
 }
 
-
-export const getAllCompany = async( req , res ) =>{
- try {
+export const getAllCompany = async (req, res) => {
+  try {
     const allCompany = await Company.find() // populate KYC details if needed
 
     res.status(200).json({

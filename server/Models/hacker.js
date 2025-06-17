@@ -64,6 +64,7 @@ const hackerSchema = new mongoose.Schema(
 )
 
 // Pre-save middleware to assign unique username if not provided
+
 hackerSchema.pre('save', async function (next) {
   if (!this.username) {
     let unique = false
