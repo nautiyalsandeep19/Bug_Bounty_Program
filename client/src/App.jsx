@@ -164,8 +164,7 @@ function App() {
             <Route path="programs" element={<ProgramList />} />
             <Route path="programs/:programId" element={<ProgramMainDetail />} />
           </Route>
-           <Route path="/addprogram" element={<ProgramCreation />} />
-
+          <Route path="/addprogram" element={<ProgramCreation />} />
 
           {/* Triager Routes */}
           <Route

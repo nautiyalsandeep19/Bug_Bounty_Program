@@ -25,7 +25,11 @@ const ProgramCard = ({ program, isDraft }) => {
   }
 
   return (
-    <div className={`bg-[#0f172a] text-white max-w-md w-full mx-auto rounded-2xl border ${isDraft ? 'border-yellow-500' : 'border-[#1e293b]'} p-8 shadow-lg hover:shadow-blue-600/50 hover:-translate-y-1 transition-all duration-300 cursor-pointer`}>
+    <div
+      className={`bg-[#0f172a] text-white max-w-md w-full mx-auto rounded-2xl border ${
+        isDraft ? 'border-yellow-500' : 'border-[#1e293b]'
+      } p-8 shadow-lg hover:shadow-blue-600/50 hover:-translate-y-1 transition-all duration-300 cursor-pointer`}
+    >
       <div className="flex justify-between items-start">
         <p className="relative top-[-15px] left-[-20px] bg-white text-[10px] text-black font-bold border w-fit p-1 rounded-lg px-5">
           {program.type}
@@ -50,15 +54,19 @@ const ProgramCard = ({ program, isDraft }) => {
       <div className="text-center">
         <h3 className="text-xl font-extrabold mb-1">{program.title}</h3>
         <p className="text-sm text-gray-400 mb-4">
+
           {program.visibility === 'private' ? 'Private Program' : 'Public Program'}
+
         </p>
       </div>
 
       {/* CTA Button */}
       <div className="flex justify-center mt-6">
         <CTAButton
+
           text={isDraft ? "Continue Editing" : "View Program"}
           onClick={handleClick}
+
         />
       </div>
     </div>
@@ -66,6 +74,4 @@ const ProgramCard = ({ program, isDraft }) => {
 }
 
 export default ProgramCard
-
-
 
