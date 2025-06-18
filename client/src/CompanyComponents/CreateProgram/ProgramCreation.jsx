@@ -1,10 +1,16 @@
 // ProgramCreation.jsx
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import ProgramTypeModal from './ProgramTypeModal'
 import CreateProgram from './AddProgram'
+import { useEditor } from '@tiptap/react'
 
 const ProgramCreation = () => {
   const [programType, setProgramType] = useState(null)
+
+ 
+  useEffect(()=>{
+     setProgramType(localStorage.getItem('selectedProgramType'));
+  },[])
 
   return (
     <>

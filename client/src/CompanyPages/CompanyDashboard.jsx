@@ -139,7 +139,7 @@ const CompanyDashboard = () => {
           {recentActivities.map((activity) => (
             <div
               key={activity.id}
-              className="border-b pb-4 last:border-0 last:pb-0"
+              className="border-b pb-04 last:border-0 last:pb-0"
             >
               <div className="flex justify-between">
                 <p className="font-medium">{activity.action}</p>
