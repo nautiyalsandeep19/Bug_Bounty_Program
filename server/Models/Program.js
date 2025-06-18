@@ -34,6 +34,7 @@ const programSchema = new mongoose.Schema(
     },
     invitedHackers: [{ type: mongoose.Schema.Types.ObjectId, ref: "Hacker" }],
     assets: [{ type: mongoose.Schema.Types.ObjectId, ref: "Asset" }],
+    reports: [{type: mongoose.Schema.Types.ObjectId,ref:"Report"}],
     type: {
       type: String,
       enum: [
@@ -64,6 +65,10 @@ const programSchema = new mongoose.Schema(
       },
     ],
     leaderboardVisibility: { type: Boolean, default: true },
+    participants: {
+  type: Number,
+  default: 0,
+}
   },
   { timestamps: true }
 );

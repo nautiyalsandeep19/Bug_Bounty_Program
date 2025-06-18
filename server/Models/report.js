@@ -1,6 +1,7 @@
 import mongoose from 'mongoose'
+import Program from './Program.js';
 
-const reportScheema = new mongoose.Schema(
+const reportSchema = new mongoose.Schema(
   {
     programId: {
       type: mongoose.Schema.Types.ObjectId,
@@ -83,5 +84,36 @@ const reportScheema = new mongoose.Schema(
   { timestamps: true }
 )
 
-const Report = mongoose.model('Report', reportScheema)
+
+
+// POST middleware to update Program after a report is created
+reportSchema.post("save", async function (doc, next) {
+  try {
+    // Step 1: Add this report to the program's reports array
+    if(doc.status !== 'draft'){
+
+      await Program.findByIdAndUpdate(doc.programId, {
+        $push: { reports: doc._id }
+      });
+    
+
+    const uniqueHackers = await mongoose.model("Report").distinct("hackerId", {
+      programId: doc.programId
+    });
+    console.log("Unique: ",uniqueHackers)
+
+    await Program.findByIdAndUpdate(doc.programId, {
+      $set: { participants: uniqueHackers.length }
+    });
+  }
+
+    next();
+  } catch (error) {
+    console.error("Error updating Program participants after report save:", error);
+    next(error);
+  }
+});
+
+
+const Report = mongoose.model('Report', reportSchema)
 export default Report

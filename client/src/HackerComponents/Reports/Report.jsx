@@ -1,83 +1,95 @@
-import React, { useEffect, useState } from 'react'
-import CTAButton from '../../Common/Button/CTAButton'
-import Severity from './SeveritySelector'
-import { UploadCloud } from 'lucide-react'
+import React, { useEffect, useState } from "react";
+import CTAButton from "../../Common/Button/CTAButton";
+import Severity from "./SeveritySelector";
+import { UploadCloud } from "lucide-react";
 import {
   Listbox,
   ListboxButton,
   ListboxOption,
   ListboxOptions,
-} from '@headlessui/react'
-import { ChevronDownIcon } from '@heroicons/react/24/solid'
-import vulnerabilityTypes from '../../assets/CWE_list.json'
+} from "@headlessui/react";
+import { ChevronDownIcon } from "@heroicons/react/24/solid";
+import vulnerabilityTypes from "../../assets/CWE_list.json";
 
-import { createReport } from '../../Services/reportApi'
-import TiptapEditor from '../../Common/Editor/TiptapEditor'
-import { uploadFiles } from '../../Services/uploaderApi'
-import toast from 'react-hot-toast'
-import ReportTemplate from './ReportTemplate'
-import '../../Common/Editor/TiptapEditor.css'
-import { useSelector } from 'react-redux'
+import { createReport } from "../../Services/reportApi";
+import TiptapEditor from "../../Common/Editor/TiptapEditor";
+import { uploadFiles } from "../../Services/uploaderApi";
+import toast from "react-hot-toast";
+import ReportTemplate from "./ReportTemplate";
+import "../../Common/Editor/TiptapEditor.css";
+import { useSelector } from "react-redux";
+import { getAssetsForProgram } from "../../Services/programsApi";
 
 const Report = () => {
-  const [scope, setScope] = useState('')
-  const [endpoint, setEndpoint] = useState('')
-  const [reportTitle, setReportTitle] = useState('')
-  const [reportSummary, setReportSummary] = useState('')
-  const [reportPOC, setReportPOC] = useState('')
-  const [severityData, setSeverityData] = useState({})
-  const [vulnerabilityType, setVulnerabilityType] = useState('')
-  const [selected, setSelected] = useState('')
-  const [selectedVulnerability, setSelectedVulnerability] = useState('')
-  const [filteredTypes, setFilteredTypes] = useState(vulnerabilityTypes)
-  const [vulnerabilityImpact, setVulnerabilityImpact] = useState('')
-  const [attachments, setAttachments] = useState([])
-  const [showPreview, setShowPreview] = useState(false)
-  const program = useSelector((state) => state.program.programData)
+  const [scope, setScope] = useState("");
+  const [endpoint, setEndpoint] = useState("");
+  const [reportTitle, setReportTitle] = useState("");
+  const [reportSummary, setReportSummary] = useState("");
+  const [reportPOC, setReportPOC] = useState("");
+  const [severityData, setSeverityData] = useState({});
+  const [vulnerabilityType, setVulnerabilityType] = useState("");
+  const [selected, setSelected] = useState("");
+  const [selectedVulnerability, setSelectedVulnerability] = useState("");
+  const [filteredTypes, setFilteredTypes] = useState(vulnerabilityTypes);
+  const [vulnerabilityImpact, setVulnerabilityImpact] = useState("");
+  const [attachments, setAttachments] = useState([]);
+  const [showPreview, setShowPreview] = useState(false);
+  const program = useSelector((state) => state.program.programData);
+  const [assets, setAssets] = useState([]);
+  
 
-  const MAX_TOTAL_SIZE_MB = 5
+
+  const MAX_TOTAL_SIZE_MB = 5;
 
   const handleAttachmentsChange = async (e) => {
-    const files = Array.from(e.target.files)
-    const totalSize = files.reduce((acc, file) => acc + file.size, 0)
+    const files = Array.from(e.target.files);
+    const totalSize = files.reduce((acc, file) => acc + file.size, 0);
 
     if (totalSize > MAX_TOTAL_SIZE_MB * 1024 * 1024) {
-      alert(`Total file size must not exceed ${MAX_TOTAL_SIZE_MB} MB.`)
-      return
+      alert(`Total file size must not exceed ${MAX_TOTAL_SIZE_MB} MB.`);
+      return;
     }
 
     try {
-      const uploadedFiles = []
+      const uploadedFiles = [];
       for (const file of files) {
-        const fileUrl = await uploadFiles(file)
+        const fileUrl = await uploadFiles(file);
 
         if (fileUrl) {
-          uploadedFiles.push({ name: file.name, url: fileUrl })
-          toast.success('file uploaded successfully')
+          uploadedFiles.push({ name: file.name, url: fileUrl });
+          toast.success("file uploaded successfully");
         }
       }
 
-      setAttachments((prev) => [...prev, ...uploadedFiles])
+      setAttachments((prev) => [...prev, ...uploadedFiles]);
     } catch (error) {
-      console.error('File upload failed:', error)
-      alert('One or more files failed to upload.')
+      console.error("File upload failed:", error);
+      alert("One or more files failed to upload.");
     }
-  }
+  };
 
   useEffect(() => {
     if (!selected?.label) {
-      setFilteredTypes(vulnerabilityTypes)
+      setFilteredTypes(vulnerabilityTypes);
     } else {
       const filter = vulnerabilityTypes.filter(
         (type) => type.label.toLowerCase() === selected.label.toLowerCase()
-      )
-      setFilteredTypes(filter)
+      );
+      setFilteredTypes(filter);
     }
-  }, [selected])
+  }, [selected]);
+
+
+useEffect(() => {
+  if (program?._id) {
+    getAssetsForProgram(program._id).then(setAssets);
+  }
+}, [program]);
+
 
   useEffect(() => {
-    setVulnerabilityType(selectedVulnerability)
-  }, [selectedVulnerability])
+    setVulnerabilityType(selectedVulnerability);
+  }, [selectedVulnerability]);
 
   const handleReportSubmission = async () => {
     const reportData = {
@@ -90,24 +102,24 @@ const Report = () => {
       severity: severityData.severity,
       vulnerabilityImpact,
       attachments,
-      testingEmail: '',
-      status: 'submitted',
+      testingEmail: "",
+      status: "submitted",
       submitDate: new Date().toISOString(),
-    }
+    };
 
     const payload = {
       programId: `${program._id}`,
 
       reportData,
-    }
+    };
 
     try {
-      await createReport(payload)
+      await createReport(payload);
       // Optionally reset form here
     } catch (error) {
-      console.error('Report submission failed:', error.message)
+      console.error("Report submission failed:", error.message);
     }
-  }
+  };
 
   const handleReportDraft = async () => {
     const reportData = {
@@ -121,25 +133,25 @@ const Report = () => {
       vulnerabilityImpact: vulnerabilityImpact,
 
       attachments: [],
-      testingEmail: '',
-      status: 'draft',
-    }
+      testingEmail: "",
+      status: "draft",
+    };
 
     const payload = {
-      programId: '6652f7c0d7289f1b443cc10a',
-      reportType: 'vulnerability',
+      programId: "6652f7c0d7289f1b443cc10a",
+      reportType: "vulnerability",
       reportData,
-    }
+    };
 
-    console.log('Submitting payload:', payload)
+    console.log("Submitting payload:", payload);
 
     try {
-      await createReport(payload)
+      await createReport(payload);
     } catch (error) {
-      console.error('Report submission failed:', error.message)
+      console.error("Report submission failed:", error.message);
     }
-  }
-  const RequiredMark = () => <span className="text-red-500 ml-1">*</span>
+  };
+  const RequiredMark = () => <span className="text-red-500 ml-1">*</span>;
 
   return (
     <section className="max-w-5xl w-full h-full mx-auto ">
@@ -148,22 +160,45 @@ const Report = () => {
 
         {/* Scope */}
         <div className="space-y-2">
-          <h2 className="text-lg md:text-xl font-semibold">
-            Select Your Scope
-            <RequiredMark />
-          </h2>
-          <select
-            value={scope}
-            onChange={(e) => setScope(e.target.value)}
-            className="w-full border border-gray-500 p-2 rounded"
-            required
+  <h2 className="text-lg md:text-xl font-semibold flex items-center">
+    Select Your Scope
+    <RequiredMark />
+  </h2>
+
+  <Listbox value={scope} onChange={setScope}>
+    <div className="relative w-full">
+      <ListboxButton className="flex items-center justify-between w-full border border-gray-300 bg-black text-white p-2 rounded text-left">
+        {scope ? scope.assetURL : "Select an asset"}
+        <ChevronDownIcon className="h-5 w-5 ml-2" />
+      </ListboxButton>
+
+      <ListboxOption className="absolute z-10 mt-1 w-full max-h-60 overflow-auto bg-black border border-gray-300 rounded shadow-lg">
+        {assets.map((asset, idx) => (
+          <ListboxOption
+            key={idx}
+            value={asset}
+            className={({ active }) =>
+              `cursor-pointer select-none p-2 ${
+                active ? "bg-indigo-600 text-white" : "text-white"
+              }`
+            }
           >
-            <option value="">-- Choose scope --</option>
-            <option value="frontend">Frontend</option>
-            <option value="backend">Backend</option>
-            <option value="api">API</option>
-          </select>
-        </div>
+            <div>
+              <p className="font-medium">{asset.assetURL}</p>
+              {/* <p className="text-xs text-gray-300">{asset.assetType}</p> */}
+            </div>
+          </ListboxOption>
+        ))}
+      </ListboxOption>
+    </div>
+  </Listbox>
+
+  {scope && (
+    <div className="text-sm text-gray-300 mt-2">
+      <strong>Selected Scope:</strong> {scope.assetURL} ({scope.assetType})
+    </div>
+  )}
+</div>
 
         {/* Endpoint */}
         <div className="space-y-2">
@@ -190,7 +225,7 @@ const Report = () => {
             <Listbox value={selected} onChange={setSelected}>
               <div className="relative w-full">
                 <ListboxButton className="flex items-center justify-between w-full border border-gray-300 bg-black text-white p-2 rounded text-left">
-                  {selected?.label || 'Select Vulnerability Type'}
+                  {selected?.label || "Select Vulnerability Type"}
                   <ChevronDownIcon className="size-5 ml-2" />
                 </ListboxButton>
 
@@ -201,14 +236,14 @@ const Report = () => {
                       value={type}
                       className={({ active }) =>
                         `cursor-default select-none py-2 pl-3 pr-9 ${
-                          active ? 'bg-indigo-600 text-white' : 'text-white'
+                          active ? "bg-indigo-600 text-white" : "text-white"
                         }`
                       }
                     >
                       {({ selected }) => (
                         <span
                           className={`block truncate ${
-                            selected ? 'font-semibold' : 'font-normal'
+                            selected ? "font-semibold" : "font-normal"
                           }`}
                         >
                           {type.label}
@@ -231,8 +266,8 @@ const Report = () => {
                           onClick={() => setSelectedVulnerability(child.label)}
                           className={`cursor-pointer px-3 py-2 rounded ${
                             selectedVulnerability === child.label
-                              ? 'bg-indigo-600 text-white'
-                              : 'bg-black text-gray-200 hover:bg-indigo-500 hover:text-white'
+                              ? "bg-indigo-600 text-white"
+                              : "bg-black text-gray-200 hover:bg-indigo-500 hover:text-white"
                           }`}
                         >
                           {child.label}
@@ -392,7 +427,7 @@ const Report = () => {
         </div>
       </div>
     </section>
-  )
-}
+  );
+};
 
-export default Report
+export default Report;

@@ -1,37 +1,37 @@
-import Program from '../Models/Program.js'
-import Report from '../Models/Report.js'
-import mongoose from 'mongoose'
+import Program from "../Models/Program.js";
+import Report from "../Models/Report.js";
+import Message from "../Models/Message.js";
 
 export const createProgram = async (req, res) => {
   try {
-    const { type, title, company, visibility } = req.body
+    const { type, title, company, visibility } = req.body;
 
     const program = new Program({
       type,
-      title: title || 'New Program',
+      title: title || "New Program",
       company,
       visibility,
-      status: 'draft', // Always create as draft initially
-    })
+      status: "draft", // Always create as draft initially
+    });
 
-    await program.save()
-    res.status(201).json({ data: program })
+    await program.save();
+    res.status(201).json({ data: program });
   } catch (error) {
-    res.status(400).json({ message: error.message })
+    res.status(400).json({ message: error.message });
   }
-}
+};
 
 export const updateProgramById = async (req, res) => {
   try {
     const safeParse = (value) => {
-      if (!value || value === 'null') return null
+      if (!value || value === "null") return null;
       try {
-        return typeof value === 'string' ? JSON.parse(value) : value
+        return typeof value === "string" ? JSON.parse(value) : value;
       } catch (e) {
-        console.warn(`Failed to parse value:`, value)
-        return null
+        console.warn(`Failed to parse value:`, value);
+        return null;
       }
-    }
+    };
 
     const updateData = {
       title: req.body.title,
@@ -49,31 +49,31 @@ export const updateProgramById = async (req, res) => {
         medium: 0,
         high: 0,
       },
-      visibility: req.body.visibility || 'public',
-      status: req.body.status || 'draft', // Add status field
-    }
+      visibility: req.body.visibility || "public",
+      status: req.body.status || "draft", // Add status field
+    };
 
-    const programId = req.params.id
+    const programId = req.params.id;
     const updatedProgram = await Program.findByIdAndUpdate(
       programId,
       updateData,
       { new: true }
-    )
+    );
 
     if (!updatedProgram) {
-      return res.status(404).json({ message: 'Program not found' })
+      return res.status(404).json({ message: "Program not found" });
     }
 
-    res.status(200).json({ message: 'Program updated', data: updatedProgram })
+    res.status(200).json({ message: "Program updated", data: updatedProgram });
   } catch (error) {
-    console.error('Update error:', error)
+    console.error("Update error:", error);
     res.status(500).json({
-      message: 'Update failed',
+      message: "Update failed",
       error: error.message,
       receivedData: req.body,
-    })
+    });
   }
-}
+};
 
 // export const getProgramsByCompany = async (req, res) => {
 //   try {
@@ -99,36 +99,36 @@ export const updateProgramById = async (req, res) => {
 // }
 export const getProgramsByCompany = async (req, res) => {
   try {
-    const { companyId } = req.params
-    const { status } = req.query // Get status from query params
+    const { companyId } = req.params;
+    const { status } = req.query; // Get status from query params
 
     if (!companyId) {
-      return res.status(400).json({ message: 'Company ID is required' })
+      return res.status(400).json({ message: "Company ID is required" });
     }
 
-    const query = { company: companyId }
+    const query = { company: companyId };
 
     // If status is provided, filter by status
     if (status) {
-      query.status = status
+      query.status = status;
     } else {
       // Default to only showing published programs if no status specified
-      query.status = 'published'
+      query.status = "published";
     }
 
     const programs = await Program.find(query)
-      .populate('company')
-      .populate('invitedHackers')
+      .populate("company")
+      .populate("invitedHackers");
 
     res.status(200).json({
-      message: 'Programs fetched successfully',
+      message: "Programs fetched successfully",
       data: programs,
-    })
+    });
   } catch (err) {
-    console.error('Error fetching programs:', err)
-    res.status(500).json({ message: 'Server error' })
+    console.error("Error fetching programs:", err);
+    res.status(500).json({ message: "Server error" });
   }
-}
+};
 
 // export const getProgramByIds = async (req, res) => {
 //   try {
@@ -161,19 +161,18 @@ export const getProgramsByCompany = async (req, res) => {
 //   }
 // }
 
-
 export const getProgramByIds = async (req, res) => {
   try {
     const { programId } = req.body;
-    console.log('ID dd', programId);
+    console.log("ID dd", programId);
 
     // First, fetch the program without leaderboard population
     const programData = await Program.findById(programId)
-      .populate('assets')
-      .populate('company');
+      .populate("assets")
+      .populate("company");
 
     if (!programData) {
-      return res.status(404).json({ message: 'Program not found' });
+      return res.status(404).json({ message: "Program not found" });
     }
 
     // Convert to plain object to allow editing
@@ -182,8 +181,8 @@ export const getProgramByIds = async (req, res) => {
     // If leaderboard visibility is true, manually populate leaderboard
     if (programData.leaderboardVisibility) {
       await Program.populate(program, {
-        path: 'leaderboard.hacker',
-        select: 'username name image',
+        path: "leaderboard.hacker",
+        select: "username name image",
       });
     } else {
       // If not visible, clear the leaderboard
@@ -195,47 +194,47 @@ export const getProgramByIds = async (req, res) => {
     program.reportCount = reportCount;
 
     res.status(200).json({
-      message: 'Program fetched successfully',
+      message: "Program fetched successfully",
       data: program,
     });
   } catch (error) {
-    console.error('Fetch Program Error:', error);
-    res.status(500).json({ message: 'Server error', error: error.message });
+    console.error("Fetch Program Error:", error);
+    res.status(500).json({ message: "Server error", error: error.message });
   }
 };
 
 export const fetchPrivateProgramsForHacker = async (req, res) => {
   try {
-    console.log('requser', req.user)
+    console.log("requser", req.user);
 
-    if (!req.user && req.user.userType !== 'hacker') {
+    if (!req.user && req.user.userType !== "hacker") {
       return res.status(403).json({
         success: false,
-        message: 'Access denied. Only hackers can access private programs.',
-      })
+        message: "Access denied. Only hackers can access private programs.",
+      });
     }
 
-    const hackerId = req.user.id
+    const hackerId = req.user.id;
 
     const programs = await Program.find({
-      visibility: 'private',
+      visibility: "private",
       invitedHackers: hackerId,
-    })
-    console.log('pro', programs)
+    });
+    console.log("pro", programs);
 
     return res.status(200).json({
       success: true,
       programs,
       count: programs.length,
-    })
+    });
   } catch (error) {
-    console.error('Error fetching private programs for hacker:', error)
+    console.error("Error fetching private programs for hacker:", error);
     return res.status(500).json({
       success: false,
-      message: 'Server error while fetching private programs',
-    })
+      message: "Server error while fetching private programs",
+    });
   }
-}
+};
 
 // export const fetchAllPrograms = async (req, res) => {
 //   try {
@@ -259,61 +258,60 @@ export const fetchPrivateProgramsForHacker = async (req, res) => {
 export const fetchAllPrograms = async (req, res) => {
   try {
     const publicPrograms = await Program.find({
-      visibility: 'public',
-      status: 'published', // Only show published programs
+      visibility: "public",
+      status: "published", // Only show published programs
     })
       .sort({ createdAt: -1 })
-      .populate('company')
+      .populate("company");
 
     res.status(200).json({
       success: true,
       count: publicPrograms.length,
       programs: publicPrograms,
-    })
+    });
   } catch (error) {
-    console.error('Error fetching public programs:', error)
+    console.error("Error fetching public programs:", error);
     res.status(500).json({
       success: false,
-      message: 'Server error while fetching programs',
-    })
+      message: "Server error while fetching programs",
+    });
   }
-}
+};
 
 export const updateProgramVisibility = async (req, res) => {
   try {
-    const { visibility } = req.body
-    const programId = req.params.id
+    const { visibility } = req.body;
+    const programId = req.params.id;
 
     // Validate visibility input
-    if (!['public', 'private'].includes(visibility)) {
+    if (!["public", "private"].includes(visibility)) {
       return res
         .status(400)
-        .json({ message: "Visibility must be either 'public' or 'private'" })
+        .json({ message: "Visibility must be either 'public' or 'private'" });
     }
 
     const updatedProgram = await Program.findByIdAndUpdate(
       programId,
       { visibility },
       { new: true }
-    )
+    );
 
     if (!updatedProgram) {
-      return res.status(404).json({ message: 'Program not found' })
+      return res.status(404).json({ message: "Program not found" });
     }
 
     res.status(200).json({
       message: `Program visibility updated to ${visibility}`,
       data: updatedProgram,
-    })
+    });
   } catch (error) {
-    console.error('Visibility update error:', error)
+    console.error("Visibility update error:", error);
     res.status(500).json({
-      message: 'Failed to update program visibility',
+      message: "Failed to update program visibility",
       error: error.message,
-    })
+    });
   }
-}
-
+};
 
 // controller/programController.js
 export const toggleLeaderboardVisibility = async (req, res) => {
@@ -322,7 +320,9 @@ export const toggleLeaderboardVisibility = async (req, res) => {
   try {
     const program = await Program.findById(programId);
     if (!program) {
-      return res.status(404).json({ success: false, message: "Program not found" });
+      return res
+        .status(404)
+        .json({ success: false, message: "Program not found" });
     }
 
     program.leaderboardVisibility = !program.leaderboardVisibility;
@@ -334,34 +334,173 @@ export const toggleLeaderboardVisibility = async (req, res) => {
       updatedProgram: program,
     });
   } catch (error) {
-    return res.status(500).json({ success: false, message: "Server error", error });
+    return res
+      .status(500)
+      .json({ success: false, message: "Server error", error });
+  }
+};
+
+export const publishProgram = async (req, res) => {
+  try {
+    const programId = req.params.id;
+
+    const updatedProgram = await Program.findByIdAndUpdate(
+      programId,
+      { status: "published" },
+      { new: true }
+    );
+
+    if (!updatedProgram) {
+      return res.status(404).json({ message: "Program not found" });
+    }
+
+    res.status(200).json({
+      message: "Program published successfully",
+      data: updatedProgram,
+    });
+  } catch (error) {
+    console.error("Publish program error:", error);
+    res.status(500).json({
+      message: "Failed to publish program",
+      error: error.message,
+    });
+  }
+};
+
+// export const avgResponse = async (req, res) => {
+//   try {
+//     const { programId } = req.body;
+
+//     if (!programId) {
+//       return res.status(400).json({ message: "Program ID is required" });
+//     }
+
+//     const reports = await Report.find({ programId }).select(
+//       "_id createdAt hackerId"
+//     );
+
+//     const timeDiffs = [];
+//     let unreadReports = 0;
+
+//     for (const report of reports) {
+//       const {
+//         _id: reportId,
+//         createdAt: reportCreatedAt,
+//         hackerId: reportHacker,
+//       } = report;
+
+//       const firstLog = await Message.findOne({
+//         reportId: reportId,
+//         messageType: "log",
+//         senderId: { $ne: reportHacker }, // someone other than the hacker
+//       })
+//         .sort({ createdAt: 1 })
+//         .select("createdAt");
+
+//       if (firstLog) {
+//         const responseTime =new Date(firstLog.createdAt) - new Date(reportCreatedAt);
+//         timeDiffs.push(responseTime);
+//       } else {
+//         unreadReports += 1;
+//       }
+//     }
+
+//     if (timeDiffs.length === 0) {
+//       return res.status(200).json({
+//         message: "No processed reports yet.",
+//         averageResponseTime: null,
+//         processedReports: 0,
+//         unreadReports,
+//       });
+//     }
+
+//     const averageMs =
+//       timeDiffs.reduce((acc, curr) => acc + curr, 0) / timeDiffs.length;
+//     const averageHours = averageMs / (1000 * 60 * 60);
+
+//     return res.status(200).json({
+//       [programId]: averageHours.toFixed(2) + " hours",
+//       processedReports: timeDiffs.length,
+//       unreadReports,
+//     });
+//   } catch (error) {
+//     console.error("Error calculating average response time:", error);
+//     return res.status(500).json({ message: "Internal Server Error" });
+//   }
+// };
+
+export const avgResponse = async (req, res) => {
+  try {
+    const programIds = (await Program.find().select("_id")).map((program) =>
+      program._id.toString()
+    );
+
+    if (!Array.isArray(programIds) || programIds.length === 0) {
+      return res.status(400).json({ message: "Program IDs are required" });
+    }
+
+    const result = {};
+
+    for (const programId of programIds) {
+      const reports = await Report.find({ programId }).select(
+        "_id createdAt hackerId"
+      );
+
+      const timeDiffs = [];
+
+      for (const report of reports) {
+        const {
+          _id: reportId,
+          createdAt: reportCreatedAt,
+          hackerId: reportHacker,
+        } = report;
+
+        const firstLog = await Message.findOne({
+          reportId,
+          messageType: "log",
+          senderId: { $ne: reportHacker },
+        })
+          .sort({ createdAt: 1 })
+          .select("createdAt");
+
+        if (firstLog) {
+          const responseTime =
+            new Date(firstLog.createdAt) - new Date(reportCreatedAt);
+          timeDiffs.push(responseTime);
+        }
+      }
+
+      if (timeDiffs.length === 0) {
+        result[programId] = null; // or "unread" if you prefer
+      } else {
+        const averageMs =
+          timeDiffs.reduce((acc, curr) => acc + curr, 0) / timeDiffs.length;
+        const averageHours = averageMs / (1000 * 60 * 60);
+        result[programId] = averageHours.toFixed(2) + " hours";
+      }
+    }
+
+    return res.status(200).json(result);
+  } catch (error) {
+    console.error("Error calculating average response times:", error);
+    return res.status(500).json({ message: "Internal Server Error" });
   }
 };
 
 
-export const publishProgram = async (req, res) => {
+export const getProgramAssets = async (req, res) => {
   try {
-    const programId = req.params.id
+    const { programId } = req.body;
 
-    const updatedProgram = await Program.findByIdAndUpdate(
-      programId,
-      { status: 'published' },
-      { new: true }
-    )
+    const program = await Program.findById(programId).populate('assets');
 
-    if (!updatedProgram) {
-      return res.status(404).json({ message: 'Program not found' })
+    if (!program) {
+      return res.status(404).json({ message: 'Program not found' });
     }
 
-    res.status(200).json({
-      message: 'Program published successfully',
-      data: updatedProgram,
-    })
+    res.status(200).json({ assets: program.assets });
   } catch (error) {
-    console.error('Publish program error:', error)
-    res.status(500).json({
-      message: 'Failed to publish program',
-      error: error.message,
-    })
+    console.error('Error fetching program assets:', error);
+    res.status(500).json({ message: 'Internal server error' });
   }
-}
+};
