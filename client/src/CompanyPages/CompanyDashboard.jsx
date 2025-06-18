@@ -65,9 +65,8 @@ const CompanyDashboard = () => {
     },
   ]
 
-
   return (
-    <div className="max-w-7xl mx-auto px-4 h-[50vh] sm:px-6 lg:px-8 py-8">
+    <div className="max-w-7xl mx-auto px-4 h-full sm:px-6 lg:px-8 py-8">
       {/* Header */}
       <div className="mb-8">
         <h1 className="text-3xl font-bold text-white">Company Dashboard</h1>
@@ -77,7 +76,7 @@ const CompanyDashboard = () => {
       </div>
 
       {/* Company Profile Section */}
-      <div className="bg-white rounded-lg shadow-md p-6 mb-8 h-2/3">
+      <div className="bg-white rounded-lg shadow-md p-6 mb-8 h-fit">
         <h2 className="text-sm font-semibold mb-4 text-gray-800">
           Company Profile
         </h2>

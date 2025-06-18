@@ -100,13 +100,11 @@ export const updateHackerPerson = async (req, res) => {
   }
 }
 
-
-
 export const getLeaderboard = async (req, res) => {
   try {
     const leaderBoard = await Hacker.aggregate([
       {
-        $sort: { totalPoints: -1 }
+        $sort: { totalPoints: -1 },
       },
       {
         $project: {
@@ -114,18 +112,21 @@ export const getLeaderboard = async (req, res) => {
           name: 1,
           username: 1,
           image: 1,
-          totalPoints: 1
-        }
-      }
-    ]);
+          totalPoints: 1,
+        },
+      },
+    ])
 
-    res.status(200).json({success:true,message:"Leader Board Data Fetched",leaderBoard});
+    res.status(200).json({
+      success: true,
+      message: 'Leader Board Data Fetched',
+      leaderBoard,
+    })
   } catch (err) {
-    console.error('Error fetching leaderboard:', err);
-    res.status(500).json({ success:false,message: 'Server error' });
+    console.error('Error fetching leaderboard:', err)
+    res.status(500).json({ success: false, message: 'Server error' })
   }
-};
-
+}
 
 export const getAllHackersDetails = async (req, res) => {
   try {
