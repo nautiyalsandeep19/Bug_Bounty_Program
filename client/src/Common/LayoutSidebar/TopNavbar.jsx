@@ -43,10 +43,12 @@ const TopNavbar = () => {
   const content = routeTitles[lastPath] || routeTitles['dashboard']
 
   return (
-    <div className="w-full sticky top-0 z-50 bg-[--color-primaryBlue] text-[--color-primary] px-6 py-4 flex justify-between items-center border-b border-[#2a2a2a] h-20">
+    <div className="w-full sticky top-0 z-100 text-[--color-primary] px-6 py-4 flex justify-between items-center border-b border-[#2a2a2a] h-20">
       <div>
-        <h2 className="text-lg font-semibold">{content.title}</h2>
-        <p className="text-sm text-[--color-primary]">
+        <h2 className="text-lg text-[var(--color-primaryText-color)]">
+          {content.title}
+        </h2>
+        <p className="text-sm text-[var( --color-secondaryText-color)] ">
           {typeof content.subtitle === 'function'
             ? content.subtitle(user?.name)
             : content.subtitle}
