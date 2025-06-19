@@ -38,19 +38,15 @@ export const getPrivatePrograms = async () => {
   }
 }
 
-
 export const getAssetsForProgram = async (programId) => {
   try {
-    const response = await apiConnector(
-      'POST',
-      endPoints.GET_PROGRAM_ASSETS,
-      { programId }
-    );
-    console.log("Response vvvvvvvvvvvvv: ",response)
-    return response?.assets;
+    const response = await apiConnector('POST', endPoints.GET_PROGRAM_ASSETS, {
+      programId,
+    })
+    console.log('Response vvvvvvvvvvvvv: ', response)
+    return response?.assets
   } catch (error) {
-    console.error('Error fetching assets:', error);
-    return [];
+    console.error('Error fetching assets:', error)
+    return []
   }
-};
-
+}

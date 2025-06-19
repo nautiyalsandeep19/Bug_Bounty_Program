@@ -58,7 +58,7 @@ const FeedDashboard = () => {
   }
 
   return (
-    <div className="h-screen  px-4 py-4 flex flex-col space-y-6 overflow-hidden ">
+    <div className="h-full  px-4 py-4 flex flex-col space-y-6  ">
       {/* User Info Card */}
       <div className="bg-zinc-900 p-6 rounded-2xl border border-zinc-700 shadow-lg hover:shadow-2xl transition-all duration-300">
         <div className="flex items-center gap-4 flex-wrap">
@@ -130,7 +130,7 @@ const FeedDashboard = () => {
         </div>
       </div>
 
-      <DashboardProgram />
+      {/* <DashboardProgram /> */}
       {/* Logs Section - scrollable, takes remaining height */}
       <div className="flex-1 overflow-y-auto bg-neutral-900 p-6 rounded-2xl border border-zinc-700 shadow-md">
         <h2 className="text-lg font-semibold text-white mb-3">
