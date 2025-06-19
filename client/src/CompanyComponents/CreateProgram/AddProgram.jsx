@@ -18,6 +18,7 @@ const stepsList = [
 ];
 
 // Step components
+
 const Step1_ProgramUsername = ({ data, updateData }) => (
   <div className="mb-8">
     <label
@@ -373,15 +374,106 @@ const CreateProgram = () => {
   const VITE_BACKEND_HOST_URL = import.meta.env.VITE_BACKEND_HOST_URL;
   
   // Load program data when component mounts
+  // useEffect(() => {
+  //   const loadProgramData = async () => {
+  //     // Check if we're editing an existing program
+  //     const programId = location.state?.programId || localStorage.getItem('programIdToEdit');
+      
+  //     if (programId) {
+  //       try {
+  //         setIsEditing(true);
+  //         const token = localStorage.getItem('token');
+  //         const response = await axios.get(
+  //           `${VITE_BACKEND_HOST_URL}/api/programs/${programId}`,
+  //           {
+  //             headers: {
+  //               Authorization: `Bearer ${token}`,
+  //             },
+  //           }
+  //         );
+
+  //         const program = response.data.data;
+  //         setProgramData({
+  //           programName: program.title,
+  //           guidelines: program.guidelines,
+  //           concerns: program.areasOfConcern,
+  //           programPolicy: program.policy,
+  //           additionalDetails: program.additionalDetails,
+  //           type: program.type,
+  //           startDate: program.startDate,
+  //           endDate: program.endDate,
+  //           visibility: program.visibility,
+  //           scope: program.scope,
+  //           brand: program.brand,
+  //           bounty: program.bountyRange,
+  //           status: program.status
+  //         });
+
+  //         localStorage.setItem('programId', programId);
+  //       } catch (error) {
+  //         console.error('Error loading program:', error);
+  //       }
+  //     } else {
+  //       // New program creation
+  //       const selectedProgramType = localStorage.getItem('selectedProgramType');
+  //       if (selectedProgramType) {
+  //         const isPrivate = selectedProgramType.includes('Private');
+  //         setProgramData((prev) => ({
+  //           ...prev,
+  //           visibility: isPrivate ? 'private' : 'public',
+  //           type: selectedProgramType,
+  //           status: 'draft',
+  //         }));
+  //       }
+  //     }
+  //   };
+
+  //   loadProgramData();
+
+  //   // Asset sync interval
+  //   let previousAssets = localStorage.getItem('assets');
+  //   const interval = setInterval(() => {
+  //     const currentAssets = localStorage.getItem('assets');
+  //     if (currentAssets && currentAssets !== previousAssets) {
+  //       const storedData = localStorage.getItem('programData');
+  //       const selectedProgramType = localStorage.getItem('selectedProgramType');
+
+  //       let updatedData = {};
+  //       if (storedData) {
+  //         updatedData = JSON.parse(storedData);
+  //       }
+
+  //       const parsedAssets = JSON.parse(currentAssets || '[]');
+  //       if (!updatedData.scope || updatedData.scope.length === 0) {
+  //         updatedData.scope = parsedAssets;
+  //       }
+
+  //       if (selectedProgramType) {
+  //         updatedData.type = selectedProgramType;
+  //         updatedData.visibility =
+  //           updatedData.visibility ||
+  //           (selectedProgramType.includes('Private') ? 'private' : 'public');
+  //       }
+
+  //       setProgramData(updatedData);
+  //       previousAssets = currentAssets;
+  //     }
+  //   }, 500);
+
+  //   return () => clearInterval(interval);
+  // }, [location.state, VITE_BACKEND_HOST_URL]);
+
+  // Load program data when component mounts
   useEffect(() => {
     const loadProgramData = async () => {
       // Check if we're editing an existing program
-      const programId = location.state?.programId || localStorage.getItem('programIdToEdit');
+      const programId = location.state?.programId || localStorage.getItem('programId');
       
       if (programId) {
         try {
           setIsEditing(true);
           const token = localStorage.getItem('token');
+          setStep(1); // Start from Step 2 (Define Scope)
           const response = await axios.get(
             `${VITE_BACKEND_HOST_URL}/api/programs/${programId}`,
             {
@@ -408,7 +500,8 @@ const CreateProgram = () => {
             status: program.status
           });
 
-          localStorage.setItem('programId', programId);
+          // Skip Step 1 if editing
+          
         } catch (error) {
           console.error('Error loading program:', error);
         }
@@ -429,7 +522,7 @@ const CreateProgram = () => {
 
     loadProgramData();
 
-    // Asset sync interval
+    // Asset sync interval (unchanged)
     let previousAssets = localStorage.getItem('assets');
     const interval = setInterval(() => {
       const currentAssets = localStorage.getItem('assets');
@@ -461,6 +554,7 @@ const CreateProgram = () => {
 
     return () => clearInterval(interval);
   }, [location.state, VITE_BACKEND_HOST_URL]);
+
 
   useEffect(() => {
     localStorage.setItem('programData', JSON.stringify(programData));
