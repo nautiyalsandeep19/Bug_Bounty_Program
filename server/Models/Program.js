@@ -9,11 +9,8 @@ const programSchema = new mongoose.Schema(
       ref: 'Company',
       required: true,
     },
-    brand: {
-      programName: { type: String, default: '' },
-      programTagline: { type: String, default: '' },
-      programWebsite: { type: String, default: '' },
-      programDescription: { type: String, default: '' },
+    description: {
+      type: String,
     },
     status: {
       type: String,
@@ -33,9 +30,9 @@ const programSchema = new mongoose.Schema(
       high: { type: Number, default: 800 },
     },
 
-    invitedHackers: [{ type: mongoose.Schema.Types.ObjectId, ref: "Hacker" }],
-    assets: [{ type: mongoose.Schema.Types.ObjectId, ref: "Asset" }],
-    reports: [{type: mongoose.Schema.Types.ObjectId,ref:"Report"}],
+    invitedHackers: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Hacker' }],
+    assets: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Asset' }],
+    reports: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Report' }],
 
     type: {
       type: String,
@@ -68,9 +65,13 @@ const programSchema = new mongoose.Schema(
     ],
     leaderboardVisibility: { type: Boolean, default: true },
     participants: {
-  type: Number,
-  default: 0,
-}
+      type: Number,
+      default: 0,
+    },
+    avgTime: {
+      type: Number,
+      default: 0,
+    },
   },
   { timestamps: true }
 )

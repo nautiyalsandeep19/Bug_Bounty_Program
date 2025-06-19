@@ -12,8 +12,10 @@
 
   --color-primaryBlue: #000028;
   --color-primarybg: #0000;
-  --color-primaryText-color: #00000;
-  --color-secondaryText-color: #8f8f91;
+  --color-secondarybg: #202127;
+
+  --color-primaryText: #ffffff;
+  --color-secondaryText: #888e99;
   --font-lato: 'Inter', sans-serif;
 }
 
