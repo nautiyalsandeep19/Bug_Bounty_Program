@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import CTAButton from "../../Common/Button/CTAButton";
 import Severity from "./SeveritySelector";
 import { UploadCloud } from "lucide-react";
@@ -36,9 +36,29 @@ const Report = () => {
   const [showPreview, setShowPreview] = useState(false);
   const program = useSelector((state) => state.program.programData);
   const [assets, setAssets] = useState([]);
+
+   const editorRef = useRef(null)
   
 
 
+  const resetForm = () => {
+  setScope("");
+  setEndpoint("");
+  setReportTitle("");
+  setReportSummary("");
+  setReportPOC("");
+  setSeverityData({});
+  setVulnerabilityType("");
+  setSelected("");
+  setSelectedVulnerability("");
+  setFilteredTypes(vulnerabilityTypes);
+  setVulnerabilityImpact("");
+  setAttachments([]);
+  setShowPreview(false);
+  editorRef.current?.editor?.commands.clearContent(true)
+};
+
+  console.log("PRogramData : ", program)
   const MAX_TOTAL_SIZE_MB = 5;
 
   const handleAttachmentsChange = async (e) => {
@@ -80,13 +100,6 @@ const Report = () => {
   }, [selected]);
 
 
-useEffect(() => {
-  if (program?._id) {
-    getAssetsForProgram(program._id).then(setAssets);
-  }
-}, [program]);
-
-
   useEffect(() => {
     setVulnerabilityType(selectedVulnerability);
   }, [selectedVulnerability]);
@@ -116,9 +129,12 @@ useEffect(() => {
     try {
       await createReport(payload);
       // Optionally reset form here
+        resetForm();
     } catch (error) {
       console.error("Report submission failed:", error.message);
     }
+
+   
   };
 
   const handleReportDraft = async () => {
@@ -147,9 +163,14 @@ useEffect(() => {
 
     try {
       await createReport(payload);
+      resetForm();
+      // editorRef.current?.editor?.commands.clearContent(true)
     } catch (error) {
       console.error("Report submission failed:", error.message);
     }
+
+
+
   };
   const RequiredMark = () => <span className="text-red-500 ml-1">*</span>;
 
@@ -159,45 +180,69 @@ useEffect(() => {
         <h1 className="text-2xl md:text-3xl font-bold">Submit Report</h1>
 
         {/* Scope */}
-        <div className="space-y-2">
+       {/* Scope */}
+<div className="space-y-2">
   <h2 className="text-lg md:text-xl font-semibold flex items-center">
     Select Your Scope
     <RequiredMark />
   </h2>
 
-  <Listbox value={scope} onChange={setScope}>
-    <div className="relative w-full">
-      <ListboxButton className="flex items-center justify-between w-full border border-gray-300 bg-black text-white p-2 rounded text-left">
-        {scope ? scope.assetURL : "Select an asset"}
-        <ChevronDownIcon className="h-5 w-5 ml-2" />
-      </ListboxButton>
+  <div className="flex flex-col gap-2 mb-4">
 
-      <ListboxOption className="absolute z-10 mt-1 w-full max-h-60 overflow-auto bg-black border border-gray-300 rounded shadow-lg">
-        {assets.map((asset, idx) => (
-          <ListboxOption
-            key={idx}
-            value={asset}
-            className={({ active }) =>
-              `cursor-pointer select-none p-2 ${
-                active ? "bg-indigo-600 text-white" : "text-white"
-              }`
-            }
-          >
-            <div>
-              <p className="font-medium">{asset.assetURL}</p>
-              {/* <p className="text-xs text-gray-300">{asset.assetType}</p> */}
-            </div>
-          </ListboxOption>
-        ))}
-      </ListboxOption>
-    </div>
-  </Listbox>
+    <select
+          name="scope"
+          value={scope}
+          onChange={(e)=>setScope(e.target.value)}
+          className="select w-full border rounded px-3 py-2"
+        >
+          <option disabled value="">
+            Select Scope
+          </option>
+          {program.assets.map((asset) => (
+            <option key={asset._id} value={asset.assetURL}>
+              {asset.assetURL}
+            </option>
+          ))}
+        </select>
 
-  {scope && (
-    <div className="text-sm text-gray-300 mt-2">
-      <strong>Selected Scope:</strong> {scope.assetURL} ({scope.assetType})
-    </div>
-  )}
+    {/* <Listbox value={scope} onChange={(val) => setScope(val.assetURL)}>
+      <div className="relative w-full">
+        <ListboxButton className="flex items-center justify-between w-full border border-gray-300 bg-black text-white p-2 rounded text-left">
+          {scope || "Select Scope"}
+          <ChevronDownIcon className="size-5 ml-2" />
+        </ListboxButton>
+        <ListboxOptions className="absolute z-10 mt-1 w-full max-h-40 overflow-y-auto bg-black border border-gray-300 rounded shadow-lg">
+          {assets.map((asset, index) => (
+  <ListboxOption
+    key={index}
+    value={asset}
+    className={({ active }) =>
+      `cursor-default select-none py-2 pl-3 pr-9 ${
+        active ? "bg-indigo-600 text-white" : "text-white"
+      }`
+    }
+  >
+    {({ selected }) => (
+      <span
+        className={`block truncate ${
+          selected ? "font-semibold" : "font-normal"
+        }`}
+      >
+        {asset.assetURL}
+      </span>
+    )}
+  </ListboxOption>
+))}
+        </ListboxOptions>
+      </div>
+    </Listbox> */}
+
+    {scope && (
+      <div className="mt-2 text-sm text-blue-500">
+        Selected Scope: <strong>{scope}</strong>
+      </div>
+    )}
+  </div>
 </div>
 
         {/* Endpoint */}
@@ -325,7 +370,7 @@ useEffect(() => {
             <h2 className="text-lg md:text-xl font-semibold mb-4">
               Report Description
             </h2>
-            <TiptapEditor setReportPOC={setReportPOC} />
+            <TiptapEditor ref={editorRef} setReportPOC={setReportPOC} />
           </div>
         </div>
         <div className="space-y-4">
