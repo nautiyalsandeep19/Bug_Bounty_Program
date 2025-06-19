@@ -1,25 +1,7 @@
-// import { Outlet } from 'react-router'
-// import CommonSidebar from './CommonSideBar'
-
-// const CommonLayout = () => {
-//   return (
-
-//     <div className="flex ml-70">
-//       <CommonSidebar />
-
-//       <div className="w-full overflow-y-auto">
-
-//         <Outlet />
-//       </div>
-//     </div>
-//   )
-// }
-
-// export default CommonLayout
-
 import React, { useState } from 'react'
 import CommonSidebar from './CommonSidebar'
 import TopNavbar from './TopNavbar'
+import MobileNavbar from './MobileNavbar'
 import { Outlet } from 'react-router-dom'
 
 const MainLayout = () => {
@@ -31,15 +13,25 @@ const MainLayout = () => {
         isCollapsed={isSidebarCollapsed}
         toggleCollapse={() => setIsSidebarCollapsed(!isSidebarCollapsed)}
       />
+
       <div
-        className={`flex-1 transition-all duration-300 ${
-          isSidebarCollapsed ? 'ml-16' : 'ml-64'
+        className={`flex flex-col w-full transition-all duration-300 ${
+          isSidebarCollapsed ? 'sm:ml-16' : 'sm:ml-64'
         }`}
       >
+        {/* Mobile Top Navbar */}
+
         <TopNavbar />
-        <main className="flex-1 overflow-y-auto p-6">
+
+        {/* Page Content */}
+        <main className="flex-1 overflow-y-auto p-4 pb-24 sm:pb-6">
           <Outlet />
         </main>
+
+        {/* Mobile Bottom Navbar */}
+        {/* <div className="sm:hidden fixed bottom-0 left-0 right-0 z-40">
+          <MobileNavbar />
+        </div> */}
       </div>
     </div>
   )
