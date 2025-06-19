@@ -14,11 +14,10 @@ const programSlice = createSlice({
       state.programData = action.payload
     },
     updateProgramField: (state, action) => {
-      const { field, value } = action.payload;
-      if (state.programData) {
-        state.programData[field] = value;
-      }
-    },
+  const { field, value } = action.payload;
+  state.programData[field] = value;
+}
+
   },
 })
 

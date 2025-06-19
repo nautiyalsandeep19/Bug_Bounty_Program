@@ -52,7 +52,6 @@ import VrtData from './Common/VrtData'
 import CommonLayout from './Common/LayoutSidebar/CommonLayout'
 import ProgramCreation from './CompanyComponents/CreateProgram/ProgramCreation'
 
-
 function App() {
   const dispatch = useDispatch()
   const token = useSelector((state) => state.auth.token)
