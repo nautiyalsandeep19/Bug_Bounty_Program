@@ -73,8 +73,8 @@ const CommonSidebar = () => {
   return (
     <>
       {/* Mobile Top Bar */}
-      <div className="sm:hidden bg-[#121212] p-4 flex justify-between items-center z-50 relative">
-        <h1 className="text-blue-500 text-2xl font-bold">Versantix</h1>
+      <div className="sm:hidden bg-[#18181b] p-4 flex justify-between items-center z-50 relative">
+        <h1 className="text-blue-500 text-2xl font-bold">Rekruters</h1>
         <button onClick={toggleMobileMenu} className="text-white">
           {isMobileMenuOpen ? <FaTimes size={24} /> : <FaBars size={24} />}
         </button>
@@ -84,7 +84,7 @@ const CommonSidebar = () => {
       <div
         className={`${
           isMobileMenuOpen ? 'block' : 'hidden'
-        } sm:block w-64 bg-[#121212] p-4 fixed top-0 left-0  h-full sm:h-screen z-50 border-r-1 border-blue-500 `}
+        } sm:block w-64 bg-[#18181b] p-4 fixed top-0 left-0  h-full sm:h-screen z-50 `}
       >
         <h1 className="text-blue-500 text-2xl font-bold mb-10 sm:block hidden">
           Versantix

@@ -60,13 +60,13 @@ const FeedDashboard = () => {
 
   return (
     
-<div className="h-screen bg-gradient-to-b from-black to-gray-900 px-4 py-4 flex flex-col space-y-6 overflow-hidden">
+<div className="h-screen w-full flex flex-col space-y-6 overflow-hidden">
   {/* User Info Card */}
   <div className="bg-zinc-900 p-6 rounded-2xl border border-zinc-700 shadow-lg hover:shadow-2xl transition-all duration-300">
     <div className="flex items-center gap-4 flex-wrap">
       {hacker.image ? (
         <img
-          src={hacker.image}
+          src={hacker.image} //111217
           alt="Profile"
           className="w-16 h-16 rounded-full object-cover border-2 border-white"
         />
@@ -93,45 +93,45 @@ const FeedDashboard = () => {
 
   {/* Stats Grid */}
   <div className="grid grid-cols-1 sm:grid-cols-4 gap-6">
-    <div className="bg-[#1F2937] p-6 rounded-xl flex items-center justify-between">
+    <div className="bg-[#202128] p-6 rounded-xl flex items-center justify-between">
       <div>
         <p className="text-gray-400">Total Earnings</p>
         <h2 className="text-3xl font-bold mt-2">$45,000</h2>
         <p className="text-green-400 mt-1 text-sm">+12% from last month</p>
       </div>
-      <Shield className="w-10 h-10 text-green-500" />
+      <Shield className="w-7 h-7 text-green-500" />
     </div>
 
-    <div className="bg-[#1F2937] p-6 rounded-xl flex items-center justify-between">
+    <div className="bg-[#202128] p-6 rounded-xl flex items-center justify-between">
       <div>
         <p className="text-gray-400">Reputation</p>
         <h2 className="text-3xl font-bold mt-2">2,850</h2>
         <p className="text-blue-400 mt-1 text-sm">Top 1% globally</p>
       </div>
-      <BadgeCheck className="w-10 h-10 text-blue-500" />
+      <BadgeCheck className="w-7 h-7 text-blue-500" />
     </div>
 
-    <div className="bg-[#1F2937] p-6 rounded-xl flex items-center justify-between">
+    <div className="bg-[#202128] p-6 rounded-xl flex items-center justify-between">
       <div>
         <p className="text-gray-400">Valid Findings</p>
         <h2 className="text-3xl font-bold mt-2">89</h2>
         <p className="text-red-400 mt-1 text-sm">70% success rate</p>
       </div>
-      <Bug className="w-10 h-10 text-red-500" />
+      <Bug className="w-7 h-7 text-red-500" />
     </div>
 
-    <div className="bg-[#1F2937] p-6 rounded-xl flex items-center justify-between">
+    <div className="bg-[#202128] p-6 rounded-xl flex items-center justify-between">
       <div>
         <p className="text-gray-400">Active Programs</p>
         <h2 className="text-3xl font-bold mt-2">3</h2>
         <p className="text-yellow-400 mt-1 text-sm">Available to hunt</p>
       </div>
-      <Target className="w-10 h-10 text-yellow-500" />
+      <Target className="w-7 h-7 text-yellow-500" />
     </div>
   </div>
 
   {/* Logs Section - scrollable, takes remaining height */}
-  <div className="flex-1 overflow-y-auto bg-neutral-900 p-6 rounded-2xl border border-zinc-700 shadow-md">
+  <div className="flex-1 overflow-y-auto bg-[#202128] p-6 rounded-2xl border border-zinc-700 shadow-md">
     <h2 className="text-lg font-semibold text-white mb-3">
       📜 Your Report Logs
     </h2> 
@@ -143,7 +143,7 @@ const FeedDashboard = () => {
           { logs.map((log, idx) => (
             <li
               key={idx}
-              className="flex flex-col gap-5 bg-[#18181b] px-4 py-2 rounded-lg text-sm text-yellow-300 border-1 border-blue-500 shadow"
+              className="flex flex-col gap-5 bg-[#202128] px-4 py-2 rounded-lg text-sm text-yellow-300 border-1 border-gray-500 shadow"
             >
               <div className="flex justify-between items-center">
                 <span
@@ -169,8 +169,8 @@ const FeedDashboard = () => {
               </div>
 
               <Button
-                className="!w-fit"
-                text="view report"
+                className="!w-fit !bg-gray-600 !border-none"
+                text="View Report"
                 onClick={() => navigate(`/chat/${log.reportId._id}`)}
               />
             </li>

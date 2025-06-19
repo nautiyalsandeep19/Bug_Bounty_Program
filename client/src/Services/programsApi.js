@@ -25,7 +25,7 @@ export const getPrivatePrograms = async () => {
 
     console.log('private p', response)
 
-    if (response.success) {
+    if (!response.success) {
       throw new Error(response.message)
     }
 

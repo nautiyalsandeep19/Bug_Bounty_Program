@@ -10,7 +10,8 @@ import {
   fetchPrivateProgramsForHacker,
   updateProgramVisibility,
   toggleLeaderboardVisibility,
-  publishProgram
+  publishProgram,
+  programInvite
 } from '../Controller/programController.js'
 import { authMid } from '../Middleware/authMid.js'
 
@@ -28,4 +29,9 @@ router.patch('/:id/publish', publishProgram);
 router.get('/allPrograms', fetchAllPrograms)
 router.get('/privatePrograms', authMid, fetchPrivateProgramsForHacker)
 
+
+
+
+// In your programs routes
+router.post('/:programId/invite', authMid, programInvite)
 export default router
