@@ -37,6 +37,9 @@ export const endPoints = {
 
   // messages/Logs
   GET_LOGS: BASE_URL + '/api/messages/logs',
+
+
+  GET_PROGRAM_ASSETS: BASE_URL + '/api/programs/get-assets',
 }
 
 export const axiosInstance = axios.create({ withCredentials: true })
