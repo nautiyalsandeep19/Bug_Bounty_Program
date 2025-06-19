@@ -152,9 +152,10 @@ export const logout = (navigate) => {
 
       //socket
       // Clear localStorage
-      localStorage.removeItem('token')
-      localStorage.removeItem('user')
-      localStorage.removeItem('userType')
+      // localStorage.removeItem('token')
+      // localStorage.removeItem('user')
+      // localStorage.removeItem('userType')
+      localStorage.clear()
 
       toast.success('Logged out successfully')
       navigate('/signup')

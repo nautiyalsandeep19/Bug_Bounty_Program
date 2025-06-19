@@ -122,7 +122,6 @@ function App() {
             }
           >
             <Route path="home" element={<AdminHome />} />
-            
           </Route>
 
           {/* Hacker Routes */}

@@ -7,14 +7,16 @@
   margin: 0% !important;
 }
 
-:root {
-  --color-primaryBlue: #ccccd8;
-  --color-primary: #bb3636;
-  --color-secondaryBlue: #060a58;
-  --color-textColor: white;
+@theme {
+  /* background Color  */
+
+  --color-primaryBlue: #000028;
+  --color-primarybg: #0000;
+  --color-primaryText-color: #00000;
+  --color-secondaryText-color: #8f8f91;
   --font-lato: 'Inter', sans-serif;
 }
 
-/* body {
+body {
   background-color: black;
-} */
+}
