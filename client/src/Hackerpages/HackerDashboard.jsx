@@ -6,6 +6,7 @@ import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router'
 import { fetchLogsForHacker } from '../Services/messageApi'
 import { Shield, BadgeCheck, Bug, Target } from 'lucide-react'
+import DashboardProgram from '../HackerComponents/DashboardProgram'
 
 const FeedDashboard = () => {
   const [hacker, setHacker] = useState(null)
@@ -129,6 +130,7 @@ const FeedDashboard = () => {
         </div>
       </div>
 
+      <DashboardProgram />
       {/* Logs Section - scrollable, takes remaining height */}
       <div className="flex-1 overflow-y-auto bg-neutral-900 p-6 rounded-2xl border border-zinc-700 shadow-md">
         <h2 className="text-lg font-semibold text-white mb-3">

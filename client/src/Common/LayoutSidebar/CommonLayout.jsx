@@ -19,8 +19,6 @@ const MainLayout = () => {
           isSidebarCollapsed ? 'sm:ml-16' : 'sm:ml-64'
         }`}
       >
-        {/* Mobile Top Navbar */}
-
         <TopNavbar />
 
         {/* Page Content */}

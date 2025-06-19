@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose from 'mongoose'
 
 const programSchema = new mongoose.Schema(
   {
@@ -6,41 +6,41 @@ const programSchema = new mongoose.Schema(
     // description: { type: String, default: "" },
     company: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Company",
+      ref: 'Company',
       required: true,
     },
     brand: {
-      programName: { type: String, default: "" },
-      programTagline: { type: String, default: "" },
-      programWebsite: { type: String, default: "" },
-      programDescription: { type: String, default: "" },
+      programName: { type: String, default: '' },
+      programTagline: { type: String, default: '' },
+      programWebsite: { type: String, default: '' },
+      programDescription: { type: String, default: '' },
     },
     status: {
-    type: String,
-    enum: ['draft', 'published'],
-    default: 'draft'
-  },
+      type: String,
+      enum: ['draft', 'published'],
+      default: 'draft',
+    },
     policy: { type: String, default: '' },
     additionalDetails: { type: String, default: '' },
     visibility: {
       type: String,
-      enum: ["private", "public"],
-      default: "public",
+      enum: ['private', 'public'],
+      default: 'public',
     },
     bountyRange: {
       low: { type: Number, default: 50 },
       medium: { type: Number, default: 400 },
       high: { type: Number, default: 800 },
     },
-    invitedHackers: [{ type: mongoose.Schema.Types.ObjectId, ref: "Hacker" }],
-    assets: [{ type: mongoose.Schema.Types.ObjectId, ref: "Asset" }],
+    invitedHackers: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Hacker' }],
+    assets: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Asset' }],
     type: {
       type: String,
       enum: [
-        "VDP",
-        "Private Bug Bounty",
-        "Public Bug Bounty",
-        "Enterprise Pentesting",
+        'VDP',
+        'Private Bug Bounty',
+        'Public Bug Bounty',
+        'Enterprise Pentesting',
       ],
       required: true,
     },
@@ -48,9 +48,9 @@ const programSchema = new mongoose.Schema(
     endDate: {
       type: Date,
       default: function () {
-        const twoMonthsLater = new Date();
-        twoMonthsLater.setMonth(twoMonthsLater.getMonth() + 2);
-        return twoMonthsLater;
+        const twoMonthsLater = new Date()
+        twoMonthsLater.setMonth(twoMonthsLater.getMonth() + 2)
+        return twoMonthsLater
       },
     },
     guidelines: { type: String },
@@ -59,15 +59,15 @@ const programSchema = new mongoose.Schema(
     isPublished: { type: Boolean, default: false },
     leaderboard: [
       {
-        hacker: { type: mongoose.Schema.Types.ObjectId, ref: "Hacker" },
+        hacker: { type: mongoose.Schema.Types.ObjectId, ref: 'Hacker' },
         score: { type: Number, default: 0 },
       },
     ],
     leaderboardVisibility: { type: Boolean, default: true },
   },
   { timestamps: true }
-);
+)
 
-const Program = mongoose.model("Program", programSchema);
+const Program = mongoose.model('Program', programSchema)
 
-export default Program;
+export default Program
