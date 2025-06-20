@@ -11,11 +11,12 @@
   /* background Color  */
 
   --color-primaryBlue: #000028;
-  --color-primarybg: #0000;
+  --color-primarybg: black;
   --color-secondarybg: #202127;
-
+  --color-thirdbg: #111218;
   --color-primaryText: #ffffff;
-  --color-secondaryText: #888e99;
+  --color-secondaryText: #d1d5da;
+  --color-primaryBorder : 
   --font-lato: 'Inter', sans-serif;
 }
 

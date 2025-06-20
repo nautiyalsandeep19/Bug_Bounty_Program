@@ -87,57 +87,53 @@ export const getLogsForHacker = async (req, res) => {
     })
   }
 }
- 
-
-
-
 
 export const updateMessage = async (req, res) => {
   try {
-    const { messageId, message } = req.body;
+    const { messageId, message } = req.body
 
     if (!messageId || !message) {
       return res.status(400).json({
         success: false,
         message: 'Both messageId and updated message are required',
-      });
+      })
     }
 
-    const existingMessage = await Message.findById(messageId);
+    const existingMessage = await Message.findById(messageId)
 
     if (!existingMessage) {
       return res.status(404).json({
         success: false,
         message: 'Message not found',
-      });
+      })
     }
 
     // Check if the message is older than 10 minutes
-    const createdAt = new Date(existingMessage.createdAt);
-    const now = new Date();
-    const diffInMinutes = (now - createdAt) / (1000 * 60);
+    const createdAt = new Date(existingMessage.createdAt)
+    const now = new Date()
+    const diffInMinutes = (now - createdAt) / (1000 * 60)
 
     if (diffInMinutes > 10) {
       return res.status(403).json({
         success: false,
         message: 'You can only edit messages within 10 minutes of sending.',
-      });
+      })
     }
 
     // Update message
-    existingMessage.message = message;
-    const updated = await existingMessage.save();
+    existingMessage.message = message
+    const updated = await existingMessage.save()
 
     return res.status(200).json({
       success: true,
       message: 'Message updated successfully',
       updatedMessage: updated,
-    });
+    })
   } catch (error) {
-    console.error('Error updating message:', error);
+    console.error('Error updating message:', error)
     return res.status(500).json({
       success: false,
       message: 'Internal Server Error',
-    });
+    })
   }
-};
+}

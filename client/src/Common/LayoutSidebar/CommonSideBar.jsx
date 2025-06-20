@@ -67,7 +67,7 @@ const CommonSidebar = ({ isCollapsed, toggleCollapse }) => {
 
   return (
     <div
-      className={`fixed top-0 left-0 h-full z-10 bg-[#121212] border-r border-blue-500 transition-all duration-300
+      className={`fixed top-0 left-0 h-full z-10 bg-primarybg border-r border-green-500 transition-all duration-300
         hidden sm:flex flex-col
         ${isCollapsed ? 'w-16' : 'w-64'}
       `}
@@ -82,7 +82,7 @@ const CommonSidebar = ({ isCollapsed, toggleCollapse }) => {
       {/* Logo + Desktop TopNavbar */}
       {!isCollapsed && (
         <>
-          <h1 className="text-blue-500 text-2xl font-bold mb-2 px-4">
+          <h1 className="text-green-500 text-2xl font-bold mb-2 px-4">
             Versantix
           </h1>
         </>
@@ -98,7 +98,6 @@ const CommonSidebar = ({ isCollapsed, toggleCollapse }) => {
         ))}
       </nav>
 
-      {/* Logout */}
       <div className="mt-6 px-2">{!isCollapsed && <Logout />}</div>
     </div>
   )

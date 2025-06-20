@@ -14,44 +14,44 @@ const ReportTemplate = ({
 }) => {
   return (
     <div className="shadow-lg border border-gray-200 rounded-xl p-6 space-y-6 max-w-4xl mx-auto">
-      <h2 className="text-2xl font-bold text-blue-700 flex items-center gap-2 mt-4">
+      <h2 className="text-2xl font-bold text-green-700 flex items-center gap-2 mt-4">
         📝 Vulnerability Report Summary
       </h2>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <p>
-          <span className="font-semibold text-blue-500"> Scope:</span> {scope}
+          <span className="font-semibold text-green-500"> Scope:</span> {scope}
         </p>
         <p>
-          <span className="font-semibold text-blue-500"> Endpoint:</span>{' '}
+          <span className="font-semibold text-green-500"> Endpoint:</span>{' '}
           {endpoint || 'N/A'}
         </p>
         <p>
-          <span className="font-semibold text-blue-500">
+          <span className="font-semibold text-green-500">
             Vulnerability Type:
           </span>{' '}
           {vulnerabilityType}
         </p>
         <p>
-          <span className="font-semibold text-blue-500"> Report Title:</span>{' '}
+          <span className="font-semibold text-green-500"> Report Title:</span>{' '}
           {reportTitle}
         </p>
         <p className="sm:col-span-2">
-          <span className="font-semibold text-blue-500"> Summary:</span>{' '}
+          <span className="font-semibold text-green-500"> Summary:</span>{' '}
           {reportSummary}
         </p>
         <p>
-          <span className="font-semibold text-blue-500"> Severity:</span>{' '}
+          <span className="font-semibold text-green-500"> Severity:</span>{' '}
           {severityData?.severity || 'N/A'}
         </p>
         <p>
-          <span className="font-semibold text-blue-500"> Impact:</span>{' '}
+          <span className="font-semibold text-green-500"> Impact:</span>{' '}
           {vulnerabilityImpact}
         </p>
       </div>
 
       <div>
-        <h3 className="text-xl font-semibold text-blue-700 mb-2 flex items-center gap-2">
+        <h3 className="text-xl font-semibold text-green-700 mb-2 flex items-center gap-2">
           Proof of Concept (POC)
         </h3>
         <div className=" ProseMirror rounded-md p-4 border  border-gray-300 prose max-w-none">
@@ -60,7 +60,7 @@ const ReportTemplate = ({
       </div>
 
       <div>
-        <h3 className="text-xl font-semibold text-blue-700 mb-2 flex items-center gap-2">
+        <h3 className="text-xl font-semibold text-green-700 mb-2 flex items-center gap-2">
           📎 Attachments
         </h3>
         <ul className="list-disc list-inside space-y-1">

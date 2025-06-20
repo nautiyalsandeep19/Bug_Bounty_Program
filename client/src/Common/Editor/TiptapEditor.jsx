@@ -136,7 +136,7 @@ const MenuBar = ({ editor }) => {
   }
 
   return (
-    <div className="flex flex-wrap gap-2 p-2 border rounded-md border-gray-300 bg-black w-full mb-4">
+    <div className="flex flex-wrap gap-2 p-2 border rounded-md border-gray-300 bg-primarybg w-full mb-4">
       {formatButton(
         <Bold size={18} />,
         () => editor.chain().focus().toggleBold().run(),
@@ -260,35 +260,36 @@ const extensions = [
   ExternalFile,
 ]
 
-const TiptapEditor = forwardRef(({ onUpdate, setReportPOC }, ref) => {
-  const editor = useEditor({
-    extensions,
-    content: '',
-    editorProps: {
-      attributes: {
-        class:
-          'ProseMirror h-[200px] w-[40vw] overflow-y-auto border border-gray-300 rounded-md p-4 focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white text-black',
+const TiptapEditor = forwardRef(
+  ({ onUpdate, setReportPOC, className = '' }, ref) => {
+    const editor = useEditor({
+      extensions,
+      content: '',
+      editorProps: {
+        attributes: {
+          class: `ProseMirror min-h-[50px] max-h-full w-full overflow-y-auto border border-secondarybg rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-green-500  ${className}`,
+        },
       },
-    },
-    onUpdate: ({ editor }) => {
-      const html = editor.getHTML()
-      if (typeof onUpdate === 'function') onUpdate(html)
-      if (typeof setReportPOC === 'function') setReportPOC(html)
-    },
-  })
+      onUpdate: ({ editor }) => {
+        const html = editor.getHTML()
+        if (typeof onUpdate === 'function') onUpdate(html)
+        if (typeof setReportPOC === 'function') setReportPOC(html)
+      },
+    })
 
-  useEffect(() => {
-    if (editor && ref) {
-      ref.current = { editor }
-    }
-  }, [editor, ref])
+    useEffect(() => {
+      if (editor && ref) {
+        ref.current = { editor }
+      }
+    }, [editor, ref])
 
-  return (
-    <div className="max-w-3xl mx-auto p-6 bg-black rounded-lg shadow-md">
-      <MenuBar editor={editor} />
-      <EditorContent editor={editor} />
-    </div>
-  )
-})
+    return (
+      <div className=" mx-auto   rounded-lg shadow-md">
+        <MenuBar editor={editor} />
+        <EditorContent editor={editor} />
+      </div>
+    )
+  }
+)
 
 export default TiptapEditor
