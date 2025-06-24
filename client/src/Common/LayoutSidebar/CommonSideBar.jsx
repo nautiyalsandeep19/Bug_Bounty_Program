@@ -40,11 +40,12 @@ const CommonSidebar = ({ isCollapsed, toggleCollapse }) => {
         label: 'Dashboard',
         icon: <FaTachometerAlt />,
       },
-      { to: '/company/programs', label: 'Programs', icon: <FaList /> },
+      { to: '/company/programs', label: 'My Programs', icon: <FaList /> },
+      { to: '/company/reports', label: 'Bug Reports', icon: <FaBug /> },
+      { to: '/company/reports', label: 'Researchers', icon: <FaCrown /> },
       { to: '/company/assets', label: 'Assets', icon: <FaBug /> },
       { to: '/company/leaderboard', label: 'Campaigns', icon: <FaCrown /> },
       { to: '/company/bounties', label: 'Bounties', icon: <FaGift /> },
-      { to: '/company/reports', label: 'Reports', icon: <FaBug /> },
       { to: '/company/setting', label: 'Settings', icon: <FaCog /> },
     ],
     triager: [
@@ -67,7 +68,9 @@ const CommonSidebar = ({ isCollapsed, toggleCollapse }) => {
 
   return (
     <div
+
       className={`fixed top-0 left-0 h-full z-10 bg-primarybg border-r border-green-500 transition-all duration-300
+
         hidden sm:flex flex-col
         ${isCollapsed ? 'w-16' : 'w-64'}
       `}

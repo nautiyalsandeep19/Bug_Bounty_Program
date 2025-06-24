@@ -11,8 +11,7 @@ import {
   updateProgramVisibility,
   toggleLeaderboardVisibility,
   publishProgram,
-  avgResponse,
-  getProgramAssets,
+  programInvite
 } from '../Controller/programController.js'
 import { authMid } from '../Middleware/authMid.js'
 
@@ -25,11 +24,16 @@ router.post('/programDetail', getProgramByIds)
 router.post('/visibilityChange', toggleLeaderboardVisibility)
 router.patch('/:id/visibility', updateProgramVisibility)
 router.patch('/:id/publish', publishProgram)
-router.get('/avgResponse', avgResponse)
+// router.get('/avgResponse', avgResponse)
 // router.post('/get-assets', getProgramAssets);
 
 // for hackers
 router.get('/allPrograms', fetchAllPrograms)
 router.get('/privatePrograms', authMid, fetchPrivateProgramsForHacker)
 
+
+
+
+// In your programs routes
+router.post('/:programId/invite', authMid, programInvite)
 export default router

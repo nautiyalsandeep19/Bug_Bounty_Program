@@ -1,18 +1,22 @@
-import Program from "../Models/Program.js";
-import Report from "../Models/Report.js";
-import Message from "../Models/Message.js";
+import Program from '../Models/Program.js'
+import Report from '../Models/Report.js'
+import Hacker from '../Models/hacker.js';
+import mongoose from 'mongoose'
+import nodemailer from 'nodemailer';
+
 
 export const createProgram = async (req, res) => {
   try {
-    const { type, title, company, visibility } = req.body;
+    const { type, title, company,description, visibility  } = req.body
 
     const program = new Program({
       type,
       title: title || "New Program",
       company,
       visibility,
-      status: "draft", // Always create as draft initially
-    });
+      status: 'draft',
+      description,
+    })
 
     await program.save();
     res.status(201).json({ data: program });
@@ -35,6 +39,7 @@ export const updateProgramById = async (req, res) => {
 
     const updateData = {
       title: req.body.title,
+      description:req.body.description,
       guidelines: req.body.guidelines,
       areasOfConcern: req.body.concerns,
       policy: req.body.policy,
@@ -49,9 +54,8 @@ export const updateProgramById = async (req, res) => {
         medium: 0,
         high: 0,
       },
-      visibility: req.body.visibility || "public",
-      status: req.body.status || "draft", // Add status field
-    };
+      visibility: req.body.visibility || 'public',
+      status: req.body.status || 'draft',     }
 
     const programId = req.params.id;
     const updatedProgram = await Program.findByIdAndUpdate(
@@ -205,7 +209,7 @@ export const getProgramByIds = async (req, res) => {
 
 export const fetchPrivateProgramsForHacker = async (req, res) => {
   try {
-    console.log("requser", req.user);
+    console.log('requsert', req.user)
 
     if (!req.user && req.user.userType !== "hacker") {
       return res.status(403).json({
@@ -217,10 +221,11 @@ export const fetchPrivateProgramsForHacker = async (req, res) => {
     const hackerId = req.user.id;
 
     const programs = await Program.find({
-      visibility: "private",
+      status:'published',
+      visibility: 'private',
       invitedHackers: hackerId,
-    });
-    console.log("pro", programs);
+    }).populate('company')
+    console.log('pro', programs)
 
     return res.status(200).json({
       success: true,
@@ -365,142 +370,103 @@ export const publishProgram = async (req, res) => {
       error: error.message,
     });
   }
-};
+}
 
-// export const avgResponse = async (req, res) => {
-//   try {
-//     const { programId } = req.body;
 
-//     if (!programId) {
-//       return res.status(400).json({ message: "Program ID is required" });
-//     }
 
-//     const reports = await Report.find({ programId }).select(
-//       "_id createdAt hackerId"
-//     );
 
-//     const timeDiffs = [];
-//     let unreadReports = 0;
-
-//     for (const report of reports) {
-//       const {
-//         _id: reportId,
-//         createdAt: reportCreatedAt,
-//         hackerId: reportHacker,
-//       } = report;
-
-//       const firstLog = await Message.findOne({
-//         reportId: reportId,
-//         messageType: "log",
-//         senderId: { $ne: reportHacker }, // someone other than the hacker
-//       })
-//         .sort({ createdAt: 1 })
-//         .select("createdAt");
-
-//       if (firstLog) {
-//         const responseTime =new Date(firstLog.createdAt) - new Date(reportCreatedAt);
-//         timeDiffs.push(responseTime);
-//       } else {
-//         unreadReports += 1;
-//       }
-//     }
-
-//     if (timeDiffs.length === 0) {
-//       return res.status(200).json({
-//         message: "No processed reports yet.",
-//         averageResponseTime: null,
-//         processedReports: 0,
-//         unreadReports,
-//       });
-//     }
-
-//     const averageMs =
-//       timeDiffs.reduce((acc, curr) => acc + curr, 0) / timeDiffs.length;
-//     const averageHours = averageMs / (1000 * 60 * 60);
-
-//     return res.status(200).json({
-//       [programId]: averageHours.toFixed(2) + " hours",
-//       processedReports: timeDiffs.length,
-//       unreadReports,
-//     });
-//   } catch (error) {
-//     console.error("Error calculating average response time:", error);
-//     return res.status(500).json({ message: "Internal Server Error" });
-//   }
-// };
-
-export const avgResponse = async (req, res) => {
+export const programInvite = async (req, res) => {
   try {
-    const programIds = (await Program.find().select("_id")).map((program) =>
-      program._id.toString()
+    const { programId } = req.params;
+    const { hackerIds } = req.body;
+
+    // 1. Update program with invited hackers
+    await Program.findByIdAndUpdate(programId, {
+      $addToSet: { invitedHackers: { $each: hackerIds } }
+    });
+
+    // 2. Get program and hacker details
+    const [program, hackers] = await Promise.all([
+      Program.findById(programId).select('title'),
+      Hacker.find({ _id: { $in: hackerIds } }).select('email name')
+    ]);
+
+    if (!program || !hackers.length) {
+      return res.status(404).json({ 
+        success: false, 
+        message: !program ? 'Program not found' : 'No hackers found' 
+      });
+    }
+
+    // 3. Configure email transporter
+    const transporter = nodemailer.createTransport({
+      service: 'gmail',
+      auth: {
+        user: process.env.EMAIL_USERNAME,
+        pass: process.env.EMAIL_PASSWORD,
+      },
+      tls: { rejectUnauthorized: false }
+    });
+
+    // 4. Send emails
+    const baseUrl = process.env.FRONTEND_URL || 'http://localhost:8000';
+    const programUrl = `${baseUrl}/programs/${programId}`;
+
+    const results = await Promise.allSettled(
+      hackers.map(hacker => transporter.sendMail({
+        from: `"Bug Bounty Platform" <${process.env.EMAIL_USERNAME}>`,
+        to: hacker.email,
+        subject: `Invitation: ${program.title}`,
+        html: `
+          <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+            <h2 style="color: #2563eb;">You've Been Invited!</h2>
+            <p>Dear ${hacker.name},</p>
+            <p>You have been invited to participate in a private bug bounty program:</p>
+            
+            <div style="background-color: #f3f4f6; padding: 16px; border-radius: 8px; margin: 16px 0;">
+              <h3 style="margin-top: 0; color: #1e40af;">${program.title}</h3>
+              <p>This is an exclusive invitation-only program.</p>
+            </div>
+            
+            <p>Click the button below to access the program:</p>
+            <a href="${programUrl}" 
+               style="display: inline-block; background-color: #2563eb; color: white; 
+                      padding: 12px 24px; text-decoration: none; border-radius: 4px; 
+                      font-weight: bold; margin: 16px 0;">
+              Access Program
+            </a>
+            
+            <p>If the button doesn't work, copy and paste this link into your browser:</p>
+            <p style="word-break: break-all;">${programUrl}</p>
+            
+            <p>Happy hacking!</p>
+            <p>The Bug Bounty Platform Team</p>
+          </div>
+        ` 
+      }))
     );
 
-    if (!Array.isArray(programIds) || programIds.length === 0) {
-      return res.status(400).json({ message: "Program IDs are required" });
+    // Check for failures
+    const failedEmails = results
+      .filter(r => r.status === 'rejected')
+      .map((r, i) => ({ email: hackers[i].email, error: r.reason.message }));
+
+    if (failedEmails.length) {
+      console.error('Failed emails:', failedEmails);
     }
 
-    const result = {};
+    res.status(200).json({
+      success: true,
+      message: `Invites sent with ${failedEmails.length} failures`,
+      failedEmails
+    });
 
-    for (const programId of programIds) {
-      const reports = await Report.find({ programId }).select(
-        "_id createdAt hackerId"
-      );
-
-      const timeDiffs = [];
-
-      for (const report of reports) {
-        const {
-          _id: reportId,
-          createdAt: reportCreatedAt,
-          hackerId: reportHacker,
-        } = report;
-
-        const firstLog = await Message.findOne({
-          reportId,
-          messageType: "log",
-          senderId: { $ne: reportHacker },
-        })
-          .sort({ createdAt: 1 })
-          .select("createdAt");
-
-        if (firstLog) {
-          const responseTime =
-            new Date(firstLog.createdAt) - new Date(reportCreatedAt);
-          timeDiffs.push(responseTime);
-        }
-      }
-
-      if (timeDiffs.length === 0) {
-        result[programId] = null; // or "unread" if you prefer
-      } else {
-        const averageMs =
-          timeDiffs.reduce((acc, curr) => acc + curr, 0) / timeDiffs.length;
-        const averageHours = averageMs / (1000 * 60 * 60);
-        result[programId] = averageHours.toFixed(2) + " hours";
-      }
-    }
-
-    return res.status(200).json(result);
-  } catch (error) {
-    console.error("Error calculating average response times:", error);
-    return res.status(500).json({ message: "Internal Server Error" });
-  }
-};
-
-
-export const getProgramAssets = async (req, res) => {
-  try {
-    const { programId } = req.body;
-
-    const program = await Program.findById(programId).populate('assets');
-
-    if (!program) {
-      return res.status(404).json({ message: 'Program not found' });
-    }
-
-    res.status(200).json({ assets: program.assets });
-  } catch (error) {
-    console.error('Error fetching program assets:', error);
-    res.status(500).json({ message: 'Internal server error' });
+  } catch (err) {
+    console.error('Invite error:', err);
+    res.status(500).json({ 
+      success: false, 
+      message: 'Server error',
+      error: err.message 
+    });
   }
 };

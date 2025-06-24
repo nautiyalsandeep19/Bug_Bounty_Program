@@ -71,78 +71,66 @@ const HackerSettings = () => {
   }
 
   return (
-    <div className="w-full bg-[#111f3a] text-white p-8 rounded-lg shadow-lg flex flex-col gap-8 overflow-y-scroll">
-      <h2 className="text-3xl font-semibold mb-6">Settings</h2>
+    <div className="w-full max-w-5xl mx-auto bg-[#202128] text-white p-10 rounded-xl shadow-xl">
+      <h2 className="text-3xl font-semibold mb-1">Profile Information</h2>
+      <p className="text-gray-400 mb-8">
+        Update your personal information and preferences
+      </p>
 
-      <div className="flex flex-col gap-8">
-        {/* User Information Section */}
-        <div className="p-6 bg-gradient-to-r from-[#1E293B] via-[#334155] to-[#1E293B] rounded-xl shadow-xl transition-all duration-300 hover:shadow-2xl">
-          <h3 className="text-2xl font-semibold text-white mb-6">
-            User Information
-          </h3>
-          <div className="flex flex-col gap-4 text-base text-gray-300 ">
-            <div className="flex items-center gap-4">
-              <img
-                src={user?.image}
-                alt="User"
-                className="w-24 h-24 rounded-full object-cover border-4 border-[#0066ff]"
-              />
-              <div>
-                <div className="flex items-center">
-                  <strong className="text-white mr-2">Name:</strong>
-                  <span className="text-gray-200">{user?.name || 'N/A'}</span>
-                </div>
-                <div className="flex items-center">
-                  <strong className="text-white mr-2">Username:</strong>
-                  <span className="text-blue-500">
-                    {user?.username || 'N/A'}
-                  </span>
-                </div>
-                <div className="flex items-center">
-                  <strong className="text-white mr-2">Email:</strong>
-                  <span className="text-gray-200">{user?.email || 'N/A'}</span>
-                </div>
-                <div className="flex items-center">
-                  <strong className="text-white mr-2">Country:</strong>
-                  <span className="text-gray-200">
-                    {user?.country || 'N/A'}
-                  </span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Edit Details Section */}
-        <div className="p-6 bg-gradient-to-r from-[#1E293B] via-[#334155] to-[#1E293B] rounded-xl shadow-xl transition-all duration-300 hover:shadow-2xl">
-          <h3 className="text-2xl font-semibold text-white mb-6">
-            Edit Details
-          </h3>
-          <div className="space-y-6">
-            {Object.keys(personalInfo).map((key) => (
-              <div key={key} className="flex flex-col gap-2">
-                <label className="text-sm font-medium text-gray-300 capitalize">
-                  {key}
-                </label>
-                <input
-                  type="text"
-                  name={key}
-                  value={personalInfo[key]}
-                  onChange={handleChange}
-                  placeholder={`Enter ${key}`}
-                  className="w-full p-4 bg-[#0F172A] text-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 transition-all duration-200 ease-in-out focus:outline-none"
-                />
-              </div>
-            ))}
+      {/* User Info Section */}
+      <div className="mb-10">
+        <div className="flex items-center gap-6 mb-6">
+          <img
+            src={user?.image}
+            alt="User"
+            className="w-24 h-24 rounded-full object-cover border-4 border-blue-500"
+          />
+          <div className="space-y-1">
+            <p>
+              <span className="font-semibold text-white">Name:</span>{' '}
+              <span className="text-gray-300">{user?.name || 'N/A'}</span>
+            </p>
+            <p>
+              <span className="font-semibold text-white">Username:</span>{' '}
+              <span className="text-blue-400">{user?.username || 'N/A'}</span>
+            </p>
+            <p>
+              <span className="font-semibold text-white">Email:</span>{' '}
+              <span className="text-gray-300">{user?.email || 'N/A'}</span>
+            </p>
+            <p>
+              <span className="font-semibold text-white">Country:</span>{' '}
+              <span className="text-gray-300">{user?.country || 'N/A'}</span>
+            </p>
           </div>
         </div>
       </div>
 
-      <div className="flex justify-center mt-8">
+      {/* Editable Fields */}
+      <form className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+        {Object.keys(personalInfo).map((key) => (
+          <div key={key} className="flex flex-col gap-2">
+            <label className="text-sm font-medium text-gray-300 capitalize">
+              {key}
+            </label>
+            <input
+              type="text"
+              name={key}
+              value={personalInfo[key]}
+              onChange={handleChange}
+              placeholder={`Enter ${key}`}
+              className="w-full px-4 py-3 bg-[#111217] text-white border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+          </div>
+        ))}
+      </form>
+
+      {/* Submit Button */}
+      <div className="flex justify-start mt-10">
         <Button
           onClick={handleSave}
           text="Update Profile"
-          className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg transition-all"
+          className="bg-green-600 hover:bg-green-700 text-white font-semibold px-6 py-3 rounded-lg transition"
         />
       </div>
     </div>

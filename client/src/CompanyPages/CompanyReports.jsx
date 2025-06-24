@@ -44,6 +44,8 @@ const CompanyReports = () => {
     fetchReports()
   }, [BASE_URL, programId])
 
+  console.log('companyreports',reports)
+
   if (loading) return <Loader />
   if (error) return <div>{error}</div>
   if (reports.length === 0) return <div>No Reports found</div>

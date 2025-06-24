@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import CommonSidebar from './CommonSidebar'
+import CommonSidebar from './CommonSideBar'
 import TopNavbar from './TopNavbar'
 import MobileNavbar from './MobileNavbar'
 import { Outlet } from 'react-router-dom'

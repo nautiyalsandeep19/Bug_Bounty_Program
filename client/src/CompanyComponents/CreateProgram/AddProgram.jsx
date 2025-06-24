@@ -12,7 +12,6 @@ const stepsList = [
   'Program Policy',
   'Bounty Range',
   'Additional Details',
-  'Brand Program',
   'Schedule Launch',
   'Review & Submit',
 ];
@@ -32,6 +31,20 @@ const Step1_ProgramUsername = ({ data, updateData }) => (
       type="text"
       value={data.programName || ''}
       onChange={(e) => updateData({ programName: e.target.value })}
+      placeholder="e.g. SecureBug Program"
+      className="w-full border border-gray-300 rounded-xl px-5 py-3 shadow-sm focus:ring-2 focus:ring-indigo-500 focus:outline-none transition"
+    />
+    <label
+      htmlFor="description"
+      className="text-lg font-medium text-gray-900 block mb-2"
+    >
+      📝 Description
+    </label>
+    <input
+      id="description"
+      type="text"
+      value={data.description || ''}
+      onChange={(e) => updateData({ description: e.target.value })}
       placeholder="e.g. SecureBug Program"
       className="w-full border border-gray-300 rounded-xl px-5 py-3 shadow-sm focus:ring-2 focus:ring-indigo-500 focus:outline-none transition"
     />
@@ -306,7 +319,7 @@ const Step8_BrandProgram = ({ data, updateData }) => {
   )
 }
 
-const Step9_ScheduleLaunch = ({ data, updateData }) => (
+const Step8_ScheduleLaunch = ({ data, updateData }) => (
   <div className="mb-6">
     <label className="block text-gray-800 font-semibold mb-2 text-lg">
       Start Date:
@@ -329,7 +342,7 @@ const Step9_ScheduleLaunch = ({ data, updateData }) => (
   </div>
 )
 
-const Step10_ReviewAndSubmit = ({ data, onSubmit }) => {
+const Step9_ReviewAndSubmit = ({ data, onSubmit }) => {
   const displayData = { ...data }
   if (displayData.bounty) {
     displayData.bounty = {
@@ -366,6 +379,7 @@ const Step10_ReviewAndSubmit = ({ data, onSubmit }) => {
 }
 // Main component
 const CreateProgram = () => {
+  const [showInvitePopup, setShowInvitePopup] = useState(false);
   const [step, setStep] = useState(0);
   const [programData, setProgramData] = useState({});
   const [isEditing, setIsEditing] = useState(false);
@@ -373,97 +387,21 @@ const CreateProgram = () => {
   const location = useLocation();
   const VITE_BACKEND_HOST_URL = import.meta.env.VITE_BACKEND_HOST_URL;
   
-  // Load program data when component mounts
-  // useEffect(() => {
-  //   const loadProgramData = async () => {
-  //     // Check if we're editing an existing program
-  //     const programId = location.state?.programId || localStorage.getItem('programIdToEdit');
-      
-  //     if (programId) {
-  //       try {
-  //         setIsEditing(true);
-  //         const token = localStorage.getItem('token');
-  //         const response = await axios.get(
-  //           `${VITE_BACKEND_HOST_URL}/api/programs/${programId}`,
-  //           {
-  //             headers: {
-  //               Authorization: `Bearer ${token}`,
-  //             },
-  //           }
-  //         );
 
-  //         const program = response.data.data;
-  //         setProgramData({
-  //           programName: program.title,
-  //           guidelines: program.guidelines,
-  //           concerns: program.areasOfConcern,
-  //           programPolicy: program.policy,
-  //           additionalDetails: program.additionalDetails,
-  //           type: program.type,
-  //           startDate: program.startDate,
-  //           endDate: program.endDate,
-  //           visibility: program.visibility,
-  //           scope: program.scope,
-  //           brand: program.brand,
-  //           bounty: program.bountyRange,
-  //           status: program.status
-  //         });
+useEffect(() => {
+  return () => {
+    if (!location.pathname.includes('/create-program')) {
+      localStorage.removeItem('programId');
+      localStorage.removeItem('programData');
+      localStorage.removeItem('assets');
+      localStorage.removeItem('selectedProgramType');
+    }
+  };
+}, [location.pathname]);
 
-  //         localStorage.setItem('programId', programId);
-  //       } catch (error) {
-  //         console.error('Error loading program:', error);
-  //       }
-  //     } else {
-  //       // New program creation
-  //       const selectedProgramType = localStorage.getItem('selectedProgramType');
-  //       if (selectedProgramType) {
-  //         const isPrivate = selectedProgramType.includes('Private');
-  //         setProgramData((prev) => ({
-  //           ...prev,
-  //           visibility: isPrivate ? 'private' : 'public',
-  //           type: selectedProgramType,
-  //           status: 'draft',
-  //         }));
-  //       }
-  //     }
-  //   };
 
-  //   loadProgramData();
-
-  //   // Asset sync interval
-  //   let previousAssets = localStorage.getItem('assets');
-  //   const interval = setInterval(() => {
-  //     const currentAssets = localStorage.getItem('assets');
-  //     if (currentAssets && currentAssets !== previousAssets) {
-  //       const storedData = localStorage.getItem('programData');
-  //       const selectedProgramType = localStorage.getItem('selectedProgramType');
-
-  //       let updatedData = {};
-  //       if (storedData) {
-  //         updatedData = JSON.parse(storedData);
-  //       }
-
-  //       const parsedAssets = JSON.parse(currentAssets || '[]');
-  //       if (!updatedData.scope || updatedData.scope.length === 0) {
-  //         updatedData.scope = parsedAssets;
-  //       }
-
-  //       if (selectedProgramType) {
-  //         updatedData.type = selectedProgramType;
-  //         updatedData.visibility =
-  //           updatedData.visibility ||
-  //           (selectedProgramType.includes('Private') ? 'private' : 'public');
-  //       }
-
-  //       setProgramData(updatedData);
-  //       previousAssets = currentAssets;
-  //     }
-  //   }, 500);
-
-  //   return () => clearInterval(interval);
-  // }, [location.state, VITE_BACKEND_HOST_URL]);
-
-  // Load program data when component mounts
+  
+// Load program data when component mounts
   useEffect(() => {
     const loadProgramData = async () => {
       // Check if we're editing an existing program
@@ -589,6 +527,7 @@ const CreateProgram = () => {
         company: userObj._id,
         visibility: visibility,
         status: 'draft',
+        description: programData.description || '', // Add this line
       };
 
       const response = await axios.post(
@@ -626,6 +565,7 @@ const CreateProgram = () => {
 
       const payload = {
         title: programData.programName,
+        description: programData.description, // Add this line
         guidelines: programData.guidelines,
         areasOfConcern: programData.concerns,
         policy: programData.programPolicy,
@@ -635,7 +575,7 @@ const CreateProgram = () => {
         endDate: programData.endDate,
         visibility: programData.visibility,
         scope: programData.scope,
-        brand: programData.brand,
+        // brand: programData.brand,
         bountyRange: programData.bounty || {
           low: 0,
           medium: 0,
@@ -656,11 +596,16 @@ const CreateProgram = () => {
       );
 
       if (publish) {
+       
+        if (programData.visibility === 'private') {
+        setShowInvitePopup(true);
+      } else {
         localStorage.removeItem('programId');
         localStorage.removeItem('programData');
         localStorage.removeItem('assets');
         localStorage.removeItem('selectedProgramType');
         navigate('/company/programs');
+      }
       } else {
         alert('Program saved as draft successfully!');
         navigate('/company/programs');
@@ -672,6 +617,15 @@ const CreateProgram = () => {
     }
   };
 
+
+  const cleanupAndNavigate = () => {
+  localStorage.removeItem('programId');
+  localStorage.removeItem('programData');
+  localStorage.removeItem('assets');
+  localStorage.removeItem('selectedProgramType');
+  navigate('/company/programs');
+};
+
   const steps = [
     Step1_ProgramUsername,
     Step2_DefineScope,
@@ -680,12 +634,155 @@ const CreateProgram = () => {
     Step5_ProgramPolicy,
     Step6_BountyRange,
     Step7_AdditionalDetails,
-    Step8_BrandProgram,
-    Step9_ScheduleLaunch,
-    Step10_ReviewAndSubmit,
+    // Step8_BrandProgram,
+    Step8_ScheduleLaunch,
+    Step9_ReviewAndSubmit,
   ];
 
   const CurrentStep = steps[step];
+
+
+
+  const InviteHackersPopup = ({ programId, onClose }) => {
+  const [hackers, setHackers] = useState([]);
+  const [selectedHackers, setSelectedHackers] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [isSending, setIsSending] = useState(false);
+  const [success, setSuccess] = useState(false);
+
+  useEffect(() => {
+    const fetchHackers = async () => {
+      try {
+        const token = localStorage.getItem('token');
+        const response = await axios.get(
+          `${VITE_BACKEND_HOST_URL}/api/hacker/leaderBoard`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        setHackers(response.data.leaderBoard);
+        setIsLoading(false);
+      } catch (error) {
+        console.error('Error fetching hackers:', error);
+        setIsLoading(false);
+      }
+    };
+
+    fetchHackers();
+  }, []);
+
+  const toggleHackerSelection = (hackerId) => {
+    setSelectedHackers(prev => 
+      prev.includes(hackerId) 
+        ? prev.filter(id => id !== hackerId) 
+        : [...prev, hackerId]
+    );
+  };
+
+  const sendInvitations = async () => {
+  if (selectedHackers.length === 0) return;
+  
+  setIsSending(true);
+  try {
+    const token = localStorage.getItem('token');
+    const response = await axios.post(
+      `${VITE_BACKEND_HOST_URL}/api/programs/${programId}/invite`,
+      { hackerIds: selectedHackers },
+      {
+        headers: { Authorization: `Bearer ${token}` },
+      }
+    );
+    
+    if (response.data.failedEmails?.length) {
+      alert(`Sent with ${response.data.failedEmails.length} failures`);
+    } else {
+      setSuccess(true);
+      setTimeout(onClose, 2000);
+    }
+  } catch (error) {
+    console.error('Error:', error.response?.data || error.message);
+    alert(`Failed: ${error.response?.data?.message || error.message}`);
+  } finally {
+    setIsSending(false);
+  }
+};
+
+  if (isLoading) {
+    return (
+      <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+        <div className="bg-white p-6 rounded-lg shadow-xl max-w-2xl w-full max-h-[80vh] overflow-y-auto">
+          <h2 className="text-xl font-bold mb-4">Loading hackers...</h2>
+          <div className="flex justify-center">
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+      <div className="bg-white p-6 rounded-lg shadow-xl max-w-2xl w-full max-h-[80vh] overflow-y-auto">
+        {success ? (
+          <div className="text-center">
+            <div className="text-green-500 text-5xl mb-4">✓</div>
+            <h2 className="text-xl font-bold mb-2">Invitations Sent Successfully!</h2>
+            <p>Selected hackers have been invited to your private program.</p>
+          </div>
+        ) : (
+          <>
+            <h2 className="text-xl font-bold mb-4">Invite Hackers to Your Private Program</h2>
+            <p className="mb-4">Select hackers from the leaderboard to invite:</p>
+            
+            <div className="space-y-3 mb-6">
+              {hackers.map(hacker => (
+                <div 
+                  key={hacker._id} 
+                  className={`flex items-center p-3 border rounded-lg cursor-pointer transition ${selectedHackers.includes(hacker._id) ? 'bg-blue-50 border-blue-300' : 'hover:bg-gray-50'}`}
+                  onClick={() => toggleHackerSelection(hacker._id)}
+                >
+                  <img 
+                    src={hacker.image || '/default-hacker.png'} 
+                    alt={hacker.name} 
+                    className="w-10 h-10 rounded-full mr-3"
+                  />
+                  <div>
+                    <h3 className="font-medium">{hacker.name}</h3>
+                    <p className="text-sm text-gray-600">@{hacker.username}</p>
+                  </div>
+                  {selectedHackers.includes(hacker._id) && (
+                    <div className="ml-auto text-blue-500">
+                      ✓
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+            
+            <div className="flex justify-end space-x-3">
+              <button
+                onClick={onClose}
+                className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition"
+                disabled={isSending}
+              >
+                Skip
+              </button>
+              <button
+                onClick={sendInvitations}
+                disabled={selectedHackers.length === 0 || isSending}
+                className={`px-4 py-2 rounded-lg text-white transition ${selectedHackers.length === 0 ? 'bg-blue-300 cursor-not-allowed' : 'bg-blue-600 hover:bg-blue-700'}`}
+              >
+                {isSending ? 'Sending...' : `Invite ${selectedHackers.length} Hackers`}
+              </button>
+            </div>
+          </>
+        )}
+      </div>
+    </div>
+  );
+};
 
   return (
     <div className="max-w-full h-[100vh] text-black mx-auto p-8 bg-white rounded-lg shadow-lg flex">
@@ -727,6 +824,15 @@ const CreateProgram = () => {
           />
         </div>
 
+
+
+        {showInvitePopup && (
+  <InviteHackersPopup 
+    programId={localStorage.getItem('programId')} 
+    onClose={cleanupAndNavigate}
+  />
+)}
+
         {/* Navigation Buttons */}
         <div className="flex justify-between">
           <button
@@ -764,7 +870,13 @@ const CreateProgram = () => {
           ) : null}
         </div>
       </div>
+
+
+      
+
     </div>
+
+    
   );
 };
 
