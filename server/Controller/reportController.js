@@ -1,5 +1,6 @@
 import Admin from '../Models/admin.js'
-import Message from '../Models/message.js'
+import Message from '../Models/Message.js'
+import Program from '../Models/Program.js'
 import Report from '../Models/Report.js'
 import { updateGlobalLeaderBoard, updateProgramLeaderBoard } from '../Utils/leaderBoard.js'
 
@@ -24,8 +25,8 @@ export const createReport = async (req, res) => {
       attachments,
       vulnerabilityImpact,
       testingEmail,
-      status,
-      submitDate,
+      status = "draft",
+      submitDate = new Date(), 
     } = reportData
     if (
       !scope ||

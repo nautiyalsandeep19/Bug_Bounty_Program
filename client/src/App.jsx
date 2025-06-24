@@ -52,7 +52,6 @@ import VrtData from './Common/VrtData'
 import CommonLayout from './Common/LayoutSidebar/CommonLayout'
 import ProgramCreation from './CompanyComponents/CreateProgram/ProgramCreation'
 
-
 function App() {
   const dispatch = useDispatch()
   const token = useSelector((state) => state.auth.token)
@@ -123,7 +122,6 @@ function App() {
             }
           >
             <Route path="home" element={<AdminHome />} />
-            
           </Route>
 
           {/* Hacker Routes */}
@@ -164,8 +162,7 @@ function App() {
             <Route path="programs" element={<ProgramList />} />
             <Route path="programs/:programId" element={<ProgramMainDetail />} />
           </Route>
-           <Route path="/addprogram" element={<ProgramCreation />} />
-
+          <Route path="/addprogram" element={<ProgramCreation />} />
 
           {/* Triager Routes */}
           <Route

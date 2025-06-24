@@ -9,10 +9,14 @@
 
 @theme {
   /* background Color  */
+
   --color-primaryBlue: #000028;
-  --color-secondaryBlue: #060a58;
-  --color-textColor: white;
-  --font-lato: 'Lato', sans-serif;
+  --color-primarybg: #0000;
+  --color-secondarybg: #202127;
+
+  --color-primaryText: #ffffff;
+  --color-secondaryText: #888e99;
+  --font-lato: 'Inter', sans-serif;
 }
 
 body {

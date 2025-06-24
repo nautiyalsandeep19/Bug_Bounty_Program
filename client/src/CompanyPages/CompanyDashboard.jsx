@@ -1,170 +1,155 @@
 import React, { useEffect } from 'react'
 import { useState } from 'react'
+import { fetchLogsForHacker } from '../Services/messageApi';
 import {
   FiActivity,
   FiAirplay,
-  FiUsers,
   FiDollarSign,
-  FiBriefcase,
-  FiAward,
+  FiBriefcase
 } from 'react-icons/fi'
 
+
 const CompanyDashboard = () => {
-  // Sample company data - replace with your actual data
-  const companyInfo = {
-    name: 'Versantix',
-    industry: 'Cybersecurity',
-    founded: '2015',
-    employees: 245,
-    location: 'San Francisco, CA',
-    description:
-      'Leading provider of bug bounty and vulnerability disclosure solutions.',
-  }
+    const [logs, setLogs] = useState([]);
+  const [activePrograms, setActivePrograms] = useState(0)
 
-  const stats = [
-    {
-      title: 'Active Programs',
-      value: '6',
-      icon: <FiAirplay className="text-2xl" />,
-    },
-    {
-      title: 'Total Hackers',
-      value: '100+',
-      icon: <FiUsers className="text-2xl" />,
-    },
-    {
-      title: 'Bounties Paid',
-      value: '2,84,500',
-      icon: <FiDollarSign className="text-2xl" />,
-    },
-    {
-      title: 'Fixes',
-      value: '50',
-      icon: <FiAward className="text-2xl" />,
-    },
-  ]
+  const storedUser = localStorage.getItem('user')
+  const userObj = JSON.parse(storedUser)
+  const companyId = userObj._id
+  const VITE_BACKEND_HOST_URL = import.meta.env.VITE_BACKEND_HOST_URL
+  
 
-  const recentActivities = [
-    {
-      id: 1,
-      action: 'New program launched',
-      time: '2 hours ago',
-      program: 'Public Bug Bounty',
-    },
-    {
-      id: 2,
-      action: 'Critical vulnerability fixed',
-      time: '1 day ago',
-      hacker: 'security_expert',
-    },
-    {
-      id: 3,
-      action: 'New team member joined',
-      time: '2 days ago',
-      name: 'Alex Morgan',
-    },
-  ]
+  useEffect(() => {
+    const fetchActivePrograms = async () => {
+      try {
+        const res = await fetch(
+          `${VITE_BACKEND_HOST_URL}/api/programs/companyPrograms/${companyId}`,
+          {
+            method: 'GET',
+            credentials: 'include',
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: `Bearer ${localStorage.getItem('token')}`,
+            },
+          }
+        )
+
+        if (!res.ok) {
+          throw new Error('Failed to fetch active programs')
+        }
+
+        const data = await res.json()
+        setActivePrograms(data.data.length)
+      } catch (err) {
+        console.error(err)
+      }
+    }
+
+    fetchActivePrograms()
+  }, [companyId, VITE_BACKEND_HOST_URL])
+
 
   return (
-    <div className="max-w-7xl mx-auto px-4 h-full sm:px-6 lg:px-8 py-8">
-      {/* Header */}
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold text-white">Company Dashboard</h1>
-        <p className="text-lg text-gray-300 mt-2">
-          Welcome back! Here's what's happening with today.
-        </p>
-      </div>
+   <div className="w-full max-w-7xl mx-auto px-4 py-8 space-y-8">
 
-      {/* Company Profile Section */}
-      <div className="bg-white rounded-lg shadow-md p-6 mb-8 h-fit">
-        <h2 className="text-sm font-semibold mb-4 text-gray-800">
-          Company Profile
-        </h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div>
-            <h3 className="text-2xl font-bold text-blue-600 mb-2">
-              {companyInfo.name}
-            </h3>
-            <p className="text-gray-700 mb-4 text-sm">
-              {companyInfo.description}
-            </p>
-            <div className="space-y-2">
-              <p className="flex items-center text-gray-600">
-                <FiBriefcase className="mr-2 text-xs" /> Industry:{' '}
-                {companyInfo.industry}
-              </p>
-              <p className="text-gray-600 text-sm">
-                Founded: {companyInfo.founded}
-              </p>
-              <p className="text-gray-600 text-sm">
-                Employees: {companyInfo.employees}
-              </p>
-              <p className="text-gray-600 text-sm">
-                Location: {companyInfo.location}
-              </p>
-            </div>
-          </div>
-          <div className="flex items-center justify-center">
-            <div className="w-32 h-32 rounded-full bg-blue-100 flex items-center justify-center">
-              <span className="text-5xl text-blue-600">VerSantix</span>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Stats Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-        {stats.map((stat, index) => (
-          <div
-            key={index}
-            className="bg-white rounded-lg shadow-md p-6 flex items-start"
-          >
-            <div className="p-3 rounded-full bg-blue-100 text-blue-600 mr-4">
-              {stat.icon}
-            </div>
-            <div>
-              <p className="text-gray-500 text-sm">{stat.title}</p>
-              <p className="text-2xl font-bold text-gray-900">{stat.value}</p>
-            </div>
-          </div>
-        ))}
-      </div>
-
-      {/* Recent Activities */}
-      <div className="bg-white text-gray-500 rounded-lg shadow-md p-6">
-        <h2 className="text-xl font-semibold mb-4 text-gray-800">
-          Recent Activities
-        </h2>
-        <div className="space-y-4">
-          {recentActivities.map((activity) => (
-            <div
-              key={activity.id}
-              className="border-b pb-04 last:border-0 last:pb-0"
-            >
-              <div className="flex justify-between">
-                <p className="font-medium">{activity.action}</p>
-                <p className="text-sm text-gray-500">{activity.time}</p>
-              </div>
-              {activity.program && (
-                <p className="text-sm text-blue-600 mt-1">
-                  Program: {activity.program}
-                </p>
-              )}
-              {activity.hacker && (
-                <p className="text-sm text-green-600 mt-1">
-                  Hacker: {activity.hacker}
-                </p>
-              )}
-              {activity.name && (
-                <p className="text-sm text-purple-600 mt-1">
-                  Name: {activity.name}
-                </p>
-              )}
-            </div>
-          ))}
-        </div>
-      </div>
+  {/* Top Stats Cards */}
+  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+    <div className="bg-[#202128] border border-green-700 p-5 rounded-xl text-white">
+      <h3 className="text-md text-gray-400 mb-2 flex justify-between">Active Programs <FiActivity/></h3>
+      <p className="text-2xl font-semibold">{activePrograms}</p>
+      <p className="text-sm text-green-500 mt-1">+2 new this month</p>
     </div>
+
+    <div className="bg-[#202128] border border-green-700 p-5 rounded-xl text-white">
+      <h3 className="text-md text-gray-400 mb-2 flex justify-between">Total Reports<FiAirplay/></h3>
+      <p className="text-2xl font-semibold">1</p>
+      <p className="text-sm text-red-400 mt-1">+15% from last month</p>
+    </div>
+
+    <div className="bg-[#202128] border border-green-700 p-5 rounded-xl text-white">
+      <h3 className="text-md text-gray-400 mb-2  flex  justify-between">Resolved Reports <FiBriefcase/></h3>
+      <p className="text-2xl font-semibold">0</p>
+      <p className="text-sm text-gray-400 mt-1">0% resolution rate</p>
+    </div>
+
+    <div className="bg-[#202128] border border-green-700 p-5 rounded-xl text-white">
+      <h3 className="text-md text-gray-400 mb-2 flex  justify-between">Total Paid <FiDollarSign/></h3>
+      <p className="text-2xl font-semibold text-green-400">$12,500</p>
+      <p className="text-sm text-gray-400 mt-1">Across all programs</p>
+    </div>
+  </div>
+
+  {/* Bug Reports Section */}
+  <div className="bg-[#141519] border border-green-700 p-6 rounded-xl">
+    <h2 className="text-xl font-semibold text-white mb-1">Recent Bug Reports</h2>
+    <p className="text-sm text-gray-400 mb-4">Latest vulnerability reports from researchers</p>
+
+    {/* Bug Reports Section */}
+      <div className="bg-[#141519] border border-green-700 p-6 rounded-xl">
+        <h2 className="text-xl font-semibold text-white mb-1">Recent Bug Reports</h2>
+        <p className="text-sm text-gray-400 mb-4">Latest vulnerability reports from researchers</p>
+
+        <div className="space-y-4 max-h-[60vh] overflow-y-auto pr-2">
+          {logs.length === 0 ? (
+            <p className="text-gray-500 text-sm">No bug reports yet.</p>
+          ) : (
+            logs.slice(0, 5).map((log, idx) => (
+              <div
+                key={idx}
+                className="bg-[#0F0F0F] text-white p-4 rounded-lg flex flex-col sm:flex-row justify-between items-start sm:items-center border border-gray-700"
+              >
+                <div className="flex items-start gap-3">
+                  <span className="text-red-500 mt-1">⚠️</span>
+                  <div>
+                    <p
+                      className="font-medium"
+                      dangerouslySetInnerHTML={{ __html: log.message }}
+                    />
+                    <p className="text-sm text-gray-400">
+                      {log.reportId?.programName || 'Unknown Program'} •{' '}
+                      {new Date(log.createdAt).toLocaleDateString()}
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-3 mt-4 sm:mt-0">
+                  <span
+                    className={`text-sm font-medium px-2 py-1 rounded ${
+                      log.reportId?.status === 'accepted'
+                        ? 'text-green-400'
+                        : 'text-yellow-400'
+                    }`}
+                  >
+                    ✔ {log.reportId?.status}
+                  </span>
+                  <a
+                    href={`/chat/${log.reportId._id}`}
+                    className="text-gray-400 hover:text-white transition"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="w-4 h-4"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M14 3h7m0 0v7m0-7L10 14M5 10v11h11v-5m-6 1h6"
+                      />
+                    </svg>
+                  </a>
+                </div>
+              </div>
+            ))
+          )}
+        </div>
+      </div>
+  </div>
+</div>
+
   )
 }
 

@@ -23,7 +23,9 @@ router.get('/companyPrograms/:companyId', getProgramsByCompany)
 router.post('/programDetail', getProgramByIds)
 router.post('/visibilityChange', toggleLeaderboardVisibility)
 router.patch('/:id/visibility', updateProgramVisibility)
-router.patch('/:id/publish', publishProgram); 
+router.patch('/:id/publish', publishProgram)
+// router.get('/avgResponse', avgResponse)
+// router.post('/get-assets', getProgramAssets);
 
 // for hackers
 router.get('/allPrograms', fetchAllPrograms)
