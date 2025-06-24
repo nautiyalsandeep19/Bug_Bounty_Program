@@ -1,12 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import { getHackerDetails } from '../Services/hackerApi'
-import Button from '../Common/Button/CTAButton'
-import { FaBug, FaBullhorn, FaSyncAlt, FaUserPlus } from 'react-icons/fa'
+
 import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router'
 import { fetchLogsForHacker } from '../Services/messageApi'
 import { Shield, BadgeCheck, Bug, Target } from 'lucide-react'
-import DashboardProgram from '../HackerComponents/DashboardProgram'
 import CTAButton from '../Common/Button/CTAButton'
 
 const FeedDashboard = () => {
