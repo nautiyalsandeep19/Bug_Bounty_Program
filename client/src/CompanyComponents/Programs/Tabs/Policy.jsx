@@ -8,7 +8,7 @@ const Policy = () => {
 
   return (
     <>
-    <div className="space-y-6 text-gray-800 ">
+    <div className="space-y-6 text-white">
          
          {
           policyDetails ? <p>{policyDetails}</p> :"no policy found"

@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import CommonSidebar from './CommonSidebar'
+import CommonSidebar from './CommonSideBar'
 import TopNavbar from './TopNavbar'
 import MobileNavbar from './MobileNavbar'
 import { Outlet } from 'react-router-dom'
@@ -27,9 +27,9 @@ const MainLayout = () => {
         </main>
 
         {/* Mobile Bottom Navbar */}
-        {/* <div className="sm:hidden fixed bottom-0 left-0 right-0 z-40">
+        <div className="sm:hidden fixed bottom-0 left-0 right-0 z-40">
           <MobileNavbar />
-        </div> */}
+        </div>
       </div>
     </div>
   )
