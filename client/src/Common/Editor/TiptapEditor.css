@@ -1,8 +1,7 @@
 /* Container styling for tiptap editor content */
 .ProseMirror {
-  background-color: black;
+  background-color: #202127;
   color: var(--color-textColor);
-  padding: 1rem;
 }
 
 /* Remove top margin on first block element */

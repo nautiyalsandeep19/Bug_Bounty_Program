@@ -11,11 +11,11 @@ const HackerReports = () => {
         <Report />
       </div>
 
-      <ProgramBox
+      {/* <ProgramBox
         className="sticky top-4 self-start"
         program={program}
         hideSubmit={true}
-      />
+      /> */}
     </div>
   )
 }

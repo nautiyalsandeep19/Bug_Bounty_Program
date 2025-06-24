@@ -14,6 +14,7 @@ import { authMid } from './Middleware/authMid.js'
 import logRequest from './Middleware/logRequest.js'
 import reportRoute from './Routes/reportRoute.js'
 import messageRoute from './Routes/messageRoute.js'
+import triagerRoute from './Routes/triagerRoute.js'
 import { app, server } from './Config/socket.js'
 
 dotenv.config()
@@ -52,8 +53,11 @@ app.use(logRequest)
 app.use('/api/company', companyRoute)
 app.use('/api/assets', assetRouter)
 app.use('/api/hacker', hackerRoute)
+
 app.use('/api/reports', reportRoute)
 app.use('/api/messages', messageRoute)
+
+app.use('/api/triager', triagerRoute)
 
 app.get('/', (req, res) => {
   res.send('Hello from server!')

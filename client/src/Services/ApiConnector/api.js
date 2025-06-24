@@ -38,8 +38,10 @@ export const endPoints = {
   // messages/Logs
   GET_LOGS: BASE_URL + '/api/messages/logs',
 
-
   GET_PROGRAM_ASSETS: BASE_URL + '/api/programs/get-assets',
+
+  // triager api
+  UPDATE_TRIAGER_DETAILS: BASE_URL + '/api/triager/updateTriagerDetails',
 }
 
 export const axiosInstance = axios.create({ withCredentials: true })

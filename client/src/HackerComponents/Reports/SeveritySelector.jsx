@@ -105,9 +105,9 @@ const SeveritySelector = ({ setSeverityData }) => {
   }, [severity, setSeverityData])
 
   return (
-    <div className="w-full  text-white md:max-w-[800px] h-fit p-4 rounded-lg space-y-4">
+    <div className="w-full  text-white md:max-w-[800px] h-fit p-4 rounded-lg space-y-4 ">
       {/* Mode Toggle */}
-      <div className="flex flex-wrap items-center gap-6 border border-gray-500 rounded px-4 py-2">
+      <div className="flex flex-wrap items-center gap-6 border border-gray-500  px-4 py-2  rounded-2xl bg-primarybg">
         {['severity', 'cvss'].map((m) => (
           <label
             key={m}
@@ -122,11 +122,11 @@ const SeveritySelector = ({ setSeverityData }) => {
             />
             <span
               className={`w-4 h-4 rounded-full border-2 flex items-center justify-center ${
-                mode === m ? 'border-blue-500' : 'border-gray-600'
+                mode === m ? 'border-green-500' : 'border-gray-600'
               }`}
             >
               {mode === m && (
-                <span className="w-2.5 h-2.5 bg-blue-500 rounded-full"></span>
+                <span className="w-2.5 h-2.5 bg-green-500 rounded-full"></span>
               )}
             </span>
             <span className="capitalize">
@@ -138,16 +138,16 @@ const SeveritySelector = ({ setSeverityData }) => {
 
       {/* Severity Picker Mode */}
       {mode === 'severity' ? (
-        <div className="flex flex-wrap items-center gap-2 border border-gray-700 rounded px-4 py-2">
+        <div className="flex flex-wrap items-center gap-2 border rounded-xl px-4 py-2 bg-primarybg border-gray-400">
           {severityLevels.map((level) => {
             const isSelected = level === severity
             return (
               <button
                 key={level}
                 onClick={() => setSeverity(level)}
-                className={`px-3 py-1 rounded text-sm border transition-colors duration-200 cursor-pointer ${
+                className={`px-3 py-1  text-sm border transition-colors duration-200 cursor-pointer rounded-2xl ${
                   isSelected
-                    ? 'border-blue-500 text-blue-400'
+                    ? 'border-green-500 text-green-400'
                     : 'border-gray-600 text-white hover:border-gray-400 hover:bg-gray-800'
                 }`}
               >
@@ -179,7 +179,7 @@ const SeveritySelector = ({ setSeverityData }) => {
                     key={opt}
                     className={`px-2 py-1 rounded text-sm cursor-pointer ${
                       cvssFields[field] === opt
-                        ? 'bg-blue-600'
+                        ? 'bg-green-500'
                         : 'bg-gray-700 hover:bg-gray-600'
                     }`}
                     onClick={() => handleCVSSChange(field, opt)}
