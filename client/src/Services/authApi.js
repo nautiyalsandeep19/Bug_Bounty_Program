@@ -150,7 +150,6 @@ export const logout = (navigate) => {
 
       disconnectSocket()
 
-      //socket
       // Clear localStorage
       // localStorage.removeItem('token')
       // localStorage.removeItem('user')

@@ -382,7 +382,7 @@ const ChatRoom = () => {
   return (
     <div className="">
       <ReportData reportId={reportId} />
-      <div className=" ProseMirror space-y-2  max-w-[100%] max-h-[500px] rounded-lg border-1 border-green-500 overflow-y-auto  m-auto min-h-30 bg-secondarybg">
+      <div className=" ProseMirror space-y-2  max-w-[100%] max-h-[500px] min-h[200px] rounded-lg border-1 border-green-500 overflow-y-auto  m-auto min-h-30 bg-secondarybg">
         <div className="mb-4 sticky top-0 z-100 bg-black px-2 py-2">
           <div className="flex items-center gap-2 text-xl font-semibold text-primaryText">
             <Send className="text-green-500" />

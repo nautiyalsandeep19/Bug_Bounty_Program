@@ -51,6 +51,7 @@ import CompanyReports from './CompanyPages/CompanyReports'
 import VrtData from './Common/VrtData'
 import CommonLayout from './Common/LayoutSidebar/CommonLayout'
 import ProgramCreation from './CompanyComponents/CreateProgram/ProgramCreation'
+import TriagerSetting from './TriagerPages/TriagerSetting'
 
 function App() {
   const dispatch = useDispatch()
@@ -178,6 +179,7 @@ function App() {
             <Route path="reports/:programId" element={<TrigerReports />} />
             <Route path="programs" element={<ProgramsPage />} />
             <Route path="programs/:programId" element={<ProgramMainDetail />} />
+            <Route path="setting" element={<TriagerSetting />} />
           </Route>
         </Routes>
       </main>

@@ -22,6 +22,18 @@ const adminSchema = new mongoose.Schema(
       required: true,
       enum: ['admin', 'triager'],
     },
+    bio: {
+      type: String,
+    },
+    github: {
+      type: String,
+    },
+    phone: {
+      type: String,
+    },
+    image: {
+      type: String,
+    },
   },
   { timestamps: true }
 )
