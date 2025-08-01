@@ -4,7 +4,6 @@ import { toast } from 'react-hot-toast'
 import { useSelector } from 'react-redux'
 import '../Common/Editor/TiptapEditor.css'
 import Loader from '../Common/Loader'
-import { TriangleAlert } from 'lucide-react'
 
 const ReportData = ({ reportId }) => {
   const [report, setReport] = useState(null)
@@ -152,92 +151,7 @@ const ReportData = ({ reportId }) => {
   }
 
   return (
-    // <div className="p-6 text-primaryText pb-4 border-4 ">
-    //   <div className="flex justify-between items-start">
-    //     <div>
-    //       <h1 className="text-3xl font-bold mb-2">
-    //         {report.programId.title}
-    //       </h1>
-
-    //       <h2>{report.title} </h2>
-
-    //       {/* Severity Select */}
-    //       {userType === 'triager' ? (
-    //         <div className="relative group">
-    //           <select
-    //             value={report.severity}
-    //             onChange={(e) => handleSeverityUpdate(e.target.value)}
-    //             disabled={isUpdating}
-    //             className={`px-3 py-1 rounded-full text-sm font-semibold ${
-    //               severityColors[report.severity] || 'bg-gray-500'
-    //             } appearance-none pr-8 cursor-pointer focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-all duration-200 ${
-    //               isUpdating
-    //                 ? 'opacity-70 cursor-not-allowed'
-    //                 : 'hover:opacity-90'
-    //             }`}
-    //           >
-    //             {severityOptions.map((sev) => (
-    //               <option
-    //                 key={sev}
-    //                 value={sev}
-    //                 className="bg-white text-gray-800"
-    //               >
-    //                 {sev}
-    //               </option>
-    //             ))}
-    //           </select>
-    //         </div>
-    //       ) : (
-    //         <span
-    //           className={`px-3 py-1 rounded-full text-sm font-semibold ${
-    //             severityColors[report.severity] || 'bg-gray-500'
-    //           }`}
-    //         >
-    //           {report.severity}
-    //         </span>
-    //       )}
-
-    //       {/* Status Select */}
-    //       {userType === 'triager' && (
-    //         <div className="relative group">
-    //           <select
-    //             value={report.status}
-    //             onChange={(e) => handleStatusUpdate(e.target.value)}
-    //             disabled={isUpdating}
-    //             className={`px-3 py-1 rounded-full text-sm font-semibold ${
-    //               statusColors[report.status] || 'bg-gray-100 text-gray-800'
-    //             } appearance-none pr-8 cursor-pointer focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-all duration-200 ${
-    //               isUpdating
-    //                 ? 'opacity-70 cursor-not-allowed'
-    //                 : 'hover:opacity-90'
-    //             }`}
-    //           >
-    //             {statusOptions.map((status) => (
-    //               <option
-    //                 key={status}
-    //                 value={status}
-    //                 className="bg-white text-secondaryText"
-    //               >
-    //                 {statusDisplayNames[status]}
-    //               </option>
-    //             ))}
-    //           </select>
-    //         </div>
-    //       )}
-    //     </div>
-    //     <div className="text-right">
-    //       <p className="text-sm opacity-90">Submitted on</p>
-    //       <p className="font-medium">
-    //         {new Date(report.submitDate).toLocaleDateString('en-US', {
-    //           year: 'numeric',
-    //           month: 'long',
-    //           day: 'numeric',
-    //         })}
-    //       </p>
-    //     </div>
-    //   </div>
-    // </div>
-    <div className=" bg-primarybg py-8 px-4">
+    <div className=" bg-primarybg py-8  w-full ">
       <div className="w-full m-auto  rounded-xl shadow-md overflow-h reportIdden">
         {/* Header */}
 
@@ -318,107 +232,6 @@ const ReportData = ({ reportId }) => {
             </p>
           </div>
         </div>
-
-        {/* Body */}
-        {/* <div className="p-6 space-y-6 border-4">
-          <div className="grreportId grreportId-cols-1 md:grreportId-cols-2 gap-4 text-primaryText ">
-            <div>
-              <h2 className="text-lg font-semibold mb-2">Technical Details</h2>
-              <h2 className="text-secondaryText">
-                Complete vulnerability report and proof of concept
-              </h2>
-
-              <div>
-                <p>{report.summary}</p>
-              </div>
-              <div className="space-y-2">
-                <p>
-                  <span className="font-medium text-secondaryText">
-                    Vulnerability Type:
-                  </span>{' '}
-                  {report.vulnerabilityType}
-                </p>
-                <p>
-                  <span>Affected URL</span>
-                  {report.vulnerableEndpoint}
-                </p>
-                <p>
-                  <span className="font-medium text-gray-600">Scope:</span>{' '}
-                  {report.scope}
-                </p>
-              </div>
-            </div>
-            <div>
-              <div>
-                <p>
-                  <span> Vulnarebility Impact{report.vulnerabilityImpact}</span>
-                </p>
-              </div>
-              <h2 className="text-lg font-semibold text-gray-700 mb-2">
-                Proof of Concept
-              </h2>
-              <div>{report.POC}</div>
-            </div>
-          </div>
-
-          <div>
-            <h2 className="text-lg font-semibold text-gray-700 mb-2">
-              Summary
-            </h2>
-            <p className="text-gray-700 bg-gray-50 p-4 rounded-lg">
-              {report.summary}
-            </p>
-          </div>
-
-          {report.vulnerabilityImpact && (
-            <div>
-              <h2 className="text-lg font-semibold text-gray-700 mb-2">
-                Impact
-              </h2>
-              <p className="text-gray-700 bg-gray-50 p-4 rounded-lg">
-                {report.vulnerabilityImpact}
-              </p>
-            </div>
-          )}
-
-          <div className="text-black ">
-            <h2 className="text-lg font-semibold text-gray-700 mb-2">
-              Proof of Concept
-            </h2>
-            <div
-              className="ProseMirror max-w-none bg-gray-50 p-4 mt-5 rounded-lg border border-gray-200"
-              dangerouslySetInnerHTML={{ __html: report.POC }}
-            />
-          </div>
-
-          <div className="grreportId grreportId-cols-1 md:grreportId-cols-2 gap-4 text-sm text-gray-600">
-            <div>
-              <p>
-                <span className="font-medium">Created:</span>{' '}
-                {new Date(report.createdAt).toLocaleString()}
-              </p>
-              <p>
-                <span className="font-medium">Last Updated:</span>{' '}
-                {new Date(report.updatedAt).toLocaleString()}
-              </p>
-            </div>
-            {report.tags && report.tags.length > 0 && (
-              <div>
-                <p className="font-medium">Tags:</p>
-                <div className="flex flex-wrap gap-2 mt-1">
-                  {report.tags.map((tag, index) => (
-                    <span
-                      key={index}
-                      className="px-2 py-1 bg-blue-100 text-blue-800 rounded-full text-xs"
-                    >
-                      {tag}
-                    </span>
-                  ))}
-                </div>
-              </div>
-            )}
-          </div>
-        </div> */}
 
         <div className="bg-[#1a1d22] text-white p-6 rounded-lg space-y-8 shadow-md  border-[0.5px] border-green-500">
           {/* Title Section */}

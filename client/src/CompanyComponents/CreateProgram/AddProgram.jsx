@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
-import CreateAssets from './CreateAssets';
-import { useNavigate, useLocation } from 'react-router-dom';
-import axios from 'axios';
+import React, { useState, useEffect } from 'react'
+import CreateAssets from './CreateAssets'
+import { useNavigate, useLocation } from 'react-router-dom'
+import axios from 'axios'
 
 // Steps labels
 const stepsList = [
@@ -14,16 +14,13 @@ const stepsList = [
   'Additional Details',
   'Schedule Launch',
   'Review & Submit',
-];
+]
 
 // Step components
 
 const Step1_ProgramUsername = ({ data, updateData }) => (
-  <div className="mb-8">
-    <label
-      htmlFor="programName"
-      className="text-lg font-medium text-gray-900 block mb-2"
-    >
+  <div className="mb-8 ">
+    <label htmlFor="programName" className="text-lg font-medium  block mb-2">
       📝 Program Name
     </label>
     <input
@@ -32,12 +29,9 @@ const Step1_ProgramUsername = ({ data, updateData }) => (
       value={data.programName || ''}
       onChange={(e) => updateData({ programName: e.target.value })}
       placeholder="e.g. SecureBug Program"
-      className="w-full border border-gray-300 rounded-xl px-5 py-3 shadow-sm focus:ring-2 focus:ring-indigo-500 focus:outline-none transition"
+      className="w-full border border-gray-300 rounded-xl px-5 py-3 shadow-sm focus:ring-1 focus:ring-green-500 focus:outline-none transition"
     />
-    <label
-      htmlFor="description"
-      className="text-lg font-medium text-gray-900 block mb-2"
-    >
+    <label htmlFor="description" className="text-lg font-medium  block mb-2">
       📝 Description
     </label>
     <input
@@ -46,7 +40,7 @@ const Step1_ProgramUsername = ({ data, updateData }) => (
       value={data.description || ''}
       onChange={(e) => updateData({ description: e.target.value })}
       placeholder="e.g. SecureBug Program"
-      className="w-full border border-gray-300 rounded-xl px-5 py-3 shadow-sm focus:ring-2 focus:ring-indigo-500 focus:outline-none transition"
+      className="w-full border border-gray-300 rounded-xl px-5 py-3 shadow-sm focus:ring-1 focus:ring-green-500 focus:outline-none transition"
     />
   </div>
 )
@@ -60,10 +54,7 @@ const Step2_DefineScope = ({ data, updateData }) => (
 
 const Step3_ParticipationGuidelines = ({ data, updateData }) => (
   <div className="mb-6">
-    <label
-      htmlFor="guidelines"
-      className="block text-gray-800 font-semibold mb-2 text-lg"
-    >
+    <label htmlFor="guidelines" className="block font-semibold mb-2 text-lg">
       Guidelines
     </label>
     <textarea
@@ -73,7 +64,7 @@ const Step3_ParticipationGuidelines = ({ data, updateData }) => (
       placeholder="Participation Guidelines"
       rows={5}
       className="w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm resize-y
-                 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent
+                 focus:outline-none focus:ring-1 focus:ring-green-500 focus:border-transparent
                  transition"
     />
   </div>
@@ -81,10 +72,7 @@ const Step3_ParticipationGuidelines = ({ data, updateData }) => (
 
 const Step4_SpecificConcerns = ({ data, updateData }) => (
   <div className="mb-6">
-    <label
-      htmlFor="concerns"
-      className="block text-gray-800 font-semibold mb-2 text-lg"
-    >
+    <label htmlFor="concerns" className="block  font-semibold mb-2 text-lg">
       Specific Concerns
     </label>
     <textarea
@@ -94,7 +82,7 @@ const Step4_SpecificConcerns = ({ data, updateData }) => (
       placeholder="Enter Specific Concerns"
       rows={5}
       className="w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm resize-y
-                 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent
+                 focus:outline-none focus:ring-1 focus:ring-green-500 focus:border-transparent
                  transition"
     />
   </div>
@@ -104,7 +92,7 @@ const Step5_ProgramPolicy = ({ data, updateData }) => (
   <div className="mb-6">
     <label
       htmlFor="programPolicy"
-      className="block text-gray-800 font-semibold mb-2 text-lg"
+      className="block  font-semibold mb-2 text-lg"
     >
       Program Policy
     </label>
@@ -115,7 +103,7 @@ const Step5_ProgramPolicy = ({ data, updateData }) => (
       placeholder="Write your program policy here..."
       rows={6}
       className="w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm resize-y
-                 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent
+                 focus:outline-none focus:ring-1 focus:ring-green-500 focus:border-transparent
                  transition"
     />
   </div>
@@ -143,10 +131,7 @@ const Step6_BountyRange = ({ data, updateData }) => {
       <h2 className="text-xl font-bold mb-4">Set Bounty Ranges</h2>
 
       <div className="mb-6">
-        <label
-          htmlFor="highBounty"
-          className="block text-gray-800 font-semibold mb-2"
-        >
+        <label htmlFor="highBounty" className="block  font-semibold mb-2">
           High Severity Bounty ($)
         </label>
         <input
@@ -157,15 +142,12 @@ const Step6_BountyRange = ({ data, updateData }) => {
           value={bounty.high || ''}
           onChange={(e) => updateBountyData('high', e.target.value)}
           placeholder="e.g. 5000"
-          className="w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
+          className="w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-1 focus:ring-green-500 focus:border-transparent transition"
         />
       </div>
 
       <div className="mb-6">
-        <label
-          htmlFor="mediumBounty"
-          className="block text-gray-800 font-semibold mb-2"
-        >
+        <label htmlFor="mediumBounty" className="block  font-semibold mb-2">
           Medium Severity Bounty ($)
         </label>
         <input
@@ -176,15 +158,12 @@ const Step6_BountyRange = ({ data, updateData }) => {
           value={bounty.medium || ''}
           onChange={(e) => updateBountyData('medium', e.target.value)}
           placeholder="e.g. 1000"
-          className="w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
+          className="w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-1 focus:ring-green-500 focus:border-transparent transition"
         />
       </div>
 
       <div className="mb-6">
-        <label
-          htmlFor="lowBounty"
-          className="block text-gray-800 font-semibold mb-2"
-        >
+        <label htmlFor="lowBounty" className="block  font-semibold mb-2">
           Low Severity Bounty ($)
         </label>
         <input
@@ -195,7 +174,7 @@ const Step6_BountyRange = ({ data, updateData }) => {
           value={bounty.low || ''}
           onChange={(e) => updateBountyData('low', e.target.value)}
           placeholder="e.g. 250"
-          className="w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
+          className="w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-1 focus:ring-green-500 focus:border-transparent transition"
         />
       </div>
 
@@ -215,7 +194,7 @@ const Step7_AdditionalDetails = ({ data, updateData }) => (
   <div className="mb-6">
     <label
       htmlFor="additionalDetails"
-      className="block text-gray-800 font-semibold mb-2 text-lg"
+      className="block  font-semibold mb-2 text-lg"
     >
       Additional Details
     </label>
@@ -226,7 +205,7 @@ const Step7_AdditionalDetails = ({ data, updateData }) => (
       placeholder="Enter Additional Details"
       rows={5}
       className="w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm resize-y
-                 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent
+                 focus:outline-none focus:ring-1 focus:ring-green-500 focus:border-transparent
                  transition"
     />
   </div>
@@ -249,7 +228,7 @@ const Step8_BrandProgram = ({ data, updateData }) => {
       <div className="mb-6">
         <label
           htmlFor="brandProgramName"
-          className="block text-gray-800 font-semibold mb-2 text-lg"
+          className="block  font-semibold mb-2 text-lg"
         >
           Program Name
         </label>
@@ -259,14 +238,14 @@ const Step8_BrandProgram = ({ data, updateData }) => {
           value={brand.programName}
           onChange={(e) => updateBrandData('programName', e.target.value)}
           placeholder="Enter Program Name"
-          className="w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
+          className="w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-1 focus:ring-green-500 focus:border-transparent transition"
         />
       </div>
 
       <div className="mb-6">
         <label
           htmlFor="programTagline"
-          className="block text-gray-800 font-semibold mb-2 text-lg"
+          className="block  font-semibold mb-2 text-lg"
         >
           Program Tagline
         </label>
@@ -276,14 +255,14 @@ const Step8_BrandProgram = ({ data, updateData }) => {
           value={brand.programTagline}
           onChange={(e) => updateBrandData('programTagline', e.target.value)}
           placeholder="Enter Program Tagline"
-          className="w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
+          className="w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-1 focus:ring-green-500 focus:border-transparent transition"
         />
       </div>
 
       <div className="mb-6">
         <label
           htmlFor="programWebsite"
-          className="block text-gray-800 font-semibold mb-2 text-lg"
+          className="block  font-semibold mb-2 text-lg"
         >
           Program Website
         </label>
@@ -293,25 +272,27 @@ const Step8_BrandProgram = ({ data, updateData }) => {
           value={brand.programWebsite}
           onChange={(e) => updateBrandData('programWebsite', e.target.value)}
           placeholder="Enter Program Website URL"
-          className="w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
+          className="w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-1 focus:ring-green-500 focus:border-transparent transition"
         />
       </div>
 
       <div className="mb-6">
         <label
           htmlFor="programDescription"
-          className="block text-gray-800 font-semibold mb-2 text-lg"
+          className="block  font-semibold mb-2 text-lg"
         >
           Program Description
         </label>
         <textarea
           id="programDescription"
           value={brand.programDescription}
-          onChange={(e) => updateBrandData('programDescription', e.target.value)}
+          onChange={(e) =>
+            updateBrandData('programDescription', e.target.value)
+          }
           placeholder="Enter Program Description"
           rows={5}
           className="w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm resize-y
-                     focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent
+                     focus:outline-none focus:ring-1 focus:ring-green-500 focus:border-transparent
                      transition"
         />
       </div>
@@ -321,23 +302,19 @@ const Step8_BrandProgram = ({ data, updateData }) => {
 
 const Step8_ScheduleLaunch = ({ data, updateData }) => (
   <div className="mb-6">
-    <label className="block text-gray-800 font-semibold mb-2 text-lg">
-      Start Date:
-    </label>
+    <label className="block  font-semibold mb-2 text-lg">Start Date:</label>
     <input
       type="date"
       value={data.startDate || ''}
       onChange={(e) => updateData({ startDate: e.target.value })}
-      className="w-full p-2 border border-gray-300 rounded-lg shadow-sm mb-4 focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
+      className="w-full p-2 border border-gray-300 rounded-lg shadow-sm mb-4 focus:outline-none focus:ring-1 focus:ring-green-500 transition"
     />
-    <label className="block text-gray-800 font-semibold mb-2 text-lg">
-      End Date:
-    </label>
+    <label className="block  font-semibold mb-2 text-lg">End Date:</label>
     <input
       type="date"
       value={data.endDate || ''}
       onChange={(e) => updateData({ endDate: e.target.value })}
-      className="w-full p-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
+      className="w-full p-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-1 focus:ring-green-500 transition"
     />
   </div>
 )
@@ -355,11 +332,45 @@ const Step9_ReviewAndSubmit = ({ data, onSubmit }) => {
   }
 
   return (
+    // <div>
+    //   <h2 className="text-2xl font-bold mb-4">Review Your Program</h2>
+    //   <pre className=" p-4 rounded-lg overflow-x-auto max-h-96">
+    //     {JSON.stringify(displayData, null, 2)}
+    //   </pre>
+    //   <div className="flex justify-between mt-6">
+    //     <button
+    //       onClick={() => onSubmit(false)}
+    //       className="bg-gray-600 hover:bg-gray-700 transition text-white font-semibold px-6 py-3 rounded-lg shadow-md"
+    //     >
+    //       Save as Draft
+    //     </button>
+    //     <button
+    //       onClick={() => onSubmit(true)}
+    //       className="bg-green-600 hover:bg-green-700 transition text-white font-semibold px-6 py-3 rounded-lg shadow-md"
+    //     >
+    //       Publish Program
+    //     </button>
+    //   </div>
+    // </div>
     <div>
       <h2 className="text-2xl font-bold mb-4">Review Your Program</h2>
-      <pre className="bg-gray-100 p-4 rounded-lg overflow-x-auto max-h-96">
-        {JSON.stringify(displayData, null, 2)}
-      </pre>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 bg-gray-100 p-6 rounded-lg max-h-96 overflow-y-auto">
+        {Object.entries(displayData).map(([key, value]) => (
+          <div key={key} className="flex flex-col">
+            <label className="text-sm font-medium text-gray-700 capitalize">
+              {key.replace(/_/g, ' ')}
+            </label>
+            <input
+              type="text"
+              readOnly
+              value={typeof value === 'object' ? JSON.stringify(value) : value}
+              className="mt-1 p-2 border border-gray-300 rounded-md bg-white text-gray-900"
+            />
+          </div>
+        ))}
+      </div>
+
       <div className="flex justify-between mt-6">
         <button
           onClick={() => onSubmit(false)}
@@ -379,39 +390,37 @@ const Step9_ReviewAndSubmit = ({ data, onSubmit }) => {
 }
 // Main component
 const CreateProgram = () => {
-  const [showInvitePopup, setShowInvitePopup] = useState(false);
-  const [step, setStep] = useState(0);
-  const [programData, setProgramData] = useState({});
-  const [isEditing, setIsEditing] = useState(false);
-  const navigate = useNavigate();
-  const location = useLocation();
-  const VITE_BACKEND_HOST_URL = import.meta.env.VITE_BACKEND_HOST_URL;
-  
+  const [showInvitePopup, setShowInvitePopup] = useState(false)
+  const [step, setStep] = useState(0)
+  const [programData, setProgramData] = useState({})
+  const [isEditing, setIsEditing] = useState(false)
+  const navigate = useNavigate()
+  const location = useLocation()
+  const VITE_BACKEND_HOST_URL = import.meta.env.VITE_BACKEND_HOST_URL
 
-useEffect(() => {
-  return () => {
-    if (!location.pathname.includes('/create-program')) {
-      localStorage.removeItem('programId');
-      localStorage.removeItem('programData');
-      localStorage.removeItem('assets');
-      localStorage.removeItem('selectedProgramType');
+  useEffect(() => {
+    return () => {
+      if (!location.pathname.includes('/create-program')) {
+        localStorage.removeItem('programId')
+        localStorage.removeItem('programData')
+        localStorage.removeItem('assets')
+        localStorage.removeItem('selectedProgramType')
+      }
     }
-  };
-}, [location.pathname]);
+  }, [location.pathname])
 
-
-  
-// Load program data when component mounts
+  // Load program data when component mounts
   useEffect(() => {
     const loadProgramData = async () => {
       // Check if we're editing an existing program
-      const programId = location.state?.programId || localStorage.getItem('programId');
-      
+      const programId =
+        location.state?.programId || localStorage.getItem('programId')
+
       if (programId) {
         try {
-          setIsEditing(true);
-          const token = localStorage.getItem('token');
-          setStep(1); // Start from Step 2 (Define Scope)
+          setIsEditing(true)
+          const token = localStorage.getItem('token')
+          setStep(1)
           const response = await axios.get(
             `${VITE_BACKEND_HOST_URL}/api/programs/${programId}`,
             {
@@ -419,9 +428,9 @@ useEffect(() => {
                 Authorization: `Bearer ${token}`,
               },
             }
-          );
+          )
 
-          const program = response.data.data;
+          const program = response.data.data
           setProgramData({
             programName: program.title,
             guidelines: program.guidelines,
@@ -435,91 +444,89 @@ useEffect(() => {
             scope: program.scope,
             brand: program.brand,
             bounty: program.bountyRange,
-            status: program.status
-          });
+            status: program.status,
+          })
 
           // Skip Step 1 if editing
-          
         } catch (error) {
-          console.error('Error loading program:', error);
+          console.error('Error loading program:', error)
         }
       } else {
         // New program creation
-        const selectedProgramType = localStorage.getItem('selectedProgramType');
+        const selectedProgramType = localStorage.getItem('selectedProgramType')
         if (selectedProgramType) {
-          const isPrivate = selectedProgramType.includes('Private');
+          const isPrivate = selectedProgramType.includes('Private')
           setProgramData((prev) => ({
             ...prev,
             visibility: isPrivate ? 'private' : 'public',
             type: selectedProgramType,
             status: 'draft',
-          }));
+          }))
         }
       }
-    };
+    }
 
-    loadProgramData();
+    loadProgramData()
 
     // Asset sync interval (unchanged)
-    let previousAssets = localStorage.getItem('assets');
+    let previousAssets = localStorage.getItem('assets')
     const interval = setInterval(() => {
-      const currentAssets = localStorage.getItem('assets');
+      const currentAssets = localStorage.getItem('assets')
       if (currentAssets && currentAssets !== previousAssets) {
-        const storedData = localStorage.getItem('programData');
-        const selectedProgramType = localStorage.getItem('selectedProgramType');
+        const storedData = localStorage.getItem('programData')
+        const selectedProgramType = localStorage.getItem('selectedProgramType')
 
-        let updatedData = {};
+        let updatedData = {}
         if (storedData) {
-          updatedData = JSON.parse(storedData);
+          updatedData = JSON.parse(storedData)
         }
 
-        const parsedAssets = JSON.parse(currentAssets || '[]');
+        const parsedAssets = JSON.parse(currentAssets || '[]')
         if (!updatedData.scope || updatedData.scope.length === 0) {
-          updatedData.scope = parsedAssets;
+          updatedData.scope = parsedAssets
         }
 
         if (selectedProgramType) {
-          updatedData.type = selectedProgramType;
+          updatedData.type = selectedProgramType
           updatedData.visibility =
             updatedData.visibility ||
-            (selectedProgramType.includes('Private') ? 'private' : 'public');
+            (selectedProgramType.includes('Private') ? 'private' : 'public')
         }
 
-        setProgramData(updatedData);
-        previousAssets = currentAssets;
+        setProgramData(updatedData)
+        previousAssets = currentAssets
       }
-    }, 500);
+    }, 500)
 
-    return () => clearInterval(interval);
-  }, [location.state, VITE_BACKEND_HOST_URL]);
-
+    return () => clearInterval(interval)
+  }, [location.state, VITE_BACKEND_HOST_URL])
 
   useEffect(() => {
-    localStorage.setItem('programData', JSON.stringify(programData));
-  }, [programData]);
+    localStorage.setItem('programData', JSON.stringify(programData))
+  }, [programData])
 
   const updateData = (newData) =>
-    setProgramData((prev) => ({ ...prev, ...newData }));
+    setProgramData((prev) => ({ ...prev, ...newData }))
 
   const initialCreation = async () => {
     try {
-      const selectedProgramType = localStorage.getItem('selectedProgramType');
-      const storedData = localStorage.getItem('programData');
-      const programData = storedData ? JSON.parse(storedData) : {};
-      const storedUser = localStorage.getItem('user');
-      const userObj = JSON.parse(storedUser);
-      const token = localStorage.getItem('token');
+      const selectedProgramType = localStorage.getItem('selectedProgramType')
+      const storedData = localStorage.getItem('programData')
+      const programData = storedData ? JSON.parse(storedData) : {}
+      const storedUser = localStorage.getItem('user')
+      const userObj = JSON.parse(storedUser)
+      const token = localStorage.getItem('token')
 
       if (!userObj?._id) {
-        throw new Error('User ID not found in localStorage');
+        throw new Error('User ID not found in localStorage')
       }
 
       if (!/^[0-9a-fA-F]{24}$/.test(userObj._id)) {
-        throw new Error('Invalid user ID format');
+        throw new Error('Invalid user ID format')
       }
 
-      const isPrivate = selectedProgramType.includes('Private');
-      const visibility = isPrivate ? 'private' : 'public';
+      const isPrivate = selectedProgramType.includes('Private')
+      const visibility = isPrivate ? 'private' : 'public'
 
       const payload = {
         type: selectedProgramType,
@@ -528,7 +535,7 @@ useEffect(() => {
         visibility: visibility,
         status: 'draft',
         description: programData.description || '', // Add this line
-      };
+      }
 
       const response = await axios.post(
         `${VITE_BACKEND_HOST_URL}/api/programs`,
@@ -539,29 +546,31 @@ useEffect(() => {
             'Content-Type': 'application/json',
           },
         }
-      );
+      )
 
       if (response.data.data && response.data.data._id) {
-        localStorage.setItem('programId', response.data.data._id);
-        return true;
+        localStorage.setItem('programId', response.data.data._id)
+        return true
       }
-      throw new Error('Program ID not found in response');
+      throw new Error('Program ID not found in response')
     } catch (error) {
       console.error('Program creation failed:', {
         message: error.message,
         response: error.response?.data,
-      });
-      throw error;
+      })
+      throw error
     }
-  };
+  }
 
   const updateProgramData = async (publish = false) => {
-    const programId = localStorage.getItem('programId');
-    if (!programId) return console.error('Program ID not found.');
+    const programId = localStorage.getItem('programId')
+    if (!programId) return console.error('Program ID not found.')
 
     try {
-      const programData = JSON.parse(localStorage.getItem('programData') || '{}');
-      const token = localStorage.getItem('token');
+      const programData = JSON.parse(
+        localStorage.getItem('programData') || '{}'
+      )
+      const token = localStorage.getItem('token')
 
       const payload = {
         title: programData.programName,
@@ -582,7 +591,7 @@ useEffect(() => {
           high: 0,
         },
         status: publish ? 'published' : 'draft',
-      };
+      }
 
       const response = await axios.put(
         `${VITE_BACKEND_HOST_URL}/api/programs/update/${programId}`,
@@ -593,38 +602,36 @@ useEffect(() => {
             Authorization: `Bearer ${token}`,
           },
         }
-      );
+      )
 
       if (publish) {
-       
         if (programData.visibility === 'private') {
-        setShowInvitePopup(true);
+          setShowInvitePopup(true)
+        } else {
+          localStorage.removeItem('programId')
+          localStorage.removeItem('programData')
+          localStorage.removeItem('assets')
+          localStorage.removeItem('selectedProgramType')
+          navigate('/company/programs')
+        }
       } else {
-        localStorage.removeItem('programId');
-        localStorage.removeItem('programData');
-        localStorage.removeItem('assets');
-        localStorage.removeItem('selectedProgramType');
-        navigate('/company/programs');
-      }
-      } else {
-        alert('Program saved as draft successfully!');
-        navigate('/company/programs');
+        alert('Program saved as draft successfully!')
+        navigate('/company/programs')
       }
     } catch (error) {
-      console.error('Update error:', error);
-      const errorMessage = error.response?.data?.message || error.message;
-      alert(`Error updating program: ${errorMessage}`);
+      console.error('Update error:', error)
+      const errorMessage = error.response?.data?.message || error.message
+      alert(`Error updating program: ${errorMessage}`)
     }
-  };
-
+  }
 
   const cleanupAndNavigate = () => {
-  localStorage.removeItem('programId');
-  localStorage.removeItem('programData');
-  localStorage.removeItem('assets');
-  localStorage.removeItem('selectedProgramType');
-  navigate('/company/programs');
-};
+    localStorage.removeItem('programId')
+    localStorage.removeItem('programData')
+    localStorage.removeItem('assets')
+    localStorage.removeItem('selectedProgramType')
+    navigate('/company/programs')
+  }
 
   const steps = [
     Step1_ProgramUsername,
@@ -637,165 +644,179 @@ useEffect(() => {
     // Step8_BrandProgram,
     Step8_ScheduleLaunch,
     Step9_ReviewAndSubmit,
-  ];
+  ]
 
-  const CurrentStep = steps[step];
-
-
+  const CurrentStep = steps[step]
 
   const InviteHackersPopup = ({ programId, onClose }) => {
-  const [hackers, setHackers] = useState([]);
-  const [selectedHackers, setSelectedHackers] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [isSending, setIsSending] = useState(false);
-  const [success, setSuccess] = useState(false);
+    const [hackers, setHackers] = useState([])
+    const [selectedHackers, setSelectedHackers] = useState([])
+    const [isLoading, setIsLoading] = useState(true)
+    const [isSending, setIsSending] = useState(false)
+    const [success, setSuccess] = useState(false)
 
-  useEffect(() => {
-    const fetchHackers = async () => {
-      try {
-        const token = localStorage.getItem('token');
-        const response = await axios.get(
-          `${VITE_BACKEND_HOST_URL}/api/hacker/leaderBoard`,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
-        setHackers(response.data.leaderBoard);
-        setIsLoading(false);
-      } catch (error) {
-        console.error('Error fetching hackers:', error);
-        setIsLoading(false);
+    useEffect(() => {
+      const fetchHackers = async () => {
+        try {
+          const token = localStorage.getItem('token')
+          const response = await axios.get(
+            `${VITE_BACKEND_HOST_URL}/api/hacker/leaderBoard`,
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            }
+          )
+          setHackers(response.data.leaderBoard)
+          setIsLoading(false)
+        } catch (error) {
+          console.error('Error fetching hackers:', error)
+          setIsLoading(false)
+        }
       }
-    };
 
-    fetchHackers();
-  }, []);
+      fetchHackers()
+    }, [])
 
-  const toggleHackerSelection = (hackerId) => {
-    setSelectedHackers(prev => 
-      prev.includes(hackerId) 
-        ? prev.filter(id => id !== hackerId) 
-        : [...prev, hackerId]
-    );
-  };
-
-  const sendInvitations = async () => {
-  if (selectedHackers.length === 0) return;
-  
-  setIsSending(true);
-  try {
-    const token = localStorage.getItem('token');
-    const response = await axios.post(
-      `${VITE_BACKEND_HOST_URL}/api/programs/${programId}/invite`,
-      { hackerIds: selectedHackers },
-      {
-        headers: { Authorization: `Bearer ${token}` },
-      }
-    );
-    
-    if (response.data.failedEmails?.length) {
-      alert(`Sent with ${response.data.failedEmails.length} failures`);
-    } else {
-      setSuccess(true);
-      setTimeout(onClose, 2000);
+    const toggleHackerSelection = (hackerId) => {
+      setSelectedHackers((prev) =>
+        prev.includes(hackerId)
+          ? prev.filter((id) => id !== hackerId)
+          : [...prev, hackerId]
+      )
     }
-  } catch (error) {
-    console.error('Error:', error.response?.data || error.message);
-    alert(`Failed: ${error.response?.data?.message || error.message}`);
-  } finally {
-    setIsSending(false);
-  }
-};
 
-  if (isLoading) {
+    const sendInvitations = async () => {
+      if (selectedHackers.length === 0) return
+
+      setIsSending(true)
+      try {
+        const token = localStorage.getItem('token')
+        const response = await axios.post(
+          `${VITE_BACKEND_HOST_URL}/api/programs/${programId}/invite`,
+          { hackerIds: selectedHackers },
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        )
+
+        if (response.data.failedEmails?.length) {
+          alert(`Sent with ${response.data.failedEmails.length} failures`)
+        } else {
+          setSuccess(true)
+          setTimeout(onClose, 2000)
+        }
+      } catch (error) {
+        console.error('Error:', error.response?.data || error.message)
+        alert(`Failed: ${error.response?.data?.message || error.message}`)
+      } finally {
+        setIsSending(false)
+      }
+    }
+
+    if (isLoading) {
+      return (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white p-6 rounded-lg shadow-xl max-w-2xl w-full max-h-[80vh] overflow-y-auto">
+            <h2 className="text-xl font-bold mb-4">Loading hackers...</h2>
+            <div className="flex justify-center">
+              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
+            </div>
+          </div>
+        </div>
+      )
+    }
+
     return (
       <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
         <div className="bg-white p-6 rounded-lg shadow-xl max-w-2xl w-full max-h-[80vh] overflow-y-auto">
-          <h2 className="text-xl font-bold mb-4">Loading hackers...</h2>
-          <div className="flex justify-center">
-            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
-          </div>
+          {success ? (
+            <div className="text-center">
+              <div className="text-green-500 text-5xl mb-4">✓</div>
+              <h2 className="text-xl font-bold mb-2">
+                Invitations Sent Successfully!
+              </h2>
+              <p>Selected hackers have been invited to your private program.</p>
+            </div>
+          ) : (
+            <>
+              <h2 className="text-xl font-bold mb-4">
+                Invite Hackers to Your Private Program
+              </h2>
+              <p className="mb-4">
+                Select hackers from the leaderboard to invite:
+              </p>
+
+              <div className="space-y-3 mb-6">
+                {hackers.map((hacker) => (
+                  <div
+                    key={hacker._id}
+                    className={`flex items-center p-3 border rounded-lg cursor-pointer transition ${
+                      selectedHackers.includes(hacker._id)
+                        ? 'bg-blue-50 border-blue-300'
+                        : 'hover:bg-gray-50'
+                    }`}
+                    onClick={() => toggleHackerSelection(hacker._id)}
+                  >
+                    <img
+                      src={hacker.image || '/default-hacker.png'}
+                      alt={hacker.name}
+                      className="w-10 h-10 rounded-full mr-3"
+                    />
+                    <div>
+                      <h3 className="font-medium">{hacker.name}</h3>
+                      <p className="text-sm text-gray-600">
+                        @{hacker.username}
+                      </p>
+                    </div>
+                    {selectedHackers.includes(hacker._id) && (
+                      <div className="ml-auto text-blue-500">✓</div>
+                    )}
+                  </div>
+                ))}
+              </div>
+
+              <div className="flex justify-end space-x-3">
+                <button
+                  onClick={onClose}
+                  className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition"
+                  disabled={isSending}
+                >
+                  Skip
+                </button>
+                <button
+                  onClick={sendInvitations}
+                  disabled={selectedHackers.length === 0 || isSending}
+                  className={`px-4 py-2 rounded-lg text-white transition ${
+                    selectedHackers.length === 0
+                      ? 'bg-blue-300 cursor-not-allowed'
+                      : 'bg-blue-600 hover:bg-blue-700'
+                  }`}
+                >
+                  {isSending
+                    ? 'Sending...'
+                    : `Invite ${selectedHackers.length} Hackers`}
+                </button>
+              </div>
+            </>
+          )}
         </div>
       </div>
-    );
+    )
   }
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-      <div className="bg-white p-6 rounded-lg shadow-xl max-w-2xl w-full max-h-[80vh] overflow-y-auto">
-        {success ? (
-          <div className="text-center">
-            <div className="text-green-500 text-5xl mb-4">✓</div>
-            <h2 className="text-xl font-bold mb-2">Invitations Sent Successfully!</h2>
-            <p>Selected hackers have been invited to your private program.</p>
-          </div>
-        ) : (
-          <>
-            <h2 className="text-xl font-bold mb-4">Invite Hackers to Your Private Program</h2>
-            <p className="mb-4">Select hackers from the leaderboard to invite:</p>
-            
-            <div className="space-y-3 mb-6">
-              {hackers.map(hacker => (
-                <div 
-                  key={hacker._id} 
-                  className={`flex items-center p-3 border rounded-lg cursor-pointer transition ${selectedHackers.includes(hacker._id) ? 'bg-blue-50 border-blue-300' : 'hover:bg-gray-50'}`}
-                  onClick={() => toggleHackerSelection(hacker._id)}
-                >
-                  <img 
-                    src={hacker.image || '/default-hacker.png'} 
-                    alt={hacker.name} 
-                    className="w-10 h-10 rounded-full mr-3"
-                  />
-                  <div>
-                    <h3 className="font-medium">{hacker.name}</h3>
-                    <p className="text-sm text-gray-600">@{hacker.username}</p>
-                  </div>
-                  {selectedHackers.includes(hacker._id) && (
-                    <div className="ml-auto text-blue-500">
-                      ✓
-                    </div>
-                  )}
-                </div>
-              ))}
-            </div>
-            
-            <div className="flex justify-end space-x-3">
-              <button
-                onClick={onClose}
-                className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition"
-                disabled={isSending}
-              >
-                Skip
-              </button>
-              <button
-                onClick={sendInvitations}
-                disabled={selectedHackers.length === 0 || isSending}
-                className={`px-4 py-2 rounded-lg text-white transition ${selectedHackers.length === 0 ? 'bg-blue-300 cursor-not-allowed' : 'bg-blue-600 hover:bg-blue-700'}`}
-              >
-                {isSending ? 'Sending...' : `Invite ${selectedHackers.length} Hackers`}
-              </button>
-            </div>
-          </>
-        )}
-      </div>
-    </div>
-  );
-};
-
-  return (
-    <div className="max-w-full h-[100vh] text-black mx-auto p-8 bg-white rounded-lg shadow-lg flex">
+    <div className="max-w-full h-[100vh]  mx-auto p-8 bg-[#0e0e0e]rounded-lg shadow-lg flex">
       {/* Step Indicators */}
       <div className="w-1/4 pr-6">
-        <ol className="flex flex-col mt-[200px] text-xs sm:text-sm font-medium text-gray-500 space-y-4">
+        <ol className="flex flex-col mt-[200px] text-xs sm:text-sm font-medium  space-y-4">
           {stepsList.map((label, index) => (
             <li
               key={label}
               className={`pb-1 border-l-4 pl-3 ${
                 index === step
-                  ? 'text-blue-600 border-blue-600 font-semibold'
-                  : 'border-gray-300'
+                  ? 'text-green-600 border-green-600 font-semibold'
+                  : ''
               }`}
             >
               {label}
@@ -806,11 +827,11 @@ useEffect(() => {
 
       {/* Main content */}
       <div className="w-3/4">
-        <h1 className="text-3xl font-extrabold mb-2 text-center text-gray-900">
+        <h1 className="text-3xl font-extrabold mb-2 text-center ">
           {isEditing ? 'Edit Program' : 'Create Bug Bounty Program'}
         </h1>
         <div className="mb-4 text-center">
-          <span className="inline-block bg-blue-100 text-blue-800 text-sm font-semibold px-3 py-1 rounded-full">
+          <span className="inline-block bg-blue-100 text-green-800 text-sm font-semibold px-3 py-1 rounded-full">
             {programData.status === 'published' ? 'Published' : 'Draft'}
           </span>
         </div>
@@ -824,14 +845,12 @@ useEffect(() => {
           />
         </div>
 
-
-
         {showInvitePopup && (
-  <InviteHackersPopup 
-    programId={localStorage.getItem('programId')} 
-    onClose={cleanupAndNavigate}
-  />
-)}
+          <InviteHackersPopup
+            programId={localStorage.getItem('programId')}
+            onClose={cleanupAndNavigate}
+          />
+        )}
 
         {/* Navigation Buttons */}
         <div className="flex justify-between">
@@ -851,33 +870,27 @@ useEffect(() => {
               onClick={async () => {
                 if (step === 0 && !isEditing) {
                   try {
-                    await initialCreation();
-                    setStep((prev) => prev + 1);
+                    await initialCreation()
+                    setStep((prev) => prev + 1)
                   } catch (error) {
                     alert(
                       'Failed to create program: ' +
                         (error.response?.data?.message || error.message)
-                    );
+                    )
                   }
                 } else {
-                  setStep((prev) => prev + 1);
+                  setStep((prev) => prev + 1)
                 }
               }}
-              className="px-6 py-3 rounded-lg shadow-md bg-blue-600 text-white font-semibold hover:bg-blue-700 transition"
+              className="px-6 py-3 rounded-lg shadow-md bg-green-600 text-white font-semibold hover:bg-green-700 transition"
             >
               Next
             </button>
           ) : null}
         </div>
       </div>
-
-
-      
-
     </div>
+  )
+}
 
-    
-  );
-};
-
-export default CreateProgram;
+export default CreateProgram

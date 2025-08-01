@@ -69,7 +69,9 @@ const HackerAllReports = () => {
 
   return (
     <div className="max-w-full mx-auto p-4">
-      <h2 className="text-2xl font-bold text-white mb-6">📝 Hacker All Reports</h2>
+      <h2 className="text-2xl font-bold text-white mb-6">
+        📝 Hacker All Reports
+      </h2>
 
       {reports.length > 0 ? (
         <div className="space-y-4">
@@ -80,25 +82,33 @@ const HackerAllReports = () => {
             >
               {/* Top: Title & Program */}
               <div className="flex justify-between items-start mb-2">
-                <h3 className="text-xl font-bold text-white">{report.title || 'Unnamed Report'}</h3>
-                <div className='flex justify-between gap-3'>
-              <span className={`text-sm  px-4 py-1 rounded-full
+                <h3 className="text-xl font-bold text-white">
+                  {report.title || 'Unnamed Report'}
+                </h3>
+                <div className="flex justify-between gap-3">
+                  <span
+                    className={`text-sm  px-4 py-1 rounded-full
                    ${
-    report.severity === "Low" ? "bg-blue-500" :
-    report.severity === "Moderate" ? "bg-orange-800" :
-    report.severity === "Critical" ? "bg-yellow-500 text-black" :
-    report.severity === "High" ? "bg-green-500" :
-    report.severity === "Informational" ? "bg-gray-500 text-black" :
-    "bg-gray-700 text-black"
-  }
-                  `}>
-                 {report.severity}
-                 </span>
+                     report.severity === 'Low'
+                       ? 'bg-blue-500'
+                       : report.severity === 'Moderate'
+                       ? 'bg-orange-800'
+                       : report.severity === 'Critical'
+                       ? 'bg-yellow-500 text-black'
+                       : report.severity === 'High'
+                       ? 'bg-green-500'
+                       : report.severity === 'Informational'
+                       ? 'bg-gray-500 text-black'
+                       : 'bg-gray-700 text-black'
+                   }
+                  `}
+                  >
+                    {report.severity}
+                  </span>
 
-
-                <span className={`text-sm  text-blue-200 px-2 py-1 rounded `}>
-                 {report.status.toUpperCase()}
-                </span>
+                  <span className={`text-sm  text-blue-200 px-2 py-1 rounded `}>
+                    {report.status.toUpperCase()}
+                  </span>
                 </div>
               </div>
 
@@ -110,10 +120,13 @@ const HackerAllReports = () => {
               {/* Bottom: Date & Bounty */}
               <div className="flex justify-between items-center">
                 <span className="text-sm text-gray-400">
-                  Submitted: {new Date(report.createdAt).toLocaleDateString('en-GB')}
+                  Submitted:{' '}
+                  {new Date(report.createdAt).toLocaleDateString('en-GB')}
                 </span>
                 <div className="flex items-center gap-4">
-                  <span className="text-lg font-bold text-green-400">$Bounty Amount</span>
+                  <span className="text-lg font-bold text-green-400">
+                    $Bounty Amount
+                  </span>
                   <CTAButton
                     text="View Report"
                     onClick={() => navigate(`/chat/${report?._id}`)}

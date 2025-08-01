@@ -13,7 +13,6 @@ const ProgramsPage = () => {
   const userType = useSelector((state) => state.auth.userType)
 
   const fetchPrograms = async (type) => {
-    console.log(type)
     setLoading(true)
     try {
       let data = null

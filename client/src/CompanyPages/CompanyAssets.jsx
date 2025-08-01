@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
-import { Link } from 'react-router-dom'
 
 const CompanyAssets = () => {
   const [assets, setAssets] = useState([])
@@ -11,14 +10,11 @@ const CompanyAssets = () => {
       try {
         const user = localStorage.getItem('user')
         const companyId = user ? JSON.parse(user)._id : null
-        // console.log('Company IDdassadsad:', companyId)
 
         if (!companyId) {
           console.error('Company ID not found')
           return
         }
-
-        // console.log('Fetching assets for company ID:',`${VITE_BACKEND_HOST_URL}/api/assets/${companyId}` )
 
         const response = await axios.get(
           `${VITE_BACKEND_HOST_URL}/api/assets/${companyId}`,
@@ -28,8 +24,6 @@ const CompanyAssets = () => {
             },
           }
         )
-
-        // console.log('Response data:', response.data)
 
         if (response.data.success) {
           setAssets(response.data.data)
@@ -45,12 +39,6 @@ const CompanyAssets = () => {
     <div className="max-w-5xl mx-auto p-6 h-[90vh] rounded-lg shadow-lg mt-10 bg-gray-900">
       <h2 className="text-2xl flex justify-between font-extrabold text-white mb-8 border-b border-gray-700 pb-2">
         Company Assets
-        {/* <Link
-          to={'/addassets'}
-          className="border p-1 px-5 bg-white text-black text-sm rounded-full"
-        >
-          Add Assets
-        </Link> */}
       </h2>
 
       {assets.length === 0 ? (
