@@ -20,13 +20,6 @@ const PROGRAM_TYPES = [
     type: 'Public Bug Bounty',
     icon: <Bug className="w-6 h-6 text-white" />,
   },
-  // {
-  //   title: 'Enterprise Pentesting',
-  //   description:
-  //     'Rapid, SaaS-based infrastructure facilitating regular testing to fortify system security',
-  //   type: 'Enterprise Pentesting',
-  //   icon: <Lock className="w-6 h-6 text-white" />,
-  // },
 ]
 
 const ProgramTypeModal = ({ onClose, onSelect }) => {

@@ -3,7 +3,7 @@ import mongoose from 'mongoose'
 const programSchema = new mongoose.Schema(
   {
     title: { type: String, required: true },
-    description: { type: String, default: "" },
+    description: { type: String, default: '' },
     company: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Company',

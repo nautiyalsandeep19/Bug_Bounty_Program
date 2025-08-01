@@ -1,50 +1,45 @@
-import React, { useState, useEffect, useRef } from 'react';
-import axios from 'axios';
-import Select from 'react-select';
-import { Link } from 'react-router';
-import { addAssetIdForCompany, getAssetIdsForCompany } from '../LocalStorage/localStorageAssets';
-import JoditEditor from 'jodit-react';
-import TiptapEditor from '../../Common/Editor/TiptapEditor' // adjust the path
+import React, { useState, useEffect, useRef } from 'react'
+import axios from 'axios'
+import Select from 'react-select'
+import {
+  addAssetIdForCompany,
+  getAssetIdsForCompany,
+} from '../LocalStorage/localStorageAssets'
 
-// import 'jodit/build/jodit.min.css';
-
-
-
+import TiptapEditor from '../../Common/Editor/TiptapEditor'
 
 const CreateAssets = ({ updateScope }) => {
-  const editor = useRef(null);
-  
-  // const STATIC_COMPANY_ID = '6652f1a1f57c9c48e16b3400';
-  const storedUser = localStorage.getItem('user');
-  const userObj = JSON.parse(storedUser);
-  const STATIC_COMPANY_ID = userObj._id;
-  const Vite_BACKEND_HOST_URL = import.meta.env.VITE_BACKEND_HOST_URL;
-  const VITE_BACKEND_HOST_URL = import.meta.env.VITE_BACKEND_HOST_URL
-  const [STATIC_PROGRAM_ID, SET_STATIC_PROGRAM_ID] = useState('');
+  const editor = useRef(null)
 
-  
+  // const STATIC_COMPANY_ID = '6652f1a1f57c9c48e16b3400';
+  const storedUser = localStorage.getItem('user')
+  const userObj = JSON.parse(storedUser)
+  const STATIC_COMPANY_ID = userObj._id
+  const Vite_BACKEND_HOST_URL = import.meta.env.VITE_BACKEND_HOST_URL
+  const VITE_BACKEND_HOST_URL = import.meta.env.VITE_BACKEND_HOST_URL
+  const [STATIC_PROGRAM_ID, SET_STATIC_PROGRAM_ID] = useState('')
 
   useEffect(() => {
     const timer = setTimeout(() => {
       const fetchProgramId = () => {
-        const storeId = String(localStorage.getItem('programId'));
-        SET_STATIC_PROGRAM_ID(storeId);
-      };
-      fetchProgramId();
-    }, 1000);
-    return () => clearTimeout(timer);
-  }, []);
+        const storeId = String(localStorage.getItem('programId'))
+        SET_STATIC_PROGRAM_ID(storeId)
+      }
+      fetchProgramId()
+    }, 1000)
+    return () => clearTimeout(timer)
+  }, [])
 
   useEffect(() => {
-    const storeId = String(localStorage.getItem('programId') || '');
-    SET_STATIC_PROGRAM_ID(storeId);
-  }, []);
+    const storeId = String(localStorage.getItem('programId') || '')
+    SET_STATIC_PROGRAM_ID(storeId)
+  }, [])
 
   useEffect(() => {
     if (STATIC_PROGRAM_ID) {
-      setFormData(prev => ({ ...prev, programId: STATIC_PROGRAM_ID }));
+      setFormData((prev) => ({ ...prev, programId: STATIC_PROGRAM_ID }))
     }
-  }, [STATIC_PROGRAM_ID]);
+  }, [STATIC_PROGRAM_ID])
 
   const [formData, setFormData] = useState({
     assetURL: '',
@@ -54,18 +49,18 @@ const CreateAssets = ({ updateScope }) => {
     scopeGroupLabels: [],
     scopeGroupType: 'In Scope',
     company: STATIC_COMPANY_ID,
-    programId: STATIC_PROGRAM_ID || ''
-  });
+    programId: STATIC_PROGRAM_ID || '',
+  })
 
   // Handle Jodit editor changes
   const handleEditorChange = (newContent) => {
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      assetDescription: newContent
-    }));
-  };
+      assetDescription: newContent,
+    }))
+  }
 
-  const [assets, setAssets] = useState([]);
+  const [assets, setAssets] = useState([])
 
   const allLabelOptions = [
     { value: 'production', label: 'Production' },
@@ -73,121 +68,122 @@ const CreateAssets = ({ updateScope }) => {
     { value: 'staging', label: 'Staging' },
     { value: 'testing', label: 'Testing' },
     { value: 'qa', label: 'QA' },
-    { value: 'devops', label: 'DevOps' }
-  ];
+    { value: 'devops', label: 'DevOps' },
+  ]
 
   const allScopeGroupLabelOptions = [
     { value: 'api cluster', label: 'API Cluster' },
     { value: 'payment gateway', label: 'Payment Gateway' },
     { value: 'infrastructure', label: 'Infrastructure' },
-    { value: 'microservices', label: 'Microservices' }
-  ];
+    { value: 'microservices', label: 'Microservices' },
+  ]
 
   useEffect(() => {
     const fetchAssets = async () => {
-   try {
-    const token = localStorage.getItem('token'); // or whatever key you use
-    const response = await axios.get(`${Vite_BACKEND_HOST_URL}/api/assets?programId=${STATIC_PROGRAM_ID}`, {
-      headers: {
-        'Authorization': `Bearer ${token}`,
-        'Content-Type': 'application/json'
-      }
-    });
-    setAssets(response.data);
-  } catch (error) {
-    console.error('Error fetching assets:', error);
-  }
-};
-    fetchAssets();
-  }, [STATIC_PROGRAM_ID]);
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
-  };
-
-  const handleLabelsChange = (selected) => {
-    setFormData(prev => ({
-      ...prev,
-      labels: selected ? selected.map(option => option.value) : []
-    }));
-  };
-
-  const handleScopeGroupLabelsChange = (selected) => {
-    setFormData(prev => ({
-      ...prev,
-      scopeGroupLabels: selected ? selected.map(option => option.value) : []
-    }));
-  };
-
-  const handleSubmit = async (e) => {
-  e.preventDefault();
-  try {
-    const token = localStorage.getItem('token');
-    
-    // Add programId to formData if not already set
-    const submissionData = {
-      ...formData,
-      programId: STATIC_PROGRAM_ID
-    };
-
-    const response = await axios.post(
-      `${Vite_BACKEND_HOST_URL}/api/assets`, 
-      submissionData,
-      {
-        headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json'
-        }
-      }
-    );
-
-    if (response.data.success) {
-      alert('Asset created successfully!');
-      const newAsset = response.data.data;
-      
-      // Update scope if updateScope prop exists
-      if (updateScope) {
-        updateScope(prevScope => [...prevScope, newAsset]);
-      }
-      
-      // Store asset ID in local storage
-      addAssetIdForCompany(STATIC_COMPANY_ID, newAsset._id);
-      
-      // Reset form
-      setFormData({
-        assetURL: '',
-        assetDescription: '',
-        assetType: 'website',
-        labels: [],
-        scopeGroupLabels: [],
-        scopeGroupType: 'In Scope',
-        company: STATIC_COMPANY_ID,
-        programId: STATIC_PROGRAM_ID
-      });
-
-      // Refresh assets list with proper authorization
-      const refreshed = await axios.get(
-        `${Vite_BACKEND_HOST_URL}/api/assets?programId=${STATIC_PROGRAM_ID}`,
-        {
-          headers: {
-            'Authorization': `Bearer ${token}`,
-            'Content-Type': 'application/json'
+      try {
+        const token = localStorage.getItem('token') // or whatever key you use
+        const response = await axios.get(
+          `${Vite_BACKEND_HOST_URL}/api/assets?programId=${STATIC_PROGRAM_ID}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+              'Content-Type': 'application/json',
+            },
           }
-        }
-      );
-      
-      if (refreshed.data.success) {
-        setAssets(refreshed.data.data);
+        )
+        setAssets(response.data)
+      } catch (error) {
+        console.error('Error fetching assets:', error)
       }
     }
-  } catch (error) {
-    console.error('Error creating asset:', error);
-    alert(error.response?.data?.message || 'Error creating asset');
+    fetchAssets()
+  }, [STATIC_PROGRAM_ID])
+
+  const handleChange = (e) => {
+    const { name, value } = e.target
+    setFormData((prev) => ({ ...prev, [name]: value }))
   }
-};
 
+  const handleLabelsChange = (selected) => {
+    setFormData((prev) => ({
+      ...prev,
+      labels: selected ? selected.map((option) => option.value) : [],
+    }))
+  }
 
+  const handleScopeGroupLabelsChange = (selected) => {
+    setFormData((prev) => ({
+      ...prev,
+      scopeGroupLabels: selected ? selected.map((option) => option.value) : [],
+    }))
+  }
+
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+    try {
+      const token = localStorage.getItem('token')
+
+      // Add programId to formData if not already set
+      const submissionData = {
+        ...formData,
+        programId: STATIC_PROGRAM_ID,
+      }
+
+      const response = await axios.post(
+        `${Vite_BACKEND_HOST_URL}/api/assets`,
+        submissionData,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          },
+        }
+      )
+
+      if (response.data.success) {
+        alert('Asset created successfully!')
+        const newAsset = response.data.data
+
+        // Update scope if updateScope prop exists
+        if (updateScope) {
+          updateScope((prevScope) => [...prevScope, newAsset])
+        }
+
+        // Store asset ID in local storage
+        addAssetIdForCompany(STATIC_COMPANY_ID, newAsset._id)
+
+        // Reset form
+        setFormData({
+          assetURL: '',
+          assetDescription: '',
+          assetType: 'website',
+          labels: [],
+          scopeGroupLabels: [],
+          scopeGroupType: 'In Scope',
+          company: STATIC_COMPANY_ID,
+          programId: STATIC_PROGRAM_ID,
+        })
+
+        // Refresh assets list with proper authorization
+        const refreshed = await axios.get(
+          `${Vite_BACKEND_HOST_URL}/api/assets?programId=${STATIC_PROGRAM_ID}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+              'Content-Type': 'application/json',
+            },
+          }
+        )
+
+        if (refreshed.data.success) {
+          setAssets(refreshed.data.data)
+        }
+      }
+    } catch (error) {
+      console.error('Error creating asset:', error)
+      alert(error.response?.data?.message || 'Error creating asset')
+    }
+  }
 
   const [assetsForCompany, setAssetsForCompany] = useState([])
   useEffect(() => {
@@ -197,7 +193,7 @@ const CreateAssets = ({ updateScope }) => {
         const user = localStorage.getItem('user')
         const companyId = user ? JSON.parse(user)._id : null
         // console.log('Company IDdassadsad:', companyId)
-        
+
         if (!companyId) {
           console.error('Company ID not found')
           return
@@ -209,8 +205,8 @@ const CreateAssets = ({ updateScope }) => {
           `${VITE_BACKEND_HOST_URL}/api/assets/${companyId}`,
           {
             headers: {
-              Authorization: `Bearer ${localStorage.getItem('token')}`
-            }
+              Authorization: `Bearer ${localStorage.getItem('token')}`,
+            },
           }
         )
 
@@ -228,37 +224,28 @@ const CreateAssets = ({ updateScope }) => {
   }, [])
   console.log(assetsForCompany)
 
+  const handleAssetClick = (asset) => {
+    try {
+      const storedData = JSON.parse(localStorage.getItem('programData')) || {}
+      const currentScope = Array.isArray(storedData.scope)
+        ? storedData.scope
+        : []
 
+      if (!currentScope.includes(asset._id)) {
+        const updatedScope = [...currentScope, asset._id]
+        const updatedProgramData = { ...storedData, scope: updatedScope }
 
+        localStorage.setItem('programData', JSON.stringify(updatedProgramData))
+        localStorage.setItem('assets', JSON.stringify(updatedScope)) // ✅ Add this line
 
-
-
-
-  
-const handleAssetClick = (asset) => {
-  try {
-    const storedData = JSON.parse(localStorage.getItem("programData")) || {};
-    const currentScope = Array.isArray(storedData.scope) ? storedData.scope : [];
-
-    if (!currentScope.includes(asset._id)) {
-      const updatedScope = [...currentScope, asset._id];
-      const updatedProgramData = { ...storedData, scope: updatedScope };
-
-      localStorage.setItem("programData", JSON.stringify(updatedProgramData));
-      localStorage.setItem("assets", JSON.stringify(updatedScope)); // ✅ Add this line
-
-      console.log("✅ Asset ID added to programData.scope:", asset._id);
-    } else {
-      console.log("⚠️ Asset ID already in scope:", asset._id);
+        console.log('✅ Asset ID added to programData.scope:', asset._id)
+      } else {
+        console.log('⚠️ Asset ID already in scope:', asset._id)
+      }
+    } catch (error) {
+      console.error('❌ Error handling asset click:', error)
     }
-  } catch (error) {
-    console.error("❌ Error handling asset click:", error);
   }
-};
-
-
-
-
 
   return (
     <div className="flex flex-col lg:flex-row max-w-7xl w-full mx-auto mt-10 bg-white rounded-2xl shadow-xl p-4 sm:p-6 lg:p-8 gap-6">
@@ -287,42 +274,49 @@ const handleAssetClick = (asset) => {
         )}
       </aside> */}
       <aside className="w-full lg:w-1/3 border-b lg:border-b-0 lg:border-r border-gray-300 pb-4 lg:pb-0 lg:pr-4 max-h-[300px] lg:max-h-[80vh] overflow-y-auto">
-  <h2 className="text-xl sm:text-2xl font-semibold mb-4 text-gray-800">Assets</h2>
-  {assetsForCompany.length === 0 ? (
-    <p className="text-gray-500">No assets found.</p>
-  ) : (
-    <ul className="space-y-3">
-      {assetsForCompany.map(asset => (
-        <li
-          key={asset._id}
-          className="p-2 border rounded bg-gray-50 cursor-pointer hover:bg-blue-50"
-          onClick={() => handleAssetClick(asset)}
-        >
-          <a
-            href={asset.assetURL}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-blue-600 text-sm break-all"
-            title={asset.assetURL}
-          >
-            {asset.assetURL}
-          </a>
-          <p className="text-xs text-gray-700">{asset.assetType}</p>
-        </li>
-      ))}
-    </ul>
-  )}
-</aside>
-
+        <h2 className="text-xl sm:text-2xl font-semibold mb-4 text-gray-800">
+          Assets
+        </h2>
+        {assetsForCompany.length === 0 ? (
+          <p className="text-gray-500">No assets found.</p>
+        ) : (
+          <ul className="space-y-3">
+            {assetsForCompany.map((asset) => (
+              <li
+                key={asset._id}
+                className="p-2 border rounded bg-gray-50 cursor-pointer hover:bg-blue-50"
+                onClick={() => handleAssetClick(asset)}
+              >
+                <a
+                  href={asset.assetURL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-blue-600 text-sm break-all"
+                  title={asset.assetURL}
+                >
+                  {asset.assetURL}
+                </a>
+                <p className="text-xs text-gray-700">{asset.assetType}</p>
+              </li>
+            ))}
+          </ul>
+        )}
+      </aside>
 
       {/* Main Form */}
       <main className="w-full lg:w-2/3">
-        <h1 className="text-2xl sm:text-3xl font-bold text-center text-gray-800 mb-2">Asset Management</h1>
-        <p className="text-center text-gray-500 mb-6">Add new assets to your system</p>
+        <h1 className="text-2xl sm:text-3xl font-bold text-center text-gray-800 mb-2">
+          Asset Management
+        </h1>
+        <p className="text-center text-gray-500 mb-6">
+          Add new assets to your system
+        </p>
 
         <form onSubmit={handleSubmit} className="space-y-5">
           <div>
-            <h1 className="text-gray-900 text-sm font-semibold pl-2">Asset URL</h1>
+            <h1 className="text-gray-900 text-sm font-semibold pl-2">
+              Asset URL
+            </h1>
             <input
               type="text"
               name="assetURL"
@@ -334,7 +328,9 @@ const handleAssetClick = (asset) => {
           </div>
 
           <div>
-            <h1 className="text-gray-900 text-sm font-semibold pl-2 mb-2">Asset Description</h1>
+            <h1 className="text-gray-900 text-sm font-semibold pl-2 mb-2">
+              Asset Description
+            </h1>
             <div className="border border-gray-300 rounded-lg overflow-hidden">
               {/* <JoditEditor
                 ref={editor}
@@ -347,21 +343,23 @@ const handleAssetClick = (asset) => {
                 }}  
               /> */}
               <TiptapEditor
-              value={formData.assetDescription}
-              onChange={handleEditorChange}
-              setReportPOC={(html) =>
-              setFormData((prev) => ({
-                ...prev,
-                assetDescription: html,
-                }))
-  }
-/>
+                value={formData.assetDescription}
+                onChange={handleEditorChange}
+                setReportPOC={(html) =>
+                  setFormData((prev) => ({
+                    ...prev,
+                    assetDescription: html,
+                  }))
+                }
+              />
             </div>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label className="block text-black text-sm font-medium mb-1">Asset Type</label>
+              <label className="block text-black text-sm font-medium mb-1">
+                Asset Type
+              </label>
               <select
                 name="assetType"
                 value={formData.assetType}
@@ -378,12 +376,16 @@ const handleAssetClick = (asset) => {
             </div>
 
             <div>
-              <label className="block text-black text-sm font-medium mb-1">Labels</label>
+              <label className="block text-black text-sm font-medium mb-1">
+                Labels
+              </label>
               <Select
                 isMulti
                 name="labels"
                 options={allLabelOptions}
-                value={allLabelOptions.filter(option => formData.labels.includes(option.value))}
+                value={allLabelOptions.filter((option) =>
+                  formData.labels.includes(option.value)
+                )}
                 onChange={handleLabelsChange}
                 className="react-select-container text-black"
                 classNamePrefix="react-select"
@@ -391,12 +393,14 @@ const handleAssetClick = (asset) => {
             </div>
 
             <div>
-              <label className="block text-sm font-medium mb-1">Scope Group Labels</label>
+              <label className="block text-sm font-medium mb-1">
+                Scope Group Labels
+              </label>
               <Select
                 isMulti
                 name="scopeGroupLabels"
                 options={allScopeGroupLabelOptions}
-                value={allScopeGroupLabelOptions.filter(option =>
+                value={allScopeGroupLabelOptions.filter((option) =>
                   formData.scopeGroupLabels.includes(option.value)
                 )}
                 onChange={handleScopeGroupLabelsChange}
@@ -406,7 +410,9 @@ const handleAssetClick = (asset) => {
             </div>
 
             <div>
-              <label className="block text-sm text-black font-medium mb-1">Scope Group Type</label>
+              <label className="block text-sm text-black font-medium mb-1">
+                Scope Group Type
+              </label>
               <select
                 name="scopeGroupType"
                 value={formData.scopeGroupType}
@@ -439,7 +445,7 @@ const handleAssetClick = (asset) => {
                   scopeGroupType: 'In Scope',
                   company: STATIC_COMPANY_ID,
                   programId: STATIC_PROGRAM_ID,
-                });
+                })
               }}
             >
               Create New
@@ -448,13 +454,7 @@ const handleAssetClick = (asset) => {
         </form>
       </main>
     </div>
-  );
-};
+  )
+}
 
-export default CreateAssets;
-
-
-
-
-
-
+export default CreateAssets

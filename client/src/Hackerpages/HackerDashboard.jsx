@@ -10,7 +10,7 @@ import CTAButton from '../Common/Button/CTAButton'
 const FeedDashboard = () => {
   const [hacker, setHacker] = useState(null)
   const [logs, setLogs] = useState([])
-  const navigate = useNavigate()
+
   const token = useSelector((state) => state.auth.token)
 
   useEffect(() => {

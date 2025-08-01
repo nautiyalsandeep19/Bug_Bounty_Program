@@ -6,7 +6,6 @@ import toast from 'react-hot-toast'
 export const getAllPrograms = async () => {
   try {
     const response = await apiConnector('GET', endPoints.GET_ALL_PROGRAMS)
-    console.log('All Programs:', response)
 
     if (!response.success) {
       toast.error(response.message)
@@ -43,7 +42,6 @@ export const getAssetsForProgram = async (programId) => {
     const response = await apiConnector('POST', endPoints.GET_PROGRAM_ASSETS, {
       programId,
     })
-    console.log('Response vvvvvvvvvvvvv: ', response)
     return response?.assets
   } catch (error) {
     console.error('Error fetching assets:', error)
