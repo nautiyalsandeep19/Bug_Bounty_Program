@@ -1,6 +1,6 @@
-import Program from '../Models/Program.js'
-import Report from '../Models/Report.js'
-import Hacker from '../Models/Hacker.js'
+import Program from '../models/Program.js'
+import Report from '../models/Report.js'
+import Hacker from '../models/Hacker.js'
 import nodemailer from 'nodemailer'
 
 export const createProgram = async (req, res) => {

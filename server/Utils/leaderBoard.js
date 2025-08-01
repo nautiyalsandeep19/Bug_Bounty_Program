@@ -1,5 +1,5 @@
-import Program from '../Models/Program.js'
-import Hacker from '../Models/Hacker.js'
+import Program from '../models/Program.js'
+import Hacker from '../models/Hacker.js'
 
 export const updateProgramLeaderBoard = async (programId, hackerId, points) => {
   if (!programId || !hackerId || typeof points !== 'number') return
