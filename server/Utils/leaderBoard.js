@@ -1,4 +1,4 @@
-import Program from '../models/Program.js'
+import Program from '../models/program.js'
 import Hacker from '../models/Hacker.js'
 
 export const updateProgramLeaderBoard = async (programId, hackerId, points) => {

@@ -1,4 +1,4 @@
-import Program from '../models/Program.js'
+import Program from '../models/program.js'
 import Report from '../models/Report.js'
 import Hacker from '../models/Hacker.js'
 import nodemailer from 'nodemailer'
