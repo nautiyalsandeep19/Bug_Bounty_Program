@@ -113,7 +113,7 @@
 // export default Report
 
 import mongoose from 'mongoose'
-import Program from './program.js'
+import Program from './Program.js'
 
 const reportSchema = new mongoose.Schema(
   {

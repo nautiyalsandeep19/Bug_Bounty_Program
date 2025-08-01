@@ -1,7 +1,7 @@
-import Admin from '../models/admin.js'
-import Message from '../models/Message.js'
+import Admin from '../Models/admin.js'
+import Message from '../Models/Message.js'
 
-import Report from '../models/Report.js'
+import Report from '../Models/Report.js'
 import {
   updateGlobalLeaderBoard,
   updateProgramLeaderBoard,

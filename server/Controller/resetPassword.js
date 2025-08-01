@@ -1,5 +1,5 @@
-import Hacker from '../models/hacker.js'
-import Company from '../models/company.js'
+import Hacker from '../Models/Hacker.js'
+import Company from '../Models/company.js'
 import bcryptjs from 'bcryptjs'
 import mailSender from '../Utils/maiSender.js'
 import dotenv from 'dotenv'
