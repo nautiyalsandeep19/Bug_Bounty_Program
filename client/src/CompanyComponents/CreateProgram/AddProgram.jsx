@@ -333,27 +333,7 @@ const Step9_ReviewAndSubmit = ({ data, onSubmit }) => {
   }
 
   return (
-    // <div>
-    //   <h2 className="text-2xl font-bold mb-4">Review Your Program</h2>
-    //   <pre className=" p-4 rounded-lg overflow-x-auto max-h-96">
-    //     {JSON.stringify(displayData, null, 2)}
-    //   </pre>
-    //   <div className="flex justify-between mt-6">
-    //     <button
-    //       onClick={() => onSubmit(false)}
-    //       className="bg-gray-600 hover:bg-gray-700 transition text-white font-semibold px-6 py-3 rounded-lg shadow-md"
-    //     >
-    //       Save as Draft
-    //     </button>
-    //     <button
-    //       onClick={() => onSubmit(true)}
-    //       className="bg-green-600 hover:bg-green-700 transition text-white font-semibold px-6 py-3 rounded-lg shadow-md"
-    //     >
-    //       Publish Program
-    //     </button>
-    //   </div>
-    // </div>
-    <div>
+    <div className=''>
       <h2 className="text-2xl font-bold mb-4">Review Your Program</h2>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 bg-gray-100 p-6 rounded-lg max-h-96 overflow-y-auto">
