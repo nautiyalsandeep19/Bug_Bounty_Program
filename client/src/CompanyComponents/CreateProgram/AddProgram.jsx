@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import CreateAssets from './CreateAssets'
 import { useNavigate, useLocation } from 'react-router-dom'
 import axios from 'axios'
+import CTAButton from '../../Common/Button/CTAButton'
 
 // Steps labels
 const stepsList = [
@@ -806,7 +807,7 @@ const CreateProgram = () => {
   }
 
   return (
-    <div className="max-w-full h-[100vh]  mx-auto p-8 bg-[#0e0e0e]rounded-lg shadow-lg flex">
+    <div className="max-w-full h-screen  mx-auto p-8 bg-gradient-to-b from-[#1c1e26] via-[#364b2c] to-[#b3ef77]]rounded-lg shadow-lg flex">
       {/* Step Indicators */}
       <div className="w-1/4 pr-6">
         <ol className="flex flex-col mt-[200px] text-xs sm:text-sm font-medium  space-y-4">

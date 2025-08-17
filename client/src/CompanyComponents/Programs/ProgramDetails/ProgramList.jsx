@@ -93,7 +93,7 @@ const ProgramList = () => {
         <p>Error loading programs: {error}</p>
         <button
           onClick={() => window.location.reload()}
-          className="mt-2 px-4 py-2 bg-blue-500 text-white rounded"
+          className="mt-2 px-4 py-2 bg-green-500 text-white rounded"
         >
           Retry
         </button>
@@ -138,7 +138,7 @@ const ProgramList = () => {
         <button
           className={`py-2 px-4 font-medium ${
             activeTab === 'published'
-              ? 'text-blue-600 border-b-2 border-blue-600'
+              ? 'text-green-600 border-b-2 border-green-600 cursor-pointer'
               : 'text-gray-500'
           }`}
           onClick={() => setActiveTab('published')}
@@ -148,7 +148,7 @@ const ProgramList = () => {
         <button
           className={`py-2 px-4 font-medium ${
             activeTab === 'draft'
-              ? 'text-blue-600 border-b-2 border-blue-600'
+              ? 'text-green-600 border-b-2 border-green-600 cursor-pointer'
               : 'text-gray-500'
           }`}
           onClick={() => setActiveTab('draft')}
